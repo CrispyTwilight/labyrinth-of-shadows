@@ -3,7 +3,7 @@
 //Desc: Creating a the Enemy class.
 #include "Character.h"
 
-class Enemy
+class Enemy : private Character
 {
 private:
 int strength;

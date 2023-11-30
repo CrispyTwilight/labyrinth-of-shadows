@@ -22,13 +22,12 @@ private:
     int rainCooldown;
     int chargedCooldown;
     int repulsionUses;
-    int roundNum;
     bool isRepulsionActivated;
     bool isBlocking;
     bool isStunned;
     bool isEnemyStunned;
 public:
-    Ranger(int max, int hea, int  str, int intel, int  dex, int lev, int ex, int need, int rai, int charg, int re, int potion, int turns, int round)
+    Ranger(int max, int hea, int  str, int intel, int  dex, int lev, int ex, int need, int rai, int charg, int re, int potion, int turns)
     {
         maxHealth = max;
         //This is a placeholder because the playername 
@@ -45,7 +44,6 @@ public:
         rainlvl = rai;
         chargedlvl = charg;
         repulsionlvl = re;
-        roundNum = round;
         // Since this an combat ability it will only be able to activated during combat so it starts off false
         isRepulsionActivated = false;
         isBlocking = false;
@@ -238,16 +236,11 @@ public:
         }
         }
         //Seeing if they enough exp for a second level up.
-        checkForLevelUp();
+        //This will go to the utility class to check.
+        //checkForLevelUp();
     }
 
-     void checkForLevelUp()
-    {
-        if (exp == expNeeded)
-        {
-            levelUp();
-        };
-    }
+     
 
 
 };

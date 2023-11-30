@@ -3,6 +3,7 @@
 //Desc: Creating a superclass for the player, npcs, and enemies
 #include <iostream>
 #include <string>
+#include "Utility.h"
 using namespace std;
 
 class Character
