@@ -1,6 +1,10 @@
+// Date: ??
+// Auth: Christian Baack
+// Desc: Class to define the map of the game.
+
+#pragma once
 #include <vector>
 #include<iostream>
-
 using namespace std;
 
 //Map class
@@ -26,13 +30,12 @@ public:
         }
     }
 
-    void display() {
+    void display() const { // JPO: const because it doesn't modify the object
         for (const auto& row : grid) {
             for (char cell : row) {
                 cout << cell << " ";
             }
-            cout << std::endl;
+            cout << endl; // JPO: removed the std:: prefix because we're using the namespace std
         }
     }
-
 };
