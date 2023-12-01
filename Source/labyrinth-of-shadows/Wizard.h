@@ -1,6 +1,7 @@
 //Auth: William Brickner
 //Date: 11/30/23
 //Desc: Creating the subclass Wizard for the player.
+#pragma once
 #include "Character.h"
 #include <conio.h> // This allows us to use _getch() which will automatically continue after the user enters a single character.
 
@@ -41,16 +42,15 @@ public:
         expNeeded = need;
         fireballLvl = fire;
         iceWallLvl = ice;
-        // Since this an combat ability it will only be able to activated during combat so it starts off fals
+        // Since this an combat ability it will only be able to activated during combat so it starts off false
         isBlocking = false;
         isStunned = false;
         fireballCooldown = 0;
         iceWallCooldown = 0;
-
     }
 
     //Setters
-     void setMaxHealth(int value)
+    void setMaxHealth(int value)
     {
         maxHealth = value;
     }
@@ -105,58 +105,63 @@ public:
     }
 
     //Getters
-      int getMaxHealth()
+    int getMaxHealth() const
     {
         return maxHealth;
     }
 
-    int getStrength()
+    int getStrength() const
     {
         return strength;
     }
 
-    int getIntelligence()
+    int getIntelligence() const
     {
         return intelligence;
     }
 
-    int getDexterity()
+    int getDexterity() const
     {
         return dexterity;
     }
 
-    int getLevel()
+    int getLevel() const
     {
         return level;
     }
 
-    int getNumturns()
+    int getNumturns() const
     {
         return numberTurns;
     }
-    int getHealthPotions()
+
+    int getHealthPotions() const
     {
         return healthPotions;
     }
-    int getExp()
+
+    int getExp() const
     {
         return exp;
     }
-    int getExpNeeded()
+
+    int getExpNeeded() const
     {
         return expNeeded;
     }
-    int getFireball()
+
+    int getFireball() const
     {
         return fireballLvl;
     }
-    int getIceWall()
+
+    int getIceWall() const
     {
         return iceWallLvl;
     }
 
     // Level up function
-     void levelUp()
+    void levelUp()
     {
         cout << "You have leveled up!\n";
         maxHealth += 5;
@@ -172,18 +177,15 @@ public:
         exp = expNeeded - exp;
         expNeeded = level * 5;
 
-        
-
         int choice;
 
-
         cout << "What Spell would you like to level up\n"
-            << "Leveling up Fireball will increase its damage\n"
-            << "Leveling up Ice wall will increase its effect duration but also increase cooldown duration.\n"
-            << "Your cooldown will be two more than the level of the Ice wall spell."
+             << "Leveling up Fireball will increase its damage\n"
+             << "Leveling up Ice wall will increase its effect duration but also increase cooldown duration.\n"
+             << "Your cooldown will be two more than the level of the Ice wall spell."
 
-            << "1. FireBall " << fireballLvl << endl
-            << "2. Ice Wall " << iceWallLvl << endl;
+             << "1. FireBall " << fireballLvl << endl
+             << "2. Ice Wall " << iceWallLvl << endl;
 
         do {
             cout << "Enter your choice: ";
