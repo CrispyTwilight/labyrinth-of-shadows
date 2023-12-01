@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <conio.h>
 using namespace std;
 
 class Player
@@ -16,7 +17,7 @@ public:
     void handleInput() {
         char input;
         cout << "Enter move (WASD): ";
-        cin >> input;
+        input = _getch();
 
         switch (input) {
         case 'W': case 'w':
