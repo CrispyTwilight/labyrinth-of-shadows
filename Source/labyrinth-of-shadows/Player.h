@@ -1,9 +1,13 @@
+// Date: ??
+// Auth: Christian Baack
+// Desc: Class to represent the player in the game for movement and position.
+
 #pragma once
 #include <iostream>
+#include <conio.h>
 using namespace std;
 
-class Player
-{
+class Player {
 private:
     int x, y; //Player's position
 
@@ -16,7 +20,7 @@ public:
     void handleInput() {
         char input;
         cout << "Enter move (WASD): ";
-        cin >> input;
+        input = _getch();
 
         switch (input) {
         case 'W': case 'w':
@@ -44,6 +48,4 @@ public:
         outX = x;
         outY = y;
     }
-
 };
-
