@@ -8,7 +8,7 @@
 #include "Map.h"
 using namespace std;
 
-class Player 
+class Player
 {
 private:
     Map& map;
@@ -18,7 +18,7 @@ private:
 public:
     Player(Map& map, int initialX, int initialY) : map(map), x(initialX), y(initialY), px(initialX), py(initialY) {}
 
-    void handleInput() 
+    void handleInput()
     {
         char input;
         cout << "Enter move (WASD): ";
@@ -42,8 +42,8 @@ public:
     }
 
     //This will check if the proposed postion is valid
-    void move(int dx, int dy) 
-    {   
+    void move(int dx, int dy)
+    {
         px += dx;
         py += dy;
         if (map.getGrid()[py][px] != '#')
@@ -57,10 +57,10 @@ public:
             py = y;
         }
         cout << "X: " << x << "  Y: " << y;
-        
+
     }
 
-    void getPosition(int& outX, int& outY) const 
+    void getPosition(int& outX, int& outY) const
     {
         outX = x;
         outY = y;

@@ -12,15 +12,15 @@
 #include "Player.h"
 #include "Utility.h"
 
-int main() 
+int main()
 {
     //Game objects
     Map gameMap(50, 30);
     Player player(gameMap,24, 13);
     Utility util;
-    
+
     //Infinite loop right now, will need a menu.
-    while (true) 
+    while (true)
     {
         player.handleInput();
         //This clears the cli
@@ -36,7 +36,7 @@ int main()
         gameMap.display();
 
         util.visual();
-            
+
         //This is necessary to control speed of the game.
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
 

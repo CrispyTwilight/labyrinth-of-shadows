@@ -17,16 +17,15 @@ private:
 
     int width, height;
     vector<vector<char>> grid;
-    
 
 public:
 
-    Map(int w, int h) : width(w), height(h) 
+    Map(int w, int h) : width(w), height(h)
     {
         grid = vector<vector<char>>(h, vector<char>(w, '.')); // '.' for empty space
     }
 
-    void updatePlayerPosition(int x, int y) 
+    void updatePlayerPosition(int x, int y)
     {
         //Only clear the player's previous position
         for (auto& row : grid)
@@ -40,17 +39,17 @@ public:
             }
         }
         //Update new position
-        if (x >= 0 && x < width && y >= 0 && y < height) 
+        if (x >= 0 && x < width && y >= 0 && y < height)
         {
             grid[y][x] = '@'; // '@' represents the player
         }
     }
 
-    void display() const 
+    void display() const
     { // JPO: const because it doesn't modify the object
-        for (const auto& row : grid) 
+        for (const auto& row : grid)
         {
-            for (char cell : row) 
+            for (char cell : row)
             {
                 cout << cell << " ";
             }
