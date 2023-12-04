@@ -57,7 +57,7 @@ public:
 	}
 
 	//Methods
-	int rollDice()
+	int rollDice() //Rolls the dice with the given max and min and returns it as an integer
 	{
 		srand(time(0));
 		setPrevRoll(rand() % max + min);
