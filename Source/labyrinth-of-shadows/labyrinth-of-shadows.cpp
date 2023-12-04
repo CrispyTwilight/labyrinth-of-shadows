@@ -8,6 +8,7 @@
 #include <windows.h>
 
 // Header files for game objects
+#include "GameManager.h"
 #include "Map.h"
 #include "Player.h"
 
