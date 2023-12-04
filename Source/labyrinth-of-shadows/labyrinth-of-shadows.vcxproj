@@ -131,6 +131,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Character.h" />
+    <ClInclude Include="Dice.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Player.h" />

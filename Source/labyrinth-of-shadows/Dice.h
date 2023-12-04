@@ -1,7 +1,8 @@
-#pragma once
 //Auth: Hunter Kauffman
 //Date: 11/30/23
 //Desc: Dice class for generating random numbers based on the max and min number put in
+
+#pragma once
 
 #include <iostream>
 #include <ctime>
@@ -25,17 +26,17 @@ public:
 	}
 
 	//Getters
-	int getMax()
+	int getMax() const
 	{
 		return max;
 	}
 
-	int getMin()
+	int getMin() const
 	{
 		return min;
 	}
 
-	int getPrevRoll()
+	int getPrevRoll() const
 	{
 		return prevRoll;
 	}
@@ -64,4 +65,3 @@ public:
 		return prevRoll;
 	}
 };
-
