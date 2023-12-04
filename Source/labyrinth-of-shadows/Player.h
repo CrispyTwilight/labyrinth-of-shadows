@@ -5,19 +5,21 @@
 #pragma once
 #include <iostream>
 #include <conio.h>
+#include "Map.h"
 using namespace std;
 
-class Player {
+class Player
+{
 private:
+    Map& map;
     int x, y; //Player's position
+    int px, py; //Proposed position. Checking for walls
 
 public:
-    Player(int initialX, int initialY) {
-        x = initialX;
-        y = initialY;
-    }
+    Player(Map& map, int initialX, int initialY) : map(map), x(initialX), y(initialY), px(initialX), py(initialY) {}
 
-    void handleInput() {
+    void handleInput()
+    {
         char input;
         cout << "Enter move (WASD): ";
         input = _getch();
@@ -39,12 +41,27 @@ public:
         }
     }
 
-    void move(int dx, int dy) {
-        x += dx;
-        y += dy;
+    //This will check if the proposed postion is valid
+    void move(int dx, int dy)
+    {
+        px += dx;
+        py += dy;
+        if (map.getGrid()[py][px] != '#')
+        {
+            x += dx;
+            y += dy;
+        }
+        else
+        {
+            px = x;
+            py = y;
+        }
+        cout << "X: " << x << "  Y: " << y;
+
     }
 
-    void getPosition(int& outX, int& outY) const {
+    void getPosition(int& outX, int& outY) const
+    {
         outX = x;
         outY = y;
     }
