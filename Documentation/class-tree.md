@@ -15,39 +15,43 @@ Map (super) - Christian
 Movement (super) - Christian
 
 Helper_Utilities (super) - All Team
-    EnemyName (arr)
-    PlayerName (arr)
+- EnemyName (arr)
+- PlayerName (arr)
 
 Character (super) - Will
-|-- Player
-    |-- Ranger
-    |-- Wizard
-    |-- Rogue
-|-- Enemy
-    |-- EnemyEasy
-    |-- EnemyMedium
-    |-- EnemyBoss
-|-- NPC
-    |-- ShopOwner
-    |-- Other
+- Player (super/sub)
+    - Ranger (sub)
+    - Wizard (sub)
+    - Rogue (sub)
+- Enemy (super/sub)
+    - EnemyEasy (sub)
+    - EnemyMedium (sub)
+    - EnemyBoss (sub)
+- NPC (super/sub)
+    - ShopOwner (sub)
+    - Other (sub)
 
-Attack (super)
+Attack (super) - ??
 (find a way to subclass the attack functionality)
 
-Ability (super)
-(Maybe??)
+Ability (super) - (Maybe??)
 
-Inventory (super) -CAB
+Inventory (super) - CAB
 
 CAB:
-|-- EnemyLoot (struct)
-|-- RandomLoot (struct)
+- EnemyLoot (struct)
+- RandomLoot (struct)
 
-|-- Bow (struct)
-|-- Staff (struct)
-|-- Sword (struct)
-|-- Dagger (struct)
+- Bow (struct)
+- Staff (struct)
+- Sword (struct)
+- Dagger (struct)
 
-|-- Shield (struct)
-|-- Armor (struct)
-|-- HealthPotion (struct)
+- Shield (struct)
+- Armor (struct)
+- HealthPotion (struct)
+
+Counts:
+- Super: 15
+- Sub: 13
+- Struct: 9
