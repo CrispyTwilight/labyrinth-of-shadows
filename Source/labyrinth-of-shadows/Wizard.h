@@ -5,7 +5,7 @@
 #include "Character.h"
 #include <conio.h> // This allows us to use _getch() which will automatically continue after the user enters a single character.
 
-class Wizard : private Character
+class Wizard : public Character
 {
 private:
     int maxHealth;
@@ -189,7 +189,7 @@ public:
 
         do {
             cout << "Enter your choice: ";
-            cin >> choice;
+            choice = _getch();
             if (choice < 0 || choice > 3) {
                 cout << "Incorrect value. Please enter a valid value.\n";
             }

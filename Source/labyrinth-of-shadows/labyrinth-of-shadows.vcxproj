@@ -127,17 +127,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bow.cpp" />
     <ClCompile Include="labyrinth-of-shadows.cpp" />
+    <ClCompile Include="Load.cpp" />
+    <ClCompile Include="RangerLoadFile.cpp" />
+    <ClCompile Include="Save.cpp" />
+    <ClCompile Include="Staff.cpp" />
+    <ClCompile Include="Sword.cpp" />
+    <ClCompile Include="WizardLoadFile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bow.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="Dice.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Load.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Ranger.h" />
+    <ClInclude Include="RangerLoadFile.h" />
+    <ClInclude Include="Save.h" />
+    <ClInclude Include="Staff.h" />
+    <ClInclude Include="Sword.h" />
     <ClInclude Include="Utility.h" />
     <ClInclude Include="Wizard.h" />
+    <ClInclude Include="WizardLoadFile.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
