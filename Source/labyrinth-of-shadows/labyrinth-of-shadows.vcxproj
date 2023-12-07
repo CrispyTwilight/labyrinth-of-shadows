@@ -137,6 +137,7 @@
     <ClInclude Include="MapManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Ranger.h" />
+    <ClInclude Include="Rogue.h" />
     <ClInclude Include="Utility.h" />
     <ClInclude Include="Wizard.h" />
   </ItemGroup>
