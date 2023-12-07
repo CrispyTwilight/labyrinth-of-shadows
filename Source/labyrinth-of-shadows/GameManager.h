@@ -4,6 +4,7 @@
 #pragma once
 #include <iostream>
 #include <conio.h>
+#include "Character.h"
 #include "Save.h"
 #include "Load.h"
 #include "Ranger.h"
@@ -95,14 +96,12 @@ public:
             {
                 // Make the Ranger the currently selected class.
                 characterSelected = "Ranger";
-                
                 break;
             }
             case 2:
             {
-                // Make the Wizard the currently selected class.
+                // Make the Wizard the curren1tly selected class.
                 characterSelected = "Wizard";
-               
                 break;
             }
             default:
@@ -202,6 +201,7 @@ public:
                     // This is a victory and should take them back to the map.
                 }
             }
+            /* This is how bosses used to be set up but we will call this when the boss is ready.
             else if (round % 10 == 0) {
                 Boss* bossPtr = new Boss(round);
                 playerRanger.fightBossEnemy(*bossPtr);
@@ -220,6 +220,7 @@ public:
                     //Should Restart the game
                 }
             }
+            */
             else {
                 Enemy* enemyPtr = new Enemy(round);
                 playerRanger.fightNormalEnemy(*enemyPtr);
@@ -264,10 +265,11 @@ public:
                     cout << "Your score was " << score << endl;
                     score = 0;
                     round = 0;
-                    //This is a lose and should restart the game.
+                    //This is a loss and should restart the game.
                 }
             }
 
+            /* This is for how bosses used to be setup for.
             if (round % 10 == 0)
             {
                 Boss* bossPtr = new Boss(round);
@@ -292,6 +294,7 @@ public:
                     //This is a lose and should restart the game.
                 }
             }
+            */
 
             else
             {
@@ -313,7 +316,7 @@ public:
                     cout << "Your score was " << score << endl;
                     score = 0;
                     round = 0;
-                   //This is a lose and should restart the game.
+                   //This is a loss and should restart the game.
                 }
 
             }

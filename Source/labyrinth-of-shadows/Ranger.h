@@ -190,7 +190,7 @@ public:
     // Leveling up the player
     void levelUp()
     {
-        std ::cout << "Congratulations you leveled up!";
+        cout << "Congratulations you leveled up!";
         // Increasing the players max health and healing them to full.
         maxHealth += 5;
         setHealth(maxHealth);
@@ -199,7 +199,7 @@ public:
         if (level % 5 == 0) {
             // Increment the number of turns when the player's level is a multiple of 5
             numberTurns++;
-            std :: cout << "Congratulations! Your number of turns has increased to: " << numberTurns << std :: endl;
+            cout << "Congratulations! Your number of turns has increased to: " << numberTurns << endl;
         }
 
         expNeeded = level * 5;
@@ -208,22 +208,22 @@ public:
         int choice;
 
         // Displaying the level up message
-        std ::cout << "What Spell would you like to level up\n"
-             << "Rain of Arrows per level will do an additional 5 damage. Starts with doing 10 damage.\n"
-             << "Charged Shot for the first unlock will allow the Ranger to stun their enemy for a turn.  \n"
-             << "Then every upgrade after that increases the number of turns per stun. Then the cooldown will increase a turn by one as well.\n"
-             << "Repulsion will reflect the next damage that is taken back at the opponent base can only be used once per a fight.\n"
-             << "But every level after number one you can use it an additional time per combat\n"
-             << "1. Rain of Arrows " << rainLvl << std :: endl
-             << "2. Charged Shot " << chargedLvl << std :: endl
-             << "3. Repulsion " << repulsionLvl << std :: endl << std :: endl << std :: endl;
+            cout << "What Spell would you like to level up\n"
+            << "Rain of Arrows per level will do an additional 5 damage. Starts with doing 10 damage.\n"
+            << "Charged Shot for the first unlock will allow the Ranger to stun their enemy for a turn.  \n"
+            << "Then every upgrade after that increases the number of turns per stun. Then the cooldown will increase a turn by one as well.\n"
+            << "Repulsion will reflect the next damage that is taken back at the opponent base can only be used once per a fight.\n"
+            << "But every level after number one you can use it an additional time per combat\n"
+            << "1. Rain of Arrows " << rainLvl << endl
+            << "2. Charged Shot " << chargedLvl << endl
+            << "3. Repulsion " << repulsionLvl << endl;
 
         do {
-            std :: cout << "Enter your choice: ";
+            cout << "Enter your choice: \n";
             // Here is the use of getch.
             choice = _getch();
             if (choice < 0 || choice > 3) {
-                std :: cout << "Incorrect value. Please enter a valid value.\n";
+                cout << "Incorrect value. Please enter a valid value.\n";
             }
         } while (choice < 0 || choice > 3);
 
@@ -232,28 +232,29 @@ public:
             case 1:
             {
                 rainLvl += 1;
-                std ::cout << "Rain of Arrows is now level " << rainLvl << std :: endl;
+                cout << "Rain of Arrows is now level " << rainLvl << endl;
                 break;
             }
             case 2:
             {
                 chargedLvl += 1;
-                std :: cout << "Charged Shot is now level " << chargedLvl << std :: endl;
+                cout << "Charged Shot is now level " << chargedLvl << endl;
                 break;
             }
             case 3:
             {
                 repulsionLvl += 1;
-                std ::cout << "Repulsion is now level " << repulsionLvl << std :: endl;
+                cout << "Repulsion is now level " << repulsionLvl << endl;
                 break;
             }
             default:
             {
-                std :: cout << "Incorrect value. Please eneter a valid value.\n";
+                cout << "Incorrect value. Please eneter a valid value.\n";
                 break;
             }
            
         }
+        //Checking for a level up.
         if (util.checkForLevelUp(exp, expNeeded))
         {
             levelUp();
@@ -287,38 +288,39 @@ public:
 
             for (int turn = 1; turn <= numberTurns; ++turn)
             {
-               std :: cout << "It's your turn, what would you like to do?\n"
+                   cout << "It's your turn, what would you like to do?\n"
                     << "1. Basic Attack\n"
                     << "2. Block\n"
                     << "3. Take Health Potion\n"
                     << "4. Rain of Arrows\n"
                     << "5. Charged Shot\n"
-                    << "6. Repulsion\n" << std :: endl << std ::endl;
+                    << "6. Repulsion\n" << endl;
 
 
-                do {
+                do 
+                {
                     bool incorrectChoice = false;
-                    std ::cout << "Enter your choice: ";
+                    cout << "Enter your choice: \n";
                     choice = _getch();
 
                     if (choice == 3 && healthPotions < 0) {
-                        std:: cout << "You are out of health potions, pick another option.\n";
+                        cout << "You are out of health potions, pick another option.\n";
                         incorrectChoice = true;
                     }
                     else if (choice == 3 && getHealth() == maxHealth) {
-                        std:: cout << "You are full on health. I highly recommend you do something else.\n";
+                        cout << "You are full on health. I highly recommend you do something else.\n";
                         incorrectChoice = true;
                     }
                     else if (choice == 4 && rainCooldown > 0) {
-                        std:: cout << "Rain of Arrows is still on cooldown. You have to wait " << rainCooldown << " number of turns.\n";
+                        cout << "Rain of Arrows is still on cooldown. You have to wait " << rainCooldown << " number of turns.\n";
                         incorrectChoice = true;
                     }
                     else if (choice == 5 && chargedCooldown > 0) {
-                        std:: cout << "Charged shot is still on cooldown. You have to wait " << chargedCooldown << " number of turns.\n";
+                        cout << "Charged shot is still on cooldown. You have to wait " << chargedCooldown << " number of turns.\n";
                         incorrectChoice = true;
                     }
                     else if (choice < 0 || choice > 5) {
-                        std:: cout << "Incorrect value. Please enter a valid value.\n";
+                        cout << "Incorrect value. Please enter a valid value.\n";
                         incorrectChoice = true;
                     }
 
@@ -335,7 +337,7 @@ public:
                 {
                 case 1:
                 {
-                    std:: cout << "You did a basic attack\n";
+                    cout << "You did a basic attack\n";
                     // attack monster
                     attackMonster(enemy, bow.damage + dexterity);
                     break;
@@ -343,20 +345,20 @@ public:
                 case 2:
                 {
                     // Block attack
-                    std:: cout << "You have started to block\n";
+                    cout << "You have started to block\n";
                     isBlocking = true;
                     break;
                 }
                 case 3:
                 {
                     // Take Health Potion If have any
-                    std:: cout << "You took a health potion\n";
+                    cout << "You took a health potion\n";
                     takePotion();
                     break;
                 }
                 case 4:
                 {
-                    std:: cout << "You used Rain of Arrows\n";
+                    cout << "You used Rain of Arrows\n";
                     // Rain of arrows
                     attackMonster(enemy, rainAttack());
                     rainCooldown = 3;
@@ -364,7 +366,7 @@ public:
                 }
                 case 5:
                 {
-                    std:: cout << " You used Charged Shot\n";
+                    cout << " You used Charged Shot\n";
                     // Charged Shot
                     isEnemyStunned = true;
                     chargedCooldown = chargedLvl + 1;
@@ -372,21 +374,21 @@ public:
                 }
                 case 6:
                 {
-                    std:: cout << "You activated Repulsion\n";
+                    cout << "You activated Repulsion\n";
                     //Repulsion Activates
                     isRepulsionActivated = true;
                     break;
                 }
                 default:
                 {
-                    std:: cout << "You put in an incorrect value please try again\n";
+                    cout << "You put in an incorrect value please try again\n";
                 }
                 }
             }
         }
         if (isStunned)
         {
-            std:: cout << "You turn has been skipped!\n";
+            cout << "You turn has been skipped!\n";
         }
     }
 
@@ -498,6 +500,11 @@ public:
                     isRepulsionActivated = true;
                     break;
                 }
+                default:
+                {
+                    cout << "You have encountered an error\n";
+                    break;
+                }
                 }
             }
 
@@ -532,8 +539,8 @@ public:
 
             for (int turn = 1; turn <= numberTurns; ++turn)
             {
-                cout << "It's your turn, what would you like to do?\n";
-                cout << "1. Basic Attack\n"
+                cout << "It's your turn, what would you like to do?\n"
+                     << "1. Basic Attack\n"
                     << "2. Block\n"
                     << "3. Take Health Potion\n"
                     << "4. Rain of Arrows\n"
@@ -621,6 +628,11 @@ public:
                     cout << "You activated Repulsion\n";
                     //Repulsion Activates
                     isRepulsionActivated = true;
+                    break;
+                }
+                default:
+                {
+                    cout << "You have encountered an error\n";
                     break;
                 }
                 }
@@ -713,20 +725,20 @@ public:
 
         if (isBlocking)
         {
-            std:: cout << "You successfully blocked the attack!\n";
+           cout << "You successfully blocked the attack!\n";
         }
         else if (isRepulsionActivated)
         {
-            std:: cout << "You used Repulsion";
+            cout << "You used Repulsion";
             attackMonster(enemy, d);
         }
         else if (enemyAttack <= dexterity)
         {
-            std:: cout << "You dodged the attack!\n";
+            cout << "You dodged the attack!\n";
         }
         else
         {
-            std::cout << "You took " << d << " damage\n";
+            cout << "You took " << d << " damage\n";
             setHealth(getHealth()- d);
         }
     }
@@ -737,24 +749,27 @@ public:
         return  10 + (rainLvl * 5);
     }
 
-    // Taking a potion effect that scales up with their level.
+    //Taking a health potion
+     // We should also find a way for them to be used if their in their inventory.
     void takePotion()
     {
+        //Removing health potion from their inventory. When the inventory is fully setup we will remove it from the inventory class instead.
         healthPotions -= 1;
-
+        //Setting their current health to a higher one.
         setHealth(getHealth() + level * 5);
+
+        // If their health after taking the health potion is higher than their max set their health to their max instead.
         if (getHealth() > maxHealth)
         {
             setHealth(maxHealth);
         }
-        std:: cout << "Your health is now at " << getHealth() << std:: endl;
+        // Confirming for their players so they know they took a health potion.
+        cout << "Your health is now at " << getHealth() << endl;
     }
 
     void fightNormalEnemy(Enemy& enemy)
     {
-        
-
-        std:: cout << "You encounter " << enemy.getName() << " with " << enemy.getHealth() << " health!\n";
+        cout << "You encounter " << enemy.getName() << " with " << enemy.getHealth() << " health!\n";
 
         while (getHealth() > 0 && enemy.getHealth() > 0) {
             // Player's turn
@@ -767,22 +782,27 @@ public:
             }
             else
             {
-                std:: cout << "The enemies turn was skipped\n";
+                cout << "The enemies turn was skipped\n";
             }
-            std :: cout << "Your health is " << getHealth() << " / " << maxHealth 
-             << "Enemy's health: " << enemy.getHealth() << std:: endl;
+            cout << "Your health is " << getHealth() << " / " << maxHealth
+                << "Rain of Arrows cooldown " << rainCooldown << endl
+                << "Charged Shot cooldown " << chargedCooldown << endl
+                << "Repulsion uses remaining " << repulsionUses << endl
+                << "Enemy's health: " << enemy.getHealth() << endl;
         }
 
         if (getHealth() <= 0) {
             // Game over logic
-            std::cout << "You were defeated! Game Over.\n";
+            cout << "You were defeated! Game Over.\n";
 
         }
         else {
             // Victory logic
-            std::cout << "You defeated the enemy!\n";
-            std:: cout << "You gained " << enemy.giveEXP() << "Experience\n";
+            cout << "You defeated the enemy!\n";
+            cout << "You gained " << enemy.giveEXP() << "Experience\n";
             isEnemyStunned = false;
+            //currently fights just give out health potions but later will be drawn from the loot pool and added to their inventory.
+            healthPotions++;
             exp += enemy.giveEXP();
             if (util.checkForLevelUp(exp, expNeeded))
             {
@@ -820,8 +840,11 @@ public:
                 cout << "The Bosses turn was skipped\n";
             }
             // Display updated stats after each round
-          
-            cout << "Enemy's health: " << boss.getHealth() << endl;
+            cout << "Your health is " << getHealth() << " / " << maxHealth
+                << "Rain of Arrows cooldown " << rainCooldown << endl
+                << "Charged Shot cooldown " << chargedCooldown << endl
+                << "Repulsion uses remaining " << repulsionUses << endl
+                << "Boss's health: " << boss.getHealth() << endl;
         }
 
         if (getHealth() <= 0) 
@@ -835,8 +858,10 @@ public:
             cout << "You defeated the Boss!\n";
             cout << "You gained " << boss.giveEXP() << " Experience";
             isEnemyStunned = false;
+            //currently fights just give out health potions but later will be drawn from the loot pool and added to their inventory.
             healthPotions++;
             exp += boss.giveEXP();
+            //Checking if they can level up.
             if (util.checkForLevelUp(exp, expNeeded))
             {
                 levelUp();
@@ -860,7 +885,6 @@ public:
                 if (!isEnemyStunned)
                 {
                     takeDamageEasyEnemy(easyEnemy, easyEnemy.attack());
-
                 }
                 else
                 {
@@ -869,20 +893,24 @@ public:
             }
             // Display updated stats after each round
 
-            cout << "Enemy's health: " << easyEnemy.getHealth() << endl;
-            cout << "Your Health is at " << getHealth() << endl;
+            cout << "Your health is " << getHealth() << " / " << maxHealth
+                << "Rain of Arrows cooldown " << rainCooldown << endl
+                << "Charged Shot cooldown " << chargedCooldown << endl
+                << "Repulsion uses remaining " << repulsionUses << endl
+                << "Enemy's health: " << easyEnemy.getHealth() << endl;
         }
 
         if (getHealth() <= 0) {
             cout << "You were defeated! Game Over.\n";
             // Game over logic
-
-
         }
         else {
             cout << "You defeated the enemy!\n";
             exp += easyEnemy.giveEXP();
             isEnemyStunned = false;
+            //currently fights just give out health potions but later will be drawn from the loot pool and added to their inventory.
+            healthPotions++;
+            //Checking for the level up after the fight is over and they have they are not dead.
             if (util.checkForLevelUp(exp, expNeeded))
             {
                 levelUp();
