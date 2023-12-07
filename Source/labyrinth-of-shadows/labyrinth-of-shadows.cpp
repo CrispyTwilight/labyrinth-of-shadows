@@ -23,11 +23,9 @@ int main()
     //Infinite loop right now, will need a menu.
     while (true)
     {
-        player.handleInput();
         //This clears the cli
         util.setCursorPosition(0, 0);
 
-        gameMap.test();
 
         //Update player's position on the map
         int playerX, playerY;
@@ -35,6 +33,14 @@ int main()
         player.getPosition(playerX, playerY);
         gameMap.updatePlayerPosition(playerX, playerY);
         gameMap.display();
+
+        //Updating other non static things on the map
+        gameMap.updateNonStatic();
+
+        gameMap.mapSwitcher();
+
+        player.handleInput();
+
 
         util.visual();
 

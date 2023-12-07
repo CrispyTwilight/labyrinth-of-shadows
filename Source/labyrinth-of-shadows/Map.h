@@ -15,6 +15,7 @@ MapManager manage;
 class Map {
 private:
 
+    int mapLevel = 0;
     int width, height;
     vector<vector<char>> grid;
 
@@ -43,6 +44,7 @@ public:
         {
             grid[y][x] = '@'; // '@' represents the player
         }
+        
     }
 
     void display() const
@@ -57,13 +59,58 @@ public:
         }
     }
 
-    void test()
-    {
-        grid = manage.getMap1();
+    void mapSwitcher()
+    {   
+        switch (mapLevel)
+        {
+        case 0:
+            grid = manage.getMap0();
+            break;
+        case 1:
+            grid = manage.getMap1();
+            break;
+        case 2:
+            grid = manage.getMap2();
+            break;
+        case 3:
+            grid = manage.getMap3();
+            finalKeys();
+            break;
+        default:
+            cout << "There was an error in map generation";
+            break;
+        }
     }
 
     vector<vector<char>> getGrid()
     {
         return grid;
+    }
+
+    void setLevel(int l)
+    {
+        mapLevel = l;
+    }
+
+    int getLevel()
+    {
+        return mapLevel;
+    }
+
+    void finalKeys()
+    {
+        int x[4] = {18, 3, 28, 48};
+        int y[4] = { 6, 20, 20, 1 };
+
+        for (int i = 0; i < 4; i++)
+        {
+            grid[y[i]][x[i]] = '?';
+        }
+        
+    }
+
+    void updateNonStatic()
+    {
+        finalKeys();
     }
 };

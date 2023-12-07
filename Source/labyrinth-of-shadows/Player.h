@@ -46,17 +46,30 @@ public:
     {
         px += dx;
         py += dy;
-        if (map.getGrid()[py][px] != '#')
+        
+        if (map.getGrid()[py][px] == 'A')
+        {
+            map.setLevel(map.getLevel() - 1);
+            px, x = 24;
+            py, y = 13;
+        }
+        if (map.getGrid()[py][px] == 'D')
+        {
+            map.setLevel(map.getLevel() + 1);
+            px, x = 24;
+            py, y = 13;
+        }
+        else if (map.getGrid()[py][px] != '#')
         {
             x += dx;
             y += dy;
         }
-        else
-        {
-            px = x;
-            py = y;
-        }
+       
+        px = x;
+        py = y;
+        
         cout << "X: " << x << "  Y: " << y;
+        
 
     }
 
