@@ -127,7 +127,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Bow.cpp" />
+    <ClCompile Include="easyEnemy.cpp" />
     <ClCompile Include="labyrinth-of-shadows.cpp" />
     <ClCompile Include="Load.cpp" />
     <ClCompile Include="RangerLoadFile.cpp" />
@@ -137,9 +139,11 @@
     <ClCompile Include="WizardLoadFile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Boss.h" />
     <ClInclude Include="Bow.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="Dice.h" />
+    <ClInclude Include="easyEnemy.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Load.h" />
     <ClInclude Include="Map.h" />

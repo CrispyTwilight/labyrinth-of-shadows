@@ -11,13 +11,14 @@ private:
 	std::string characterSelected;
   
 public:
-	Load(std:: string character)
-	{
-		characterSelected = character;
-      
-	}
+    //Default Constructor
+    Load()
+    {
 
-    void loadTheGameRanger(int score, int round, Ranger playerRanger)
+    }
+
+    //Passing by reference in order to properly load the game for the rest of the program.
+    void loadTheGameRanger(int &score, int &round, Ranger &playerRanger)
     {
 
 
@@ -52,7 +53,7 @@ public:
         std :: cout << "Character Loaded Sucessfully\n";
 
     }
-    void loadTheGameWizard(int score, int round, Wizard playerWizard)
+    void loadTheGameWizard(int &score, int &round, Wizard &playerWizard)
     {
      
             ifstream inFile("wizard.txt");

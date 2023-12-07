@@ -30,6 +30,7 @@ private:
     bool isBlocking;
     bool isStunned;
     bool isEnemyStunned;
+    Utility util;
     Bow bow;
 public:
     Ranger(int max, int hea, int  str, int intel, int  dex, int lev, int ex, int need, int rai, int charg, int re, int potion, int turns)
@@ -57,6 +58,7 @@ public:
         rainCooldown = 0;
         chargedCooldown = 0;
         repulsionUses = repulsionLvl;
+      
 
     }
 
@@ -121,6 +123,8 @@ public:
         repulsionLvl = value;
     }
 
+    
+
     // Getters
     int getMaxHealth() const
     {
@@ -182,6 +186,7 @@ public:
         return repulsionLvl;
     }
 
+    
     // Leveling up the player
     void levelUp()
     {
@@ -249,9 +254,10 @@ public:
             }
            
         }
-        //Seeing if they enough exp for a second level up.
-        //This will go to the utility class to check.
-        //checkForLevelUp();
+        if (util.checkForLevelUp(exp, expNeeded))
+        {
+            levelUp();
+        }
     }
 
     //Player turn for the base enemy type
@@ -384,10 +390,319 @@ public:
         }
     }
 
+    // Player for the easy enemy
+    void playerTurnEasy(easyEnemy& easyEnemy)
+    {
+        isBlocking = false;
+        rainCooldown -= 1;
+        chargedCooldown -= 1;
+        int choice = 0;
+        // Dex + Bow damage
+        if (chargedCooldown == 1)
+        {
+            isEnemyStunned = false;
+        }
+        if (!isStunned)
+        {
+
+            for (int turn = 1; turn <= numberTurns; ++turn)
+            {
+                cout << "It's your turn, what would you like to do?\n";
+                cout << "1. Basic Attack\n"
+                    << "2. Block\n"
+                    << "3. Take Health Potion\n"
+                    << "4. Rain of Arrows\n"
+                    << "5. Charged Shot\n"
+                    << "6. Repulsion\n" << endl << endl;
+
+
+                do {
+                    bool incorrectChoice = false;
+                    cout << "Enter your choice: ";
+                    cin >> choice;
+
+                    if (choice == 3 && healthPotions < 0) {
+                        cout << "You are out of health potions, pick another option.\n";
+                        incorrectChoice = true;
+                    }
+                    else if (choice == 3 && getHealth() == maxHealth) {
+                        cout << "You are full on health. I highly recommend you do something else.\n";
+                        incorrectChoice = true;
+                    }
+                    else if (choice == 4 && rainCooldown > 0) {
+                        cout << "Rain of Arrows is still on cooldown. You have to wait " << rainCooldown << " number of turns.\n";
+                        incorrectChoice = true;
+                    }
+                    else if (choice == 5 && chargedCooldown > 0) {
+                        cout << "Charged shot is still on cooldown. You have to wait " << chargedCooldown << " number of turns.\n";
+                        incorrectChoice = true;
+                    }
+                    else if (choice < 0 || choice > 5) {
+                        cout << "Incorrect value. Please enter a valid value.\n";
+                        incorrectChoice = true;
+                    }
+
+                    // Check if the choice is invalid due to cooldown or lack of resources
+                    if (incorrectChoice) {
+                        // The do-while loop will continue if the choice was incorrect
+                        continue;
+                    }
+
+                } while (choice > 6 || choice < 0);
+
+
+                switch (choice)
+                {
+                case 1:
+                {
+
+                    // attack monster
+                    cout << "You did a basic attack\n";
+                    attackMonsterEasy(easyEnemy, bow.damage + dexterity);
+                    break;
+                }
+                case 2:
+                {
+                    // Block attack
+                    cout << "You have started to block\n";
+                    isBlocking = true;
+                    break;
+                }
+                case 3:
+                {
+                    // Take Health Potion If have any
+                    cout << "You took a health potion\n";
+                    takePotion();
+                    break;
+                }
+                case 4:
+                {
+                    // Rain of arrows
+                    cout << "You used Rain of Arrows\n";
+                    attackMonsterEasy(easyEnemy, rainAttack());
+                    rainCooldown = 3;
+                    break;
+                }
+                case 5:
+                {
+                    // Charged Shot
+                    cout << " You used Charged Shot\n";
+                    isEnemyStunned = true;
+                    chargedCooldown = chargedLvl + 1;
+                    break;
+                }
+                case 6:
+                {
+                    //Repulsion Activates
+                    cout << "You activated Repulsion\n";
+                    isRepulsionActivated = true;
+                    break;
+                }
+                }
+            }
+
+            if (isStunned)
+            {
+                cout << "You turn has been skipped!\n";
+            }
+        }
+    }
+
+    // Player turn for the boss class
+    void playerTurnBoss(Boss& boss)
+    {
+        isBlocking = false;
+        // Only lowering the cooldowns when they are above zero.
+        if (rainCooldown > 0)
+        {
+            rainCooldown -= 1;
+        }
+        if (chargedCooldown > 0)
+        {
+            chargedCooldown -= 1;
+        }
+        int choice = 0;
+        // Dex + Bow damage
+        if (chargedCooldown == 1)
+        {
+            isEnemyStunned = false;
+        }
+        if (!isStunned)
+        {
+
+            for (int turn = 1; turn <= numberTurns; ++turn)
+            {
+                cout << "It's your turn, what would you like to do?\n";
+                cout << "1. Basic Attack\n"
+                    << "2. Block\n"
+                    << "3. Take Health Potion\n"
+                    << "4. Rain of Arrows\n"
+                    << "5. Charged Shot\n"
+                    << "6. Repulsion\n " << endl << endl;
+
+
+                do {
+                    bool incorrectChoice = false;
+                    cout << "Enter your choice: ";
+                    cin >> choice;
+
+                    if (choice == 3 && healthPotions < 0) {
+                        cout << "You are out of health potions, pick another option.\n";
+                        incorrectChoice = true;
+                    }
+                    else if (choice == 3 && getHealth() == maxHealth) {
+                        cout << "You are full on health. I highly recommend you do something else.\n";
+                        incorrectChoice = true;
+                    }
+                    else if (choice == 4 && rainCooldown > 0) {
+                        cout << "Rain of Arrows is still on cooldown. You have to wait " << rainCooldown << " number of turns.\n";
+                        incorrectChoice = true;
+                    }
+                    else if (choice == 5 && chargedCooldown > 0) {
+                        cout << "Charged shot is still on cooldown. You have to wait " << chargedCooldown << " number of turns.\n";
+                        incorrectChoice = true;
+                    }
+                    else if (choice < 0 || choice > 5) {
+                        cout << "Incorrect value. Please enter a valid value.\n";
+                        incorrectChoice = true;
+                    }
+
+                    // Check if the choice is invalid 
+                    if (incorrectChoice) {
+                        // The do-while loop will continue if the choice was incorrect
+                        continue;
+                    }
+
+                } while (choice > 6 || choice < 0);
+
+
+                switch (choice)
+                {
+                case 1:
+                {
+
+                    // attack monster
+                    cout << "You did a basic attack\n";
+                    attackMonsterBoss(boss, bow.damage + dexterity);
+                    break;
+                }
+                case 2:
+                {
+                    // Block attack
+                    cout << "You have started to block\n";
+                    isBlocking = true;
+                    break;
+                }
+                case 3:
+                {
+                    // Take Health Potion If have any
+                    cout << "You took a health potion\n";
+                    takePotion();
+                    break;
+                }
+                case 4:
+                {
+                    // Rain of arrows
+                    cout << "You used Rain of Arrows\n";
+                    attackMonsterBoss(boss, rainAttack());
+                    rainCooldown = 3;
+                    break;
+                }
+                case 5:
+                {
+                    cout << " You used Charged Shot\n";
+                    // Charged Shot
+                    isEnemyStunned = true;
+                    chargedCooldown = chargedLvl + 1;
+                    break;
+                }
+                case 6:
+                {
+                    cout << "You activated Repulsion\n";
+                    //Repulsion Activates
+                    isRepulsionActivated = true;
+                    break;
+                }
+                }
+            }
+
+            if (isStunned)
+            {
+                cout << "You turn has been skipped!\n";
+                isStunned = false;
+            }
+        }
+    }
+
     void attackMonster(Enemy& enemy, int d)
     {
         enemy.takeDamage(d);
-        std:: cout << enemy.getName() << "took " << d << " damage.\n";
+        cout << enemy.getName() << "took " << d << " damage.\n";
+    }
+
+
+    void attackMonsterEasy(easyEnemy& easyEnemy, int d)
+    {
+        easyEnemy.takeDamage(d);
+        cout << easyEnemy.getName() << " took " << d << " damage.\n";
+    }
+
+    void attackMonsterBoss(Boss& boss, int d)
+    {
+        boss.takeDamage(d);
+        cout << boss.getName() << "took " << d << " damage.\n";
+    }
+
+    // Taking damage from the easy enemy.
+    void takeDamageEasyEnemy(easyEnemy& easyEnemy, int d)
+    {
+        int enemyAttack = rand() % 100 + 1;
+
+        if (isBlocking)
+        {
+            cout << "You successfully blocked the attack!\n";
+        }
+        else if (isRepulsionActivated)
+        {
+            cout << "You used Repulsion\n";
+            attackMonsterEasy(easyEnemy, d);
+        }
+        else if (enemyAttack <= dexterity)
+        {
+            cout << "You dodged the attack!\n";
+        }
+        else
+        {
+            cout << "You took " << d << " damage\n";
+            setHealth(getHealth()-d);
+        }
+    }
+
+    // Taking damage from a normal enemy.
+    void takeDamageBoss(Boss& boss, int d)
+    {
+        // Getting a random number and seeing if the players dex is higher and if it is they will dodge the attack.
+        int enemyAttack = rand() % 100 + 1;
+
+        if (isBlocking)
+        {
+            cout << "You successfully blocked the attack!\n";
+        }
+        else if (isRepulsionActivated)
+        {
+            cout << "You used Repulsion";
+            attackMonsterBoss(boss, d);
+            isRepulsionActivated = false;
+        }
+        else if (enemyAttack <= dexterity)
+        {
+            cout << "You dodged the attack!\n";
+        }
+        else
+        {
+            cout << "You took " << d << " damage\n";
+            setHealth(getHealth() - d);
+        }
     }
 
     // Taking damage from a normal enemy.
@@ -416,11 +731,13 @@ public:
         }
     }
 
+    //calculating the damage from a rain of arrows attack.
     int rainAttack()
     {
         return  10 + (rainLvl * 5);
     }
 
+    // Taking a potion effect that scales up with their level.
     void takePotion()
     {
         healthPotions -= 1;
@@ -435,7 +752,7 @@ public:
 
     void fightNormalEnemy(Enemy& enemy)
     {
-        Enemy enemy(1);
+        
 
         std:: cout << "You encounter " << enemy.getName() << " with " << enemy.getHealth() << " health!\n";
 
@@ -467,8 +784,112 @@ public:
             std:: cout << "You gained " << enemy.giveEXP() << "Experience\n";
             isEnemyStunned = false;
             exp += enemy.giveEXP();
-            //checkForLevelUp();
+            if (util.checkForLevelUp(exp, expNeeded))
+            {
+                levelUp();
+            }
         }
     }
 
+    // Fighting for the boss enemy.
+    void fightBossEnemy(Boss& boss)
+    {
+        int turnCount = 0;
+        cout << "You encounter " << boss.getName() << " with " << boss.getHealth() << " health!\n";
+
+        while (getHealth() > 0 && boss.getHealth() > 0) {
+            // Player's turn
+            playerTurnBoss(boss);
+
+            turnCount++;
+
+            if (!isEnemyStunned)
+            {
+                // Enemy's turn
+                if (turnCount % 2 != 0)
+                {
+                    takeDamageBoss(boss, boss.getDamage());
+                }
+                else
+                {
+                    isStunned = true;
+                }
+            }
+            else
+            {
+                cout << "The Bosses turn was skipped\n";
+            }
+            // Display updated stats after each round
+          
+            cout << "Enemy's health: " << boss.getHealth() << endl;
+        }
+
+        if (getHealth() <= 0) 
+        {
+            // Game over logic
+            cout << "You were defeated! Game Over.\n";
+        }
+        else 
+        {
+            // Victory logic
+            cout << "You defeated the Boss!\n";
+            cout << "You gained " << boss.giveEXP() << " Experience";
+            isEnemyStunned = false;
+            healthPotions++;
+            exp += boss.giveEXP();
+            if (util.checkForLevelUp(exp, expNeeded))
+            {
+                levelUp();
+            }
+        }
+    }
+
+    // The function when the player has to fight a weak enemy (The first three enemies).
+    void fightWeakEnemy(easyEnemy& easyEnemy)
+    {
+        // Display the enemy's details
+        cout << "You encounter " << easyEnemy.getName() << " with " << easyEnemy.getHealth() << " health!\n";
+
+        while (getHealth() > 0 && easyEnemy.getHealth() > 0) {
+            // Player's turn
+            playerTurnEasy(easyEnemy);
+
+            if (easyEnemy.getHealth() > 0)
+            {
+                // Enemy's turn
+                if (!isEnemyStunned)
+                {
+                    takeDamageEasyEnemy(easyEnemy, easyEnemy.attack());
+
+                }
+                else
+                {
+                    cout << "The enemies turn was skipped!\n";
+                }
+            }
+            // Display updated stats after each round
+
+            cout << "Enemy's health: " << easyEnemy.getHealth() << endl;
+            cout << "Your Health is at " << getHealth() << endl;
+        }
+
+        if (getHealth() <= 0) {
+            cout << "You were defeated! Game Over.\n";
+            // Game over logic
+
+
+        }
+        else {
+            cout << "You defeated the enemy!\n";
+            exp += easyEnemy.giveEXP();
+            isEnemyStunned = false;
+            if (util.checkForLevelUp(exp, expNeeded))
+            {
+                levelUp();
+            }
+        }
+    }
+  
+
 };
+

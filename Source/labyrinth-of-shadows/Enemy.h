@@ -13,7 +13,7 @@ private:
 	int dexterity;
 	int expWorth;
 	int battleStyle;
-	std::string description; // JPO: It's good practice to use std:: instead of using namespace std; in any header file.
+	std::string description; 
 	Bow bow;
 	Sword sword;
 	Staff staff;
