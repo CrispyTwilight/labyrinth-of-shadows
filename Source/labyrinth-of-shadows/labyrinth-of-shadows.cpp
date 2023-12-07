@@ -16,8 +16,8 @@
 int main()
 {
     //Game objects
-    Map gameMap(50, 30);
-    Player player(gameMap,24, 13);
+    Map gameMap(51, 31); // JPO: Updated so that the @ is can actually be in the middle of the map.
+    Player player(gameMap,25, 15); // JPO: Updated so that the player starts in the middle of the map.
     Utility util;
 
     //Infinite loop right now, will need a menu.

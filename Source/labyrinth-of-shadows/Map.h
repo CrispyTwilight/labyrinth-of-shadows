@@ -14,14 +14,12 @@ MapManager manage;
 //Map class
 class Map {
 private:
-
     int mapLevel = 0;
     int width, height;
     vector<vector<char>> grid;
 
 public:
-
-    Map(int w, int h) : width(w), height(h)
+    Map(int w, int h) : width(w), height(h) // JPO: We could get rid of the default map I think.
     {
         grid = vector<vector<char>>(h, vector<char>(w, '.')); // '.' for empty space
     }
@@ -44,7 +42,6 @@ public:
         {
             grid[y][x] = '@'; // '@' represents the player
         }
-        
     }
 
     void display() const
@@ -60,7 +57,7 @@ public:
     }
 
     void mapSwitcher()
-    {   
+    {
         switch (mapLevel)
         {
         case 0:
@@ -82,7 +79,7 @@ public:
         }
     }
 
-    vector<vector<char>> getGrid()
+    vector<vector<char>> getGrid() const
     {
         return grid;
     }
@@ -92,7 +89,7 @@ public:
         mapLevel = l;
     }
 
-    int getLevel()
+    int getLevel() const
     {
         return mapLevel;
     }
@@ -106,7 +103,6 @@ public:
         {
             grid[y[i]][x[i]] = '?';
         }
-        
     }
 
     void updateNonStatic()
