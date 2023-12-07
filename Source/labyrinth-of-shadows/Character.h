@@ -3,28 +3,35 @@
 //Desc: Creating a superclass for the player, npcs, and enemies
 #pragma once
 #include <iostream>
-#include <string>
 #include "Utility.h"
-using namespace std;
+
 
 class Character
 {
 private:
     //Fields
     int health;
-    string name;
+    std ::string name;
 
 public:
+    Character()
+    {
+        health = 0;
+        name = "";
+    }
 
-    // JPO: add constructor
-
+    Character(int hea, std ::string n)
+    {
+        health = hea;
+        name = n;
+    }
     //Setters
     void setHealth(int value)
     {
         health = value;
     }
 
-    void setName(string n)
+    void setName(std ::string n)
     {
         name = n;
     }
@@ -35,7 +42,7 @@ public:
         return health;
     }
 
-    string getName() const
+    std ::string getName() const
     {
         return name;
     }
