@@ -6,17 +6,21 @@
 int main()
 {
     //Game objects
+<<<<<<< HEAD
     Map gameMap(50, 30);
     Player player(gameMap,24, 13);
+=======
+    Map gameMap(51, 31); // JPO: Updated so that the @ is can actually be in the middle of the map.
+    Player player(gameMap,25, 15); // JPO: Updated so that the player starts in the middle of the map.
+    Utility util;
+>>>>>>> Christian3
 
     //Infinite loop right now, will need a menu.
     while (true)
     {
-        player.handleInput();
         //This clears the cli
         setCursorPosition(0, 0);
 
-        gameMap.test();
 
         //Update player's position on the map
         int playerX, playerY;
@@ -25,7 +29,19 @@ int main()
         gameMap.updatePlayerPosition(playerX, playerY);
         gameMap.display();
 
+<<<<<<< HEAD
         visual();
+=======
+        //Updating other non static things on the map
+        gameMap.updateNonStatic();
+
+        gameMap.mapSwitcher();
+
+        player.handleInput();
+
+
+        util.visual();
+>>>>>>> Christian3
 
         //This is necessary to control speed of the game.
         std::this_thread::sleep_for(std::chrono::milliseconds(100));

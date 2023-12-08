@@ -34,26 +34,40 @@ public:
             move(1, 0);
             break;
             //Add more controls as needed
+        //JPO: Add a default case to handle invalid input.
         }
     }
 
-    //This will check if the proposed postion is valid
+    //This will check if the proposed position is valid
     void move(int dx, int dy)
     {
         px += dx;
         py += dy;
-        if (map.getGrid()[py][px] != '#')
+
+        if (map.getGrid()[py][px] == 'A')
+        {
+            map.setLevel(map.getLevel() - 1);
+            px = x = 25; // JPO: These assignments don't modify the "p" variables at all, so I changed to double assignment.
+            py = y = 15;
+
+
+        }
+        if (map.getGrid()[py][px] == 'D')
+        {
+            map.setLevel(map.getLevel() + 1);
+            px = x = 25;
+            py = y = 15;
+        }
+        else if (map.getGrid()[py][px] != '#')
         {
             x += dx;
             y += dy;
         }
-        else
-        {
-            px = x;
-            py = y;
-        }
-        cout << "X: " << x << "  Y: " << y;
 
+        px = x;
+        py = y;
+
+        cout << "X: " << x << "  Y: " << y;
     }
 
     void getPosition(int& outX, int& outY) const
