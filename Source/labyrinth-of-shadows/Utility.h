@@ -4,6 +4,7 @@
 #pragma once
 #include "Ranger.h"
 #include "Wizard.h"
+#include "Rogue.h"
 class Utility
 {
 public:

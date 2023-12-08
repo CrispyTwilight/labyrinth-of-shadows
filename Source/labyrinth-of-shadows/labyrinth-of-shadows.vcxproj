@@ -142,6 +142,7 @@
     <ClInclude Include="Boss.h" />
     <ClInclude Include="Bow.h" />
     <ClInclude Include="Character.h" />
+    <ClInclude Include="Dagger.h" />
     <ClInclude Include="Dice.h" />
     <ClInclude Include="easyEnemy.h" />
     <ClInclude Include="Enemy.h" />
@@ -150,6 +151,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Ranger.h" />
     <ClInclude Include="RangerLoadFile.h" />
+    <ClInclude Include="RogueLoadFile.h" />
     <ClInclude Include="Save.h" />
     <ClInclude Include="Staff.h" />
     <ClInclude Include="Sword.h" />

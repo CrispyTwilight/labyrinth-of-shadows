@@ -3,6 +3,7 @@
 #include <fstream>
 #include "Ranger.h"
 #include "Wizard.h"
+#include "Rogue.h"
 
 // Before These are truly finished I need to see the inventory needs to be finished
 class Save
@@ -77,6 +78,40 @@ public:
             }
             outFile.close();
 	}
+    void saveTheGameRanger(int round, int score, Rogue playerRogue)
+    {
+
+        //Saving the game incase they are a ranger
+        std::ofstream outFile("rogue.txt");
+        if (outFile.is_open()) {
+            outFile << playerRogue.getMaxHealth() << std::endl;
+            outFile << playerRogue.getHealth() << std::endl;
+            outFile << playerRogue.getStrength() << std::endl;
+            outFile << playerRogue.getIntelligence() << std::endl;
+            outFile << playerRogue.getDexterity() << std::endl;
+            outFile << playerRogue.getLevel() << std::endl;
+            outFile << playerRogue.getNumTurns() << std::endl;
+            outFile << playerRogue.getHealthPotions() << std::endl;
+            outFile << playerRogue.getExp() << std::endl;
+            outFile << playerRogue.getExpNeeded() << std::endl;
+            outFile << playerRogue.getSneakAttackLvl() << std::endl;
+            outFile << playerRogue.getDodgeLvl() << std::endl;
+            outFile << score << std::endl;
+            outFile << round << std::endl;
+
+
+            std::cout << "Character saved successfully!" << std::endl;
+        }
+        else {
+            std::cout << "Unable to open the file for saving!" << std::endl;
+        }
+
+        outFile.close();
+
+        // Saving the game if they are a wizard
+
+
+    }
 
 };
 
