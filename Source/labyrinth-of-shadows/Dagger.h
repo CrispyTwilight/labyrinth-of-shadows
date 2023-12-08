@@ -4,6 +4,6 @@ struct Dagger
     int damage;
 
     Dagger() {
-        damage = 5; // Base damage for bows
+        damage = 5; // Base damage for daggers.
     }
 };

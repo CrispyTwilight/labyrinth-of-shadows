@@ -1,3 +1,6 @@
+//Auth: William Brickner
+// Date: 12/8/23
+// Desc: A save class that will allow us to save from any where else in the program.
 #pragma once
 #include <iostream>
 #include <fstream>

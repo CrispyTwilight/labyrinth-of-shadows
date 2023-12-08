@@ -1,4 +1,6 @@
-#pragma once
+//Auth: William Brickner
+// Date: 12/8/23
+// Desc: The easy enemy class that will show the players the basics of combat without killing them outright.
 #pragma once
 #include <iostream>
 #include <string>

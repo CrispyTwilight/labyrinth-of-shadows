@@ -1,3 +1,7 @@
+//Auth: William Brickner
+//Date: 12/8/23
+//Desc: Since these load files have to be class specific here is one for the Ranger class to load her variables.
+
 #pragma once
 struct RangerLoadFile
 {

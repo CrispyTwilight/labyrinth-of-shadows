@@ -26,7 +26,7 @@ private:
     bool isBlocking;
     bool isStunned;
     bool isEnemyStunned;
-    Utility util;
+    
     Bow bow;
 public:
     Ranger(int max, int hea, int  str, int intel, int  dex, int lev, int ex, int need, int rai, int charg, int re, int potion, int turns)
@@ -248,7 +248,7 @@ public:
             }
         }
         //Checking for a level up.
-        if (util.checkForLevelUp(exp, expNeeded))
+        if (checkForLevelUp(exp, expNeeded))
         {
             levelUp();
         }
@@ -797,7 +797,7 @@ public:
             //currently fights just give out health potions but later will be drawn from the loot pool and added to their inventory.
             healthPotions++;
             exp += enemy.giveEXP();
-            if (util.checkForLevelUp(exp, expNeeded))
+            if (checkForLevelUp(exp, expNeeded))
             {
                 levelUp();
             }
@@ -855,7 +855,7 @@ public:
             healthPotions++;
             exp += boss.giveEXP();
             //Checking if they can level up.
-            if (util.checkForLevelUp(exp, expNeeded))
+            if (checkForLevelUp(exp, expNeeded))
             {
                 levelUp();
             }
@@ -904,7 +904,7 @@ public:
             //currently fights just give out health potions but later will be drawn from the loot pool and added to their inventory.
             healthPotions++;
             //Checking for the level up after the fight is over and they have they are not dead.
-            if (util.checkForLevelUp(exp, expNeeded))
+            if (checkForLevelUp(exp, expNeeded))
             {
                 levelUp();
             }

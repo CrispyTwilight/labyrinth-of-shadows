@@ -4,7 +4,7 @@
 #pragma once
 #include "Character.h"
 #include "Enemy.h"
-#include "Utility.h"
+
 #include "Dagger.h"
 #include <conio.h> // This allows us to use _getch() which will automatically continue after the user enters a single character.
 using namespace std;
@@ -29,7 +29,6 @@ private:
     bool isBlocking;
     bool isStunned;
     bool isEnemyStunned;
-    Utility util;
     Dagger dagger;
 
 public:
@@ -230,7 +229,7 @@ public:
         }
 
         }
-        if (util.checkForLevelUp(exp, expNeeded))
+        if (checkForLevelUp(exp, expNeeded))
         {
             levelUp();
         }
@@ -761,7 +760,7 @@ public:
             std::cout << "You gained " << enemy.giveEXP() << "Experience\n";
             isEnemyStunned = false;
             exp += enemy.giveEXP();
-            if (util.checkForLevelUp(exp, expNeeded))
+            if (checkForLevelUp(exp, expNeeded))
             {
                 levelUp();
             }
@@ -814,7 +813,7 @@ public:
             isEnemyStunned = false;
             healthPotions++;
             exp += boss.giveEXP();
-            if (util.checkForLevelUp(exp, expNeeded))
+            if (checkForLevelUp(exp, expNeeded))
             {
                 levelUp();
             }
@@ -860,7 +859,7 @@ public:
             cout << "You defeated the enemy!\n";
             exp += easyEnemy.giveEXP();
             isEnemyStunned = false;
-            if (util.checkForLevelUp(exp, expNeeded))
+            if (checkForLevelUp(exp, expNeeded))
             {
                 levelUp();
             }
