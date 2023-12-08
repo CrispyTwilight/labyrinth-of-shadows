@@ -1,12 +1,8 @@
 // Date: ??
 // Auth: Christian Baack
 // Desc: Class to represent the player in the game for movement and position.
-
 #pragma once
-#include <iostream>
-#include <conio.h>
-#include "Map.h"
-using namespace std;
+#include "All_Includes.h"
 
 class Player
 {

@@ -2,10 +2,7 @@
 //Date: 11/30/2023
 //Desc: Creating a superclass for the player, npcs, and enemies
 #pragma once
-#include <iostream>
-#include <string>
-#include "Utility.h"
-using namespace std;
+#include "All_Includes.h"
 
 class Character
 {

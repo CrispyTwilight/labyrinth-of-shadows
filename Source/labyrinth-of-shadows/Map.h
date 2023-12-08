@@ -1,13 +1,8 @@
 // Date: ??
 // Auth: Christian Baack
 // Desc: Class to define the map of the game.
-
 #pragma once
-#include <vector>
-#include<iostream>
-#include "MapManager.h"
-
-using namespace std;
+#include "All_Includes.h"
 
 MapManager manage;
 

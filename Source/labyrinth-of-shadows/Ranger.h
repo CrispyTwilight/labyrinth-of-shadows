@@ -2,8 +2,7 @@
 //Date: 11/30/23
 //Desc: Creating the subclass ranger for the player.
 #pragma once
-#include "Character.h"
-#include <conio.h> // This allows us to use _getch() which will automatically continue after the user enters a single character.
+#include "All_Includes.h"
 
 class Ranger : private Character
 {
