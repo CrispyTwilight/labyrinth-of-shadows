@@ -25,7 +25,7 @@ private:
     bool isStunned;
     bool isEnemyStunned;
     Staff staff;
-    Utility util;
+   
 
 public:
     Wizard(int max, int hea, int  str, int intel, int  dex, int lev, int ex, int need, int ice, int fire, int potion, int turns)
@@ -223,7 +223,7 @@ public:
         }
         //Checking if they need to be leveled up again its in the util because it is an easy check that all characters use.
         }
-        if (util.checkForLevelUp(exp, expNeeded))
+        if (checkForLevelUp(exp, expNeeded))
         {
             levelUp();
         }
@@ -700,7 +700,7 @@ public:
             cout << "You gained " << enemy.giveEXP() << "Experience\n";
             // We will need to add the functionality of getting something from the item pool to add to their inventory.
             exp += enemy.giveEXP();
-            util.checkForLevelUp(exp, expNeeded);
+            checkForLevelUp(exp, expNeeded);
         }
     }
 
@@ -744,7 +744,7 @@ public:
             cout << "You defeated the enemy!\n";
             exp += easyEnemy.giveEXP();
             isEnemyStunned = false;
-            if (util.checkForLevelUp(exp, expNeeded))
+            if (checkForLevelUp(exp, expNeeded))
             {
                 levelUp();
             }
@@ -794,7 +794,7 @@ public:
             cout << "You gained " << boss.giveEXP() << " Experience\n";
             healthPotions++;
             exp += boss.giveEXP();
-            if (util.checkForLevelUp(exp, expNeeded))
+            if (checkForLevelUp(exp, expNeeded))
             {
                 levelUp();
             }
