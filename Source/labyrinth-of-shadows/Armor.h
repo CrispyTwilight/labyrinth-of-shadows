@@ -1,17 +1,18 @@
-// Auth: John O'Neal
-// Date: 12/01/2023
+// Auth: Christian A. Botos, John O'Neal
+// Date: 12/07/2023
 // Desc: Header file for the Armor struct.
 #pragma once
 #include "All_Includes.h"
 
 struct Armor {
-	// Define enum for Armor types that can be used to determine what kind of Armor it is. It is defined inside the struct so that it can be accessed as Armor::ArmorType
+	// Define enumerated data type for Armor types that can be used to determine what kind of Armor it is. It is defined inside the struct so that it can be accessed as Armor::ArmorType
 	enum ArmorType {
 		NONE, // Default value
 		BREASTPLATE,
 		HELMET,
 		CAP,
 		GAUNTLETS,
+		GREAVES,
 		SHIELD,
 		GLOVES,
 		ARMOR_TYPE_COUNT // Used to determine the number of Armor types
@@ -25,8 +26,8 @@ struct Armor {
 	std::string name;
 	std::string material;
 	// There are two static fields that will be initialized in the initializer.cpp file
-	static std::vector<std::string> possibleNames;
-	static std::vector<std::string> possibleMaterials;
+	static std::vector<std::string> possibleArmorNames;
+	static std::vector<std::string> possibleArmorMaterials;
 
 	// Constructor with default arguments and initializer list
 	// All params are pass by const reference to avoid copying the arguments for efficiency

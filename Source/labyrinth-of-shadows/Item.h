@@ -1,59 +1,89 @@
-// Auth: John O'Neal
+// Auth: Christian A. Botos, John O'Neal
 // Date: 12/07/2023
-// Desc: Item class is a base class for all items in the game.
+// Desc: This is the file that holds Item names and materials
+
 #pragma once
 #include "All_Includes.h"
+
+
 
 class Item {
 public:
     // These are static because they are the same for all instances of the struct.
-    inline static vector<string> possibleNames = {
+    inline static vector<string> possibleWeaponNames = {
         "Reaper",
         "Shadowstrike",
         "Celestial Fury",
         "Thunderclaw",
         "Moonbeam",
-        "Abyssal Edge",
         "Soulrender",
         "Blazebringer",
-        "Riftblade",
-        "Doomblade",
-        "Soulslayer",
         "Soulreaper",
-        "Frostbite",
-        "Skullcrusher",
-        "The End",
         "Omega",
-        "The Void",
-        "Eclipse",
-        "Stormbreaker",
-        "Netherbane",
+        "Oblivion",
     };
 
-    inline static vector<string> possibleMaterials = {
+    inline static vector<string> possibleWeaponMaterials = {
         "Ironwood",
         "Alloy",
-        "Obsidian",
-        "Dragonbone",
         "Starlight Silver",
-        "Shadowsteel",
-        "Crystal",
         "Damascus Steel",
         "Mithril",
         "Titanium",
-        "Platinum",
-        "Gold",
         "Silver",
         "Bronze",
-        "Copper",
-        "Tin",
         "Iron",
         "Steel",
-        "Stone",
-        "Wood",
-        "Bone",
-        "Leather",
-        "Cloth",
-        "Glass",
     };
-};
+
+    inline static vector<string> possibleArmorNames = {
+        "Champion's Ward",
+        "Elder's Guard",
+        "Ender's Gear",
+        "Guardian's Ward",
+        "Soulward",
+        "Aegis",
+        "Elven Garb",
+        "Mage's Robes",
+        "Warrior's Garments",
+        "Divine Protector",
+    };
+
+    inline static vector<string> possibleArmorMaterials = {
+         "Cloth",
+        "Leather",
+        "Steel",
+        "Iron",
+        "Chainmail",
+        "Bronze",
+        "Silver",
+        "Alloy",
+        "Mithril",
+        "Titanium",
+    };
+
+    inline static vector<string> possiblePotionNames = {
+        "Blue Potion",
+        "Red Potion",
+        "Green Potion",
+        "Orange Potion",
+        "Yellow Potion",
+        "Purple Potion",
+        "Clear Potion",
+        "Unmarked Potion",
+        "White Potion",
+        "Black Potion",
+    };
+
+    inline static vector<string> possibleArmorMaterials = {
+        "Wheatgrass",
+        "Divine Blood",
+        "Butterfly Wings",
+        "Common Mushrooms",
+        "Raven Eggs",
+        "Red Flowers",
+        "Falcon Eyes",
+        "Sunstone Dust",
+        "Corrupted Plants",
+        "Eagle Feathers",
+    };

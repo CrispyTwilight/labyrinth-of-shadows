@@ -1,6 +1,6 @@
-// Auth: John O'Neal
-// Date: 12/01/2023
-// Desc: Loot struct. Can be used as a template for other structs.
+// Auth: Christian A. Botos, John O'Neal
+// Date: 12/07/2023
+// Desc: Loot structure.
 #pragma once
 #include "All_Includes.h"
 
@@ -33,7 +33,7 @@ struct Loot {
                     lootArmor = Armor(true);
                     break;
                 case 3:
-                    // Generate a random potion
+        // Generate a random potion
                     // lootPotion = Potion(true);
                     break;
                 default:
@@ -47,3 +47,4 @@ struct Loot {
         gold = goldDie.rollDice();
     }
 };
+

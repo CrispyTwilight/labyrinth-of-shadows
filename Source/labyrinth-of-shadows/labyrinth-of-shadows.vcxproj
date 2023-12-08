@@ -149,10 +149,12 @@
     <ClInclude Include="easyEnemy.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="All_Includes.h" />
+    <ClInclude Include="Inventory.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Loot.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Potion.h" />
     <ClInclude Include="Ranger.h" />
     <ClInclude Include="RangerLoadFile.h" />
     <ClInclude Include="RogueLoadFile.h" />
