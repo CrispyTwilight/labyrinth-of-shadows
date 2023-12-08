@@ -1,6 +1,5 @@
 #pragma once
-#include "Character.h"
-#include "Sword.h"
+#include "All_Includes.h"
 
 class Boss : public Character
 {
@@ -8,7 +7,7 @@ private:
 	int strength;
 	int dexterity;
 	int expWorth;
-	std ::string name;
+	string name;
 	Sword sword;
 
 public:
@@ -19,7 +18,6 @@ public:
 		generateDexterity(round);
 		name = "The Dark Lord";
 		expWorth = round * 5;
-
 	}
 
 	int attack()
@@ -48,21 +46,17 @@ public:
 	{
 		int minDexterity = round;
 		int maxDexterity = round * 2;
-		dexterity = rand() % (maxDexterity - minDexterity + 1) + minDexterity;
+		dexterity = rand() % (maxDexterity - minDexterity + 1) + minDexterity; // JPO: This should use the Dice class
 	}
 
-
-
-	int getDamage()
+	int getDamage() const
 	{
 		return sword.damage + strength;
 	}
 
-	std ::string getName()
+	string getName() const
 	{
 		return name;
 	}
 
-	
 };
-
