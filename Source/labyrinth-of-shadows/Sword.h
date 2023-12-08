@@ -1,4 +1,6 @@
 #pragma once
+#include "All_Includes.h"
+
 struct Sword
 {
     int damage;
@@ -7,4 +9,3 @@ struct Sword
         damage = 8; // Base damage for swords
     }
 };
-

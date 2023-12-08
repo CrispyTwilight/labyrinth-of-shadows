@@ -4,15 +4,17 @@
 #pragma once
 #include "All_Includes.h"
 
-/* I need to be able to check what class the player has selected before can do a proper if/else statement to fully implement this.
-void checkForLevelUp(int &exp, int &expNeeded)
+bool checkForLevelUp(int& exp, int& expNeeded)
 {
-    if (exp == expNeeded)
+    if (exp >= expNeeded)
     {
-        levelUp();
-    };
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
-*/
 
 //This is for some visual issues I was having with the cli, Should be moved later to utilities.
 //This always keeps the command line at the bottom instead of clearing it.

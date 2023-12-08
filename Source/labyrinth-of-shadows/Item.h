@@ -1,11 +1,8 @@
 // Auth: Christian A. Botos, John O'Neal
 // Date: 12/07/2023
-// Desc: This is the file that holds Item names and materials
-
+// Desc: This is the file that holds Item names and materials.
 #pragma once
 #include "All_Includes.h"
-
-
 
 class Item {
 public:
@@ -75,7 +72,7 @@ public:
         "Black Potion",
     };
 
-    inline static vector<string> possibleArmorMaterials = {
+    inline static vector<string> possiblePotionMaterials = {
         "Wheatgrass",
         "Divine Blood",
         "Butterfly Wings",
@@ -87,3 +84,4 @@ public:
         "Corrupted Plants",
         "Eagle Feathers",
     };
+};

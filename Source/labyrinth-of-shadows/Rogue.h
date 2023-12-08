@@ -2,12 +2,9 @@
 //Date: 12/5/23
 //Desc: Creating the subclass Rogue for the player.
 #pragma once
-#include "Character.h"
-#include "Enemy.h"
-#include "Utility.h"
+// #include "All_Includes.h"
+// JPO: Temp fix for the issue with the compiler not finding the files
 #include "Dagger.h"
-#include <conio.h> // This allows us to use _getch() which will automatically continue after the user enters a single character.
-using namespace std;
 
 class Rogue : public Character
 {
@@ -29,7 +26,6 @@ private:
     bool isBlocking;
     bool isStunned;
     bool isEnemyStunned;
-    Utility util;
     Dagger dagger;
 
 public:
@@ -230,7 +226,7 @@ public:
         }
 
         }
-        if (util.checkForLevelUp(exp, expNeeded))
+        if (checkForLevelUp(exp, expNeeded))
         {
             levelUp();
         }
@@ -297,7 +293,7 @@ public:
                         incorrectChoice = true;
                     }
 
-                    // Check if the choice is invalid 
+                    // Check if the choice is invalid
                     if (incorrectChoice) {
                         // The do-while loop will continue if the choice was incorrect
                         continue;
@@ -419,7 +415,7 @@ public:
                         incorrectChoice = true;
                     }
 
-                    // Check if the choice is invalid 
+                    // Check if the choice is invalid
                     if (incorrectChoice) {
                         // The do-while loop will continue if the choice was incorrect
                         continue;
@@ -542,7 +538,7 @@ public:
                         incorrectChoice = true;
                     }
 
-                    // Check if the choice is invalid 
+                    // Check if the choice is invalid
                     if (incorrectChoice) {
                         // The do-while loop will continue if the choice was incorrect
                         continue;
@@ -591,7 +587,7 @@ public:
                     dodgeCooldown = dodgeLvl + 1;
                     break;
                 }
-                
+
                 }
             }
 
@@ -761,7 +757,7 @@ public:
             std::cout << "You gained " << enemy.giveEXP() << "Experience\n";
             isEnemyStunned = false;
             exp += enemy.giveEXP();
-            if (util.checkForLevelUp(exp, expNeeded))
+            if (checkForLevelUp(exp, expNeeded))
             {
                 levelUp();
             }
@@ -814,7 +810,7 @@ public:
             isEnemyStunned = false;
             healthPotions++;
             exp += boss.giveEXP();
-            if (util.checkForLevelUp(exp, expNeeded))
+            if (checkForLevelUp(exp, expNeeded))
             {
                 levelUp();
             }
@@ -860,7 +856,7 @@ public:
             cout << "You defeated the enemy!\n";
             exp += easyEnemy.giveEXP();
             isEnemyStunned = false;
-            if (util.checkForLevelUp(exp, expNeeded))
+            if (checkForLevelUp(exp, expNeeded))
             {
                 levelUp();
             }

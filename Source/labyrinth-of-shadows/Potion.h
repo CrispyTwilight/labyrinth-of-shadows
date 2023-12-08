@@ -1,10 +1,8 @@
 // Auth: Christian A. Botos
 // Date: 12/07/ 2023
-// Desc: Header file for the Potion structure for holding data variables. Can be used as a template for other structures 
-
+// Desc: Header file for the Potion structure for holding data variables.
 #pragma once
-#include <string>
-#include <vector>
+#include "All_Includes.h"
 
 struct Potion
 {
@@ -14,22 +12,40 @@ struct Potion
 		HALF_HEAL,
 		FULL_HEAL,
 		DOUBLE_HEAL,
-		POTION_TYPE_COUNT,
+		POTION_TYPE_COUNT, // Used to determine the number of possible potion types.
 	};
 
 	// Fields
+	PotionType type;
 	int heal;
 	int weight;
 	int value;
-	std::string name;
-	std::string material;
-	// There are two static fields that will be initialized in the Initializer.cpp file
-	static std::vector<std::string> possiblePotionNames;
-	static std::vector<std::string> possiblePotionMaterials;
+	string name;
+	string material;
 
-	// Constructor with default arguments and initializer list
-	// All params are pass by const reference to avoid copying the arguments for efficiency
-	Potion(const int& heal = 10, const int& weight = 5, const int& value = 20, const std::string& name = "Default Name", const std::string& material = "Default Material")
-		: heal(heal), weight(weight), value(value), name(name), material(material) {}
+	// Constructor with default arguments and initializer list.
+	// All parameters are passed by const reference to avoid copying the arguments for efficiency.
+	Potion(const PotionType& = NONE, const int& heal = 10, const int& weight = 5, const int& value = 20, const string& name = "Default Name", const string& material = "Default Material")
+		: type(type), heal(heal), weight(weight), value(value), name(name), material(material) {}
+
+	// Randomized constructor. The randomize parameter has no use or effect, it is just there to differentiate it from the other constructor.
+	explicit Potion(bool randomize) {
+		Dice typeDie(Potion::POTION_TYPE_COUNT - 1, 1);
+		type = static_cast<Potion::PotionType>(typeDie.rollDice());
+
+		Dice dmgDie(20, 1);
+		heal = dmgDie.rollDice();
+
+		Dice weightDie(20, 1);
+		weight = weightDie.rollDice();
+
+		Dice valueDie(20, 1);
+		value = valueDie.rollDice();
+
+		Dice nameDie(Item::possiblePotionNames.size() - 1);
+		name = Item::possiblePotionNames[nameDie.rollDice()];
+
+		Dice materialDie(Item::possiblePotionMaterials.size() - 1);
+		material = Item::possiblePotionMaterials[materialDie.rollDice()];
+	}
 };
-

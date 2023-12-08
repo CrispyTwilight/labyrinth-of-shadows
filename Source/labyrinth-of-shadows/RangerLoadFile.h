@@ -1,4 +1,6 @@
 #pragma once
+#include "All_Includes.h"
+
 struct RangerLoadFile
 {
     int max,
@@ -17,5 +19,3 @@ struct RangerLoadFile
         round,
         score;
 };
-
-
