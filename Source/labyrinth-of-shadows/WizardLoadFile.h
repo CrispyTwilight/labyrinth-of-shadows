@@ -2,6 +2,8 @@
 //Date: 12/8/2023
 //Desc: A structure that will hold all of the variables when we load the game.
 #pragma once
+#include "All_Includes.h"
+
 struct WizardLoadFile
 {
     int max,

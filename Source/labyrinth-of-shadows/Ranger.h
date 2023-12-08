@@ -2,7 +2,12 @@
 //Date: 11/30/23
 //Desc: Creating the subclass ranger for the player.
 #pragma once
-#include "All_Includes.h"
+// #include "All_Includes.h"
+// JPO: Temp fix for the issue with the compiler not finding the files
+#include "Character.h"
+#include "Enemy.h"
+#include "easyEnemy.h"
+#include "Boss.h"
 
 class Ranger : public Character
 {
@@ -26,7 +31,6 @@ private:
     bool isBlocking;
     bool isStunned;
     bool isEnemyStunned;
-    
     Bow bow;
 public:
     Ranger(int max, int hea, int  str, int intel, int  dex, int lev, int ex, int need, int rai, int charg, int re, int potion, int turns)
@@ -54,8 +58,6 @@ public:
         rainCooldown = 0;
         chargedCooldown = 0;
         repulsionUses = repulsionLvl;
-
-
     }
 
     //Setters
@@ -567,7 +569,7 @@ public:
                         incorrectChoice = true;
                     }
 
-                    // Check if the choice is invalid 
+                    // Check if the choice is invalid
                     if (incorrectChoice) {
                         // The do-while loop will continue if the choice was incorrect
                         continue;
@@ -840,12 +842,12 @@ public:
                 << "Boss's health: " << boss.getHealth() << endl;
         }
 
-        if (getHealth() <= 0) 
+        if (getHealth() <= 0)
         {
             // Game over logic
             cout << "You were defeated! Game Over.\n";
         }
-        else 
+        else
         {
             // Victory logic
             cout << "You defeated the Boss!\n";
@@ -911,4 +913,3 @@ public:
         }
     }
 };
-

@@ -4,7 +4,6 @@
 #pragma once
 #include "All_Includes.h"
 
-
 class Character
 {
 private:
@@ -24,6 +23,7 @@ public:
         health = hea;
         name = n;
     }
+
     //Setters
     void setHealth(int value)
     {

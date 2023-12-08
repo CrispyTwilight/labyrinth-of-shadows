@@ -2,12 +2,9 @@
 //Date: 12/5/23
 //Desc: Creating the subclass Rogue for the player.
 #pragma once
-#include "Character.h"
-#include "Enemy.h"
-
+// #include "All_Includes.h"
+// JPO: Temp fix for the issue with the compiler not finding the files
 #include "Dagger.h"
-#include <conio.h> // This allows us to use _getch() which will automatically continue after the user enters a single character.
-using namespace std;
 
 class Rogue : public Character
 {
@@ -296,7 +293,7 @@ public:
                         incorrectChoice = true;
                     }
 
-                    // Check if the choice is invalid 
+                    // Check if the choice is invalid
                     if (incorrectChoice) {
                         // The do-while loop will continue if the choice was incorrect
                         continue;
@@ -418,7 +415,7 @@ public:
                         incorrectChoice = true;
                     }
 
-                    // Check if the choice is invalid 
+                    // Check if the choice is invalid
                     if (incorrectChoice) {
                         // The do-while loop will continue if the choice was incorrect
                         continue;
@@ -541,7 +538,7 @@ public:
                         incorrectChoice = true;
                     }
 
-                    // Check if the choice is invalid 
+                    // Check if the choice is invalid
                     if (incorrectChoice) {
                         // The do-while loop will continue if the choice was incorrect
                         continue;
@@ -590,7 +587,7 @@ public:
                     dodgeCooldown = dodgeLvl + 1;
                     break;
                 }
-                
+
                 }
             }
 

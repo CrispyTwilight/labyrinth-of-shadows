@@ -4,15 +4,13 @@
 #pragma once
 #include "All_Includes.h"
 
-
-bool checkForLevelUp(int &exp, int &expNeeded)
+bool checkForLevelUp(int& exp, int& expNeeded)
 {
     if (exp == expNeeded)
     {
         return true;
     };
 }
-
 
 //This is for some visual issues I was having with the cli, Should be moved later to utilities.
 //This always keeps the command line at the bottom instead of clearing it.

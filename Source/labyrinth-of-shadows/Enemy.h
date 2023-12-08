@@ -2,7 +2,12 @@
 //Date: 11/30/23
 //Desc: Creating a the Enemy class.
 #pragma once
-#include "All_Includes.h"
+// #include "All_Includes.h"
+// JPO: Temp fix for the issue with the compiler not finding the files
+#include "Sword.h"
+#include "Bow.h"
+#include "Staff.h"
+
 
 class Enemy : public Character
 {

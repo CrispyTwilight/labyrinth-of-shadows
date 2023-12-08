@@ -15,30 +15,29 @@ struct Loot {
     Loot() {
         // Generate a random number between 1 and 100
         Dice lootDie(100, 1);
-        int lootRoll = lootDie.rollDice();
 
         // 40% chance of getting some loot
-        if (lootRoll <= 40) {
+        if ( int lootRoll = lootDie.rollDice() <= 40) {
             // Generate a random number between 1 and 3 to determine the type of loot
             Dice typeDie(3, 1);
             int typeRoll = typeDie.rollDice();
 
             switch (typeRoll) {
-                case 1:
-                    // Generate a random weapon
-                    lootWeapon = Weapon(true);
-                    break;
-                case 2:
-                    // Generate a random armor
-                    lootArmor = Armor(true);
-                    break;
-                case 3:
-        // Generate a random potion
-                    // lootPotion = Potion(true);
-                    break;
-                default:
-                    cout << "Error: Invalid loot type roll.\n";
-                    break;
+            case 1:
+                // Generate a random weapon
+                lootWeapon = Weapon(true);
+                break;
+            case 2:
+                // Generate a random armor
+                lootArmor = Armor(true);
+                break;
+            case 3:
+                // Generate a random potion
+                            // lootPotion = Potion(true);
+                break;
+            default:
+                cout << "Error: Invalid loot type roll.\n";
+                break;
             }
         }
 
@@ -47,4 +46,3 @@ struct Loot {
         gold = goldDie.rollDice();
     }
 };
-

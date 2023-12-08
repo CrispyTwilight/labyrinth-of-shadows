@@ -25,7 +25,6 @@ private:
     bool isStunned;
     bool isEnemyStunned;
     Staff staff;
-   
 
 public:
     Wizard(int max, int hea, int  str, int intel, int  dex, int lev, int ex, int need, int ice, int fire, int potion, int turns)
@@ -739,7 +738,7 @@ public:
         {
             cout << "You were defeated! Game Over.\n";
         }
-        else 
+        else
         {
             cout << "You defeated the enemy!\n";
             exp += easyEnemy.giveEXP();

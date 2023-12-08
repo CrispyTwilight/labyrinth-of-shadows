@@ -1,4 +1,6 @@
 #pragma once
+#include "All_Includes.h"
+
 struct Staff
 {
     int damage;
@@ -8,4 +10,3 @@ struct Staff
     }
 
 };
-

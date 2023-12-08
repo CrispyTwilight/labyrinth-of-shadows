@@ -2,10 +2,7 @@
 // Date: 12/8/23
 // Desc: The easy enemy class that will show the players the basics of combat without killing them outright.
 #pragma once
-#include <iostream>
-#include <string>
-#include "Character.h"
-
+#include "All_Includes.h"
 
 class easyEnemy : public Character
 {
@@ -13,7 +10,7 @@ private:
 	int strength;
 	int dexterity;
 	int expWorth;
-	std ::string name;
+	string name;
 
 public:
 	easyEnemy()
@@ -35,15 +32,13 @@ public:
 		setHealth(getHealth()-d);
 	}
 
-	int giveEXP()
+	int giveEXP() const
 	{
 		return expWorth;
 	}
 
-	std ::string getName()
+	string getName() const // JPO: This is hiding the Character::getName() function
 	{
 		return name;
 	}
-
 };
-

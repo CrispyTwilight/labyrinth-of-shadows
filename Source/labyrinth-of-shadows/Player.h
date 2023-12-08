@@ -3,6 +3,7 @@
 // Desc: Class to represent the player in the game for movement and position.
 #pragma once
 #include "All_Includes.h"
+#include "Map.h"
 
 class Player
 {

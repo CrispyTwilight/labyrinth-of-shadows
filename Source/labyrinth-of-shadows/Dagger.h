@@ -1,4 +1,6 @@
 #pragma once
+#include "All_Includes.h"
+
 struct Dagger
 {
     int damage;
