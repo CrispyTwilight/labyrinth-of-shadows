@@ -4,6 +4,7 @@
 #pragma once
 #include "All_Includes.h"
 
+
 class Character
 {
 private:
@@ -12,9 +13,17 @@ private:
     string name;
 
 public:
+    Character()
+    {
+        health = 0;
+        name = "";
+    }
 
-    // JPO: add constructor
-
+    Character(int hea, string n)
+    {
+        health = hea;
+        name = n;
+    }
     //Setters
     void setHealth(int value)
     {
