@@ -104,6 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -130,14 +131,20 @@
     <ClCompile Include="labyrinth-of-shadows.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Armor.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="Dice.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="All_Includes.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="Loot.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Ranger.h" />
-    <ClInclude Include="Utility.h" />
+    <ClInclude Include="Shop.h" />
+    <ClInclude Include="Util.h" />
+    <ClInclude Include="Weapon.h" />
     <ClInclude Include="Wizard.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

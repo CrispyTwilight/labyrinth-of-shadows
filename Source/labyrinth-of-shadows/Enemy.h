@@ -2,7 +2,7 @@
 //Date: 11/30/23
 //Desc: Creating a the Enemy class.
 #pragma once
-#include "Character.h"
+#include "All_Includes.h"
 
 class Enemy : private Character
 {
