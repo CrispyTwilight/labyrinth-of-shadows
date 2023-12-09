@@ -6,6 +6,9 @@
 
 class Item {
 public:
+    // Destructor
+    virtual ~Item() = default;
+
     // These are static because they are the same for all instances of the struct.
     inline static vector<string> possibleWeaponNames = {
         "Reaper",

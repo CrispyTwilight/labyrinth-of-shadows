@@ -34,6 +34,7 @@ using namespace std;
 #include "Item.h"
 #include "Weapon.h"
 #include "Armor.h"
+#include "Potion.h"
 #include "Shop.h"
 #include "Loot.h"
 

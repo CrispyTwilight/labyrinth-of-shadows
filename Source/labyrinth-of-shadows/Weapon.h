@@ -4,7 +4,7 @@
 #pragma once
 #include "All_Includes.h"
 
-struct Weapon {
+struct Weapon : public Item {
 	// Define enum for weapon types that can be used to determine what kind of weapon it is. It is defined inside the struct and can be accessed as Weapon::WeaponType.
 	enum WeaponType {
 		NONE, // Default value
@@ -44,7 +44,7 @@ struct Weapon {
         Dice valueDie(20, 1);
         value = valueDie.rollDice();
 
-        Dice nameDie(Item::possibleWeaponNames.size() - 1);
+        Dice nameDie(Item::possibleWeaponNames.size() - 1); // JPO remove Item::
         name = Item::possibleWeaponNames[nameDie.rollDice()];
 
         Dice materialDie(Item::possibleWeaponMaterials.size() - 1);

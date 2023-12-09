@@ -10,6 +10,7 @@ private:
     //Fields
     int health;
     string name;
+    Inventory inventory;
 
 public:
     Character()
@@ -18,7 +19,7 @@ public:
         name = "";
     }
 
-    Character(int hea, string n)
+    Character(int hea, string n, int gold)
     {
         health = hea;
         name = n;
@@ -44,5 +45,10 @@ public:
     string getName() const
     {
         return name;
+    }
+
+    Inventory& getInventory()
+    {
+        return inventory;
     }
 };
