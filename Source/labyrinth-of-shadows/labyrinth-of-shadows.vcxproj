@@ -149,6 +149,7 @@
     <ClInclude Include="Potion.h" />
     <ClInclude Include="Ranger.h" />
     <ClInclude Include="RangerLoadFile.h" />
+    <ClInclude Include="Rogue.h" />
     <ClInclude Include="RogueLoadFile.h" />
     <ClInclude Include="Save.h" />
     <ClInclude Include="Staff.h" />

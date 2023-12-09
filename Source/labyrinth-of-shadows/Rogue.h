@@ -4,6 +4,11 @@
 #pragma once
 // #include "All_Includes.h"
 // JPO: Temp fix for the issue with the compiler not finding the files
+#include "Character.h"
+#include "Enemy.h"
+#include "easyEnemy.h"
+#include "Boss.h"
+#include "Dice.h"
 #include "Dagger.h"
 
 class Rogue : public Character
@@ -27,6 +32,7 @@ private:
     bool isStunned;
     bool isEnemyStunned;
     Dagger dagger;
+    Dice d100;
 
 public:
     Rogue(int max, int hea, int  str, int intel, int  dex, int lev, int ex, int need, int sa, int dodge, int potion, int turns)
@@ -52,6 +58,8 @@ public:
         isEnemyStunned = false;
         sneakAttackCooldown = 0;
         dodgeCooldown = 0;
+        d100.setMax(100);
+        d100.setMin(1);
 
     }
 
@@ -621,7 +629,7 @@ public:
     // Taking damage from the easy enemy.
     void takeDamageEasyEnemy(easyEnemy& easyEnemy, int d)
     {
-        int enemyAttack = rand() % 100 + 1;
+        int enemyAttack = d100.rollDice();
 
         if (isBlocking)
         {
@@ -648,7 +656,7 @@ public:
     void takeDamageBoss(Boss& boss, int d)
     {
         // Getting a random number and seeing if the players dex is higher and if it is they will dodge the attack.
-        int enemyAttack = rand() % 100 + 1;
+        int enemyAttack = d100.rollDice();
 
         if (isBlocking)
         {
@@ -675,7 +683,7 @@ public:
     void takeDamage(Enemy& enemy, int d)
     {
         // Getting a random number and seeing if the players dex is higher and if it is they will dodge the attack.
-        int enemyAttack = rand() % 100 + 1;
+        int enemyAttack = d100.rollDice();
 
         if (isBlocking)
         {
