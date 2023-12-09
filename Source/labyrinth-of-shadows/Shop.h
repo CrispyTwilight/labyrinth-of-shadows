@@ -9,13 +9,14 @@ class Shop
 private:
 	// Fields
     static const int MAX_ITEMS = 3;
-	static const int SIZE = 4;
-    vector<Weapon> weapons;
-	vector<Armor> armor;
-	vector<Potion> potions;
+    static const int SIZE = 4;
+    vector<Item*> shopInventory;
+    vector<Weapon*> weaponsInventory;
+    vector<Armor*> armorsInventory;
+    vector<Potion*> potionsInventory;
     int goldBalance;
 	int charCounter;
-	Character character;
+    Character character;
 
 	array<string, SIZE> shopNames = {
 		"General Shop",
@@ -48,48 +49,66 @@ private:
 public:
 	// Constructor
     Shop() {
-		// Fill the shop's inventory with items.
+        // Fill the shop's inventory with items.
         for (int i = 0; i < MAX_ITEMS; i++) {
-            weapons.push_back(Weapon(true));
+            Weapon* weapon = new Weapon(true);
+            weaponsInventory.push_back(weapon); // add to the weapons inventory
+            shopInventory.push_back(weapon); // add to the shop's inventory
         }
-		for (int i = 0; i < MAX_ITEMS; i++) {
-			armor.push_back(Armor(true));
-		}
-		for (int i = 0; i < MAX_ITEMS; i++) {
-			potions.push_back(Potion(true));
-		}
-		goldBalance = 0; // This needs the get the current gold balance from the character.
-		charCounter = 0; // Default value for the character counter.
+
+        for (int i = 0; i < MAX_ITEMS; i++) {
+            Armor* armor = new Armor(true);
+            armorsInventory.push_back(armor);
+            shopInventory.push_back(armor);
+        }
+
+        for (int i = 0; i < MAX_ITEMS; i++) {
+            Potion* potion = new Potion(true);
+            potionsInventory.push_back(potion);
+            shopInventory.push_back(potion);
+        }
+        goldBalance = 0; // This needs the get the current gold balance from the character.
+		charCounter = 0;
     }
 
     void displayShopItems() {
         // Randomly select the shop name, owner, and attribute.
-        Dice shopNameDie(shopNames.size());
+        Dice shopNameDie(SIZE - 1);
         string randShopName = shopNames[shopNameDie.rollDice()];
 
-        Dice shopOwnerDie(shopOwners.size());
+        Dice shopOwnerDie(SIZE - 1);
         string randShopOwner = shopOwners[shopOwnerDie.rollDice()];
 
-        Dice shopAttributeDie(ownerAttributes.size());
+        Dice shopAttributeDie(SIZE - 1);
         string randOwnerAttribute = ownerAttributes[shopOwnerDie.rollDice()];
 
         // Display the shop's owner, name, and headings. Use endl to make character count easier.
-        cout << right << setw(16 + 8) << randShopOwner << " " << randOwnerAttribute << setw(7 + 4) << randShopName << endl;
-        cout << right << setw(4 + 3) << "Item" << setw(58) << "Asking Price" << endl;
+        stringstream ss;
+		ss << randShopOwner << " " << randOwnerAttribute;
+		cout << right << setw(19 + 9) << ss.str() << setw(14 + 10) << randShopName << endl;
+        cout << right << setw(4 + 3) << "Item" << setw(55 + 4) << "Asking Price" << endl;
 
-		// Display weapons, armor, and potions.
-        for (int i = 0; i < MAX_ITEMS; i++) {
-            cout << char('a' + charCounter) << ") " << left << setw(55) << weapons[i].name << right << setw(4) << "$" << weapons[i].value << endl;
-			charCounter++;
-        }
 
-		for (int i = 0; i < MAX_ITEMS; i++) {
-			cout << char('a' + charCounter) << ") " << left << setw(55) << armor[i].name << right << setw(4) << "$" << armor[i].value << endl;
+		for (int i = 0; i < weaponsInventory.size(); i++) {
+			stringstream ss;
+			ss << weaponsInventory[i]->name << " - " << weaponsInventory[i]->material << " " << weaponTypeToString(weaponsInventory[i]->type);
+			cout << char('a' + charCounter) << ") " << left << setw(55) << ss.str() << right << setw(4) << "$" << weaponsInventory[i]->value << endl;
 			charCounter++;
 		}
 
-		for (int i = 0; i < MAX_ITEMS; i++) {
-			cout << char('a' + i) << ") " << left << setw(55) << potions[i].name << right << setw(4) << "$" << potions[i].value << endl;
+		// Display armor
+		for (int i = 0; i < armorsInventory.size(); i++) {
+			stringstream ss;
+			ss << armorsInventory[i]->name << " - " << armorsInventory[i]->material << " " << armorTypeToString(armorsInventory[i]->type);
+			cout << char('a' + charCounter) << ") " << left << setw(55) << ss.str() << right << setw(4) << "$" << armorsInventory[i]->value << endl;
+			charCounter++;
+		}
+
+		// Display potions
+		for (int i = 0; i < potionsInventory.size(); i++) {
+			stringstream ss;
+			ss << potionsInventory[i]->name << " " << potionTypeToString(potionsInventory[i]->type) << " potion of " << potionsInventory[i]->material;
+			cout << char('a' + charCounter) << ") " << left << setw(55) << ss.str() << right << setw(4) << "$" << potionsInventory[i]->value << endl;
 			charCounter++;
 		}
 
@@ -98,91 +117,91 @@ public:
 
         // Display the shop's menu options.
         cout << "\nYou may:\n";
-        for (int i = 0; i < SIZE; i++) {
+        for (int i = 0; i < SIZE - 1; i++) {
             cout << setw(35) << menuOptions[i] << endl;
         }
 
-		menuChoice();
+		//menuChoice();
     }
 
-	void menuChoice() {
-		char input = _getch();
-		switch (input) {
-			case 'p': {
-				cout << "Purchase what?";
-				input = _getch();
-				purchaseItem(input - 'a', character);
-				break;
-			}
-			case 's': {
-				cout << "Sell what?";
-				input = _getch();
-				sellItem(input - 'a', character);
-				break;
-			}
-			// Add more cases as needed
-			default: {
-				cout << "Invalid input." << endl;
-				break;
-			}
-		}
-	}
+	 //void menuChoice() {
+	 //	char input = _getch();
+	 //	switch (input) {
+	 //		case 'p': {
+	 //			cout << "Purchase what?";
+	 //			input = _getch();
+	 //			purchaseItem(input - 'a', character);
+	 //			break;
+	 //		}
+	 //		case 's': {
+	 //			cout << "Sell what?";
+	 //			input = _getch();
+	 //			sellItem(input - 'a', character);
+	 //			break;
+	 //		}
+	 //		// Add more cases as needed
+	 //		default: {
+	 //			cout << "Invalid input." << endl;
+	 //			break;
+	 //		}
+	 //	}
+	 //}
 
-	void purchaseItem(int itemIndex, Character& character) {
-		// Check if the character has enough gold to purchase weapon
-		if (character.getInventory().getGold() < weapons[itemIndex].value) {
-			cout << "You don't have enough gold to purchase this item." << endl;
-			return;
-		}
+	// void purchaseItem(int itemIndex, Character& character) {
+	// 	// Check if the character has enough gold to purchase weapon
+	// 	if (character.getInventory().getGold() < weapons[itemIndex].value) {
+	// 		cout << "You don't have enough gold to purchase this item." << endl;
+	// 		return;
+	// 	}
 
-		// Add the weapon to the character's inventory
-		character.getInventory().addItem(weapons[itemIndex]);
-		character.getInventory().deductGold(weapons[itemIndex].value);
-		weapons.erase(weapons.begin() + itemIndex);
-		weapons.insert(weapons.begin() + itemIndex, Weapon(true));
+	// 	// Add the weapon to the character's inventory
+	// 	character.getInventory().addItem(&weapons[itemIndex]);
+	// 	character.getInventory().deductGold(weapons[itemIndex].value);
+	// 	weapons.erase(weapons.begin() + itemIndex);
+	// 	weapons.insert(weapons.begin() + itemIndex, Weapon(true));
 
-		// Check if the character has enough gold to purchase armor
-		if (character.getInventory().getGold() < armor[itemIndex].value) {
-			cout << "You don't have enough gold to purchase this item." << endl;
-			return;
-		}
+	// 	// Check if the character has enough gold to purchase armor
+	// 	if (character.getInventory().getGold() < armor[itemIndex].value) {
+	// 		cout << "You don't have enough gold to purchase this item." << endl;
+	// 		return;
+	// 	}
 
-		// Add the armor to the character's inventory
-		character.getInventory().addItem(armor[itemIndex]);
-		character.getInventory().deductGold(armor[itemIndex].value);
-		armor.erase(armor.begin() + itemIndex);
-		armor.insert(armor.begin() + itemIndex, Armor(true));
+	// 	// Add the armor to the character's inventory
+	// 	character.getInventory().addItem(armor[itemIndex]);
+	// 	character.getInventory().deductGold(armor[itemIndex].value);
+	// 	armor.erase(armor.begin() + itemIndex);
+	// 	armor.insert(armor.begin() + itemIndex, Armor(true));
 
-		// Check if the character has enough gold to purchase potion
-		if (character.getInventory().getGold() < potions[itemIndex].value) {
-			cout << "You don't have enough gold to purchase this item." << endl;
-			return;
-		}
+	// 	// Check if the character has enough gold to purchase potion
+	// 	if (character.getInventory().getGold() < potions[itemIndex].value) {
+	// 		cout << "You don't have enough gold to purchase this item." << endl;
+	// 		return;
+	// 	}
 
-		// Add the potion to the character's inventory
-		character.getInventory().addItem(potions[itemIndex]);
-		character.getInventory().deductGold(potions[itemIndex].value);
-		potions.erase(potions.begin() + itemIndex);
-		potions.insert(potions.begin() + itemIndex, Potion(true));
+	// 	// Add the potion to the character's inventory
+	// 	character.getInventory().addItem(potions[itemIndex]);
+	// 	character.getInventory().deductGold(potions[itemIndex].value);
+	// 	potions.erase(potions.begin() + itemIndex);
+	// 	potions.insert(potions.begin() + itemIndex, Potion(true));
 
-		cout << "You have purchased the item." << endl;
-	}
+	// 	cout << "You have purchased the item." << endl;
+	// }
 
-	void sellItem() {
-		// This does not add the item to the shop's inventory. It simply removes the item from the character's inventory and adds the gold value to the characters gold balance.
-		cout << "You have sold an item.\n";
-		character.GoldBalance += weapons[0].value;
-		goldBalance += weapons[0].value;
-		displayShopItems();
-	}
+	// void sellItem() {
+	// 	// This does not add the item to the shop's inventory. It simply removes the item from the character's inventory and adds the gold value to the characters gold balance.
+	// 	cout << "You have sold an item.\n";
+	// 	character.GoldBalance += weapons[0].value;
+	// 	goldBalance += weapons[0].value;
+	// 	displayShopItems();
+	// }
 
-	void inventoryList() {
-		cout << "Inventory list.\n";
-	}
+	// void inventoryList() {
+	// 	cout << "Inventory list.\n";
+	// }
 
-	void exitShop() {
-		cout << "You are exiting the shop...\n";
-		// save the shop's inventory
-		// call a display map function
-	}
+	// void exitShop() {
+	// 	cout << "You are exiting the shop...\n";
+	// 	// save the shop's inventory
+	// 	// call a display map function
+	// }
 };

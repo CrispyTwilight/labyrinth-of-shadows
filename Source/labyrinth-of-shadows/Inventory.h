@@ -3,6 +3,7 @@
 // Desc: header file for the Inventory class for the player's inventory
 #pragma once
 #include "All_Includes.h"
+#include "Item.h" //Jpo Temp
 
 class Inventory
 {
@@ -43,4 +44,5 @@ public:
 	void deductGold(int g) {
 		gold -= g;
 	}
+
 };

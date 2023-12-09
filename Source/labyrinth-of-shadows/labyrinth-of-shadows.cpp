@@ -22,8 +22,8 @@ void testDriver() {
     while (choice != 'q') {
         // Welcome and menu
         cout << "Pick an option to test:\n"
-            << "1. Generate Map"
-            << "2. Generate Shop\n"
+            << "1. Test Map\n"
+            << "2. Test Shop\n"
             << "q. Quit\n"
             << "Choice: ";
         choice = _getch(); // Get a single character from the user without echoing it to the console
@@ -84,7 +84,9 @@ void mapDriver() {
     }
 }
 
+// JPO: This function drives the shop for testing.
 void shopDriver() {
+    cout << endl << endl;
     Shop shop;
     shop.displayShopItems();
 }

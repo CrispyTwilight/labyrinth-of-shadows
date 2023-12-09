@@ -3,6 +3,8 @@
 //Desc: Creating a superclass for the player, npcs, and enemies
 #pragma once
 #include "All_Includes.h"
+#include "Inventory.h" //Jpo Temp
+
 
 class Character
 {
@@ -35,6 +37,11 @@ public:
     {
         name = n;
     }
+
+    void setInventory(Inventory inv)
+	{
+		inventory = inv;
+	}
 
     //Getters
     int getHealth() const

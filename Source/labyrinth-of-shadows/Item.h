@@ -6,6 +6,15 @@
 
 class Item {
 public:
+    // Fields
+    string name;
+    int value;
+
+
+    // Constructor
+    Item(const string& name = "Default Name", const int& value = 0)
+        : name(name), value(value) {}
+
     // Destructor
     virtual ~Item() = default;
 
@@ -50,7 +59,7 @@ public:
     };
 
     inline static vector<string> possibleArmorMaterials = {
-         "Cloth",
+        "Cloth",
         "Leather",
         "Steel",
         "Iron",
@@ -63,16 +72,16 @@ public:
     };
 
     inline static vector<string> possiblePotionNames = {
-        "Blue Potion",
-        "Red Potion",
-        "Green Potion",
-        "Orange Potion",
-        "Yellow Potion",
-        "Purple Potion",
-        "Clear Potion",
-        "Unmarked Potion",
-        "White Potion",
-        "Black Potion",
+        "Blue",
+        "Red",
+        "Green",
+        "Orange",
+        "Yellow",
+        "Purple",
+        "Clear",
+        "Unmarked",
+        "White",
+        "Black",
     };
 
     inline static vector<string> possiblePotionMaterials = {
