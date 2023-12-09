@@ -20,16 +20,20 @@ private:
 	Bow bow;
 	Sword sword;
 	Staff staff;
+	Dice enemyDice;
+
+	
 
 public:
 	Enemy(int round)
-	{
+	{	
 		generateHealth(round);
 		generateStrength(round);
 		generateDexterity(round);
 		generateBattleStyle();
 		expWorth = round * 2;
 		generateNameAndDescription();
+		
 	}
 
 	int attack()
@@ -54,24 +58,32 @@ public:
 	{
 		int minStrength = round;
 		int maxStrength = round * 2;
-		strength = rand() % (maxStrength - minStrength + 1) + minStrength;
+		enemyDice.setMin(1);
+		enemyDice.setMax((maxStrength - minStrength + 1) + minStrength);
 	}
 	void generateDexterity(int round)
 	{
 		int minDexterity = round;
 		int maxDexterity = round * 2;
-		dexterity = rand() % (maxDexterity - minDexterity + 1) + minDexterity;
+		enemyDice.setMin(1);
+		enemyDice.setMax((maxDexterity - minDexterity + 1) + minDexterity);
 	}
+
 	void generateBattleStyle() {
-		battleStyle = rand() % 3; // Randomly choose battle style (0, 1, or 2)
+		enemyDice.setMin(0);
+		enemyDice.setMax(2);
+		battleStyle = enemyDice.rollDice(); // Randomly choose battle style (0, 1, or 2)
 	}
 
 	void generateNameAndDescription() {
 		string names[] = { "Garkle", "Snarflark ", "Zog", "Blarg", "Gruk" };
 		string creatureTypes[] = { "Bandit", "Goblin", "Gremlin", "Skeleton" };
 
-		int nameIndex = rand() % size(names);
-		int typeIndex = rand() % size(creatureTypes);
+		enemyDice.setMax(size(names));
+		enemyDice.setMin(0);
+		int nameIndex = enemyDice.rollDice();
+		enemyDice.setMax(size(creatureTypes));
+		int typeIndex = enemyDice.rollDice();
 
 		setName(names[nameIndex] + " the " + creatureTypes[typeIndex]);
 		description = " a fearsome creature";

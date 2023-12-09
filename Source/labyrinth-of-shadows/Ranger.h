@@ -31,6 +31,7 @@ private:
     bool isBlocking;
     bool isStunned;
     bool isEnemyStunned;
+    Dice d100;
     Bow bow;
 public:
     Ranger(int max, int hea, int  str, int intel, int  dex, int lev, int ex, int need, int rai, int charg, int re, int potion, int turns)
@@ -58,6 +59,8 @@ public:
         rainCooldown = 0;
         chargedCooldown = 0;
         repulsionUses = repulsionLvl;
+        d100.setMin(1);
+        d100.setMax(100);
     }
 
     //Setters
@@ -663,7 +666,7 @@ public:
     // Taking damage from the easy enemy.
     void takeDamageEasyEnemy(easyEnemy& easyEnemy, int d)
     {
-        int enemyAttack = rand() % 100 + 1;
+        int enemyAttack = d100.rollDice();
 
         if (isBlocking)
         {
@@ -689,7 +692,7 @@ public:
     void takeDamageBoss(Boss& boss, int d)
     {
         // Getting a random number and seeing if the players dex is higher and if it is they will dodge the attack.
-        int enemyAttack = rand() % 100 + 1;
+        int enemyAttack = d100.rollDice();
 
         if (isBlocking)
         {
@@ -716,7 +719,7 @@ public:
     void takeDamage(Enemy& enemy, int d)
     {
         // Getting a random number and seeing if the players dex is higher and if it is they will dodge the attack.
-        int enemyAttack = rand() % 100 + 1;
+        int enemyAttack = d100.rollDice();
 
         if (isBlocking)
         {

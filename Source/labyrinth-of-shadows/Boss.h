@@ -9,6 +9,7 @@ private:
 	int expWorth;
 	string name;
 	Sword sword;
+	Dice enemyDice;
 
 public:
 	Boss(int round)
@@ -36,17 +37,16 @@ public:
 	}
 	void generateHealth(int round)
 	{
-		setHealth(round * 3);
+		setHealth(350);
 	}
 	void generateStrength(int round)
 	{
-		strength = round * 2;
+		strength = 50;
 	}
 	void generateDexterity(int round)
 	{
-		int minDexterity = round;
-		int maxDexterity = round * 2;
-		dexterity = rand() % (maxDexterity - minDexterity + 1) + minDexterity; // JPO: This should use the Dice class
+		// These are static and need to be tested.
+		dexterity = 50;
 	}
 
 	int getDamage() const
