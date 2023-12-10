@@ -10,6 +10,7 @@ private:
     Map& map;
     int x, y; //Player's position
     int px, py; //Proposed position. Checking for walls
+    int keys = 4;
 
 public:
     Player(Map& map, int initialX, int initialY) : map(map), x(initialX), y(initialY), px(initialX), py(initialY) {}
@@ -52,6 +53,15 @@ public:
 
 
         }
+        if (map.getGrid()[py][px] == '?')
+        {
+            map.updateSpace(px, py, '.');
+            keys += 1;
+            if (keys == 5)
+            {
+                map.updateSpace(24, 14, '?');
+            }
+        }
         if (map.getGrid()[py][px] == 'D')
         {
             map.setLevel(map.getLevel() + 1);
@@ -64,15 +74,35 @@ public:
             y += dy;
         }
 
+
         px = x;
         py = y;
 
-        cout << "X: " << x << "  Y: " << y;
+        resetOrBoss();
+
     }
 
     void getPosition(int& outX, int& outY) const
     {
         outX = x;
         outY = y;
+    }
+
+    void resetOrBoss()
+    {
+        int c = 0;
+        if (keys == 6)
+        {
+            cout << "Would you like to to reset the game(you keep all your character progress), or fight the final boss?\n1. Reset\n2. Fight   ";
+            cin >> c;
+            keys = 0;
+            system("cls");
+        }
+
+        if (c == 1)
+        {
+            map.reset();
+            map.setLevel(0);
+        }
     }
 };

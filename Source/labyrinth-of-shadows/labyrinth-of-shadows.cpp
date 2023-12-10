@@ -60,6 +60,7 @@ void mapDriver() {
     //Infinite loop right now, will need a menu.
     while (true)
     {
+        srand(time(NULL));
         //This clears the cli
         setCursorPosition(0, 0);
 
@@ -71,17 +72,15 @@ void mapDriver() {
         gameMap.updatePlayerPosition(playerX, playerY);
         gameMap.display();
 
-        //Updating other non static things on the map
-        gameMap.updateNonStatic();
-
         gameMap.mapSwitcher();
 
         player.handleInput();
 
         visual();
+        gameMap.moveE();
 
         //This is necessary to control speed of the game.
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        this_thread::sleep_for(chrono::milliseconds(100));
     }
 }
 
