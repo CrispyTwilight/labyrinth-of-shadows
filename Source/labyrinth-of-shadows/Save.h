@@ -9,7 +9,9 @@
 #include "Ranger.h"
 #include "Wizard.h"
 #include "Rogue.h"
-
+#include "Inventory.h"
+#include "Armor.h"
+#include "Weapon.h"
 // Before These are truly finished I need to see the inventory needs to be finished
 class Save
 {
@@ -18,7 +20,7 @@ public:
 	Save()
 	{}
 
-    void saveTheGameRanger(int round, int score, Ranger playerRanger)
+    void saveTheGameRanger(int round, int score, Ranger playerRanger , Inventory& playerInventory)
     {
         //Saving the game if they are a ranger
         ofstream outFile("ranger.txt");
@@ -40,6 +42,7 @@ public:
             outFile << round << endl;
 
             cout << "Character saved successfully!" << endl;
+            saveInventory(playerInventory, "ranger_inventory.txt");
         }
         else {
             cout << "Unable to open the file for saving!" << endl;
@@ -48,7 +51,7 @@ public:
         outFile.close();
     }
 
-    void saveTheGameWizard(int round, int score, Wizard playerWizard)
+    void saveTheGameWizard(int round, int score, Wizard playerWizard, Inventory& playerInventory)
     {
         // Saving the game if they are a wizard
         ofstream outFile("wizard.txt");
@@ -70,6 +73,7 @@ public:
             outFile << round << endl;
 
             cout << "Character saved successfully!" << endl;
+            saveInventory(playerInventory, "ranger_inventory.txt");
         }
         else {
             cout << "Unable to open the file for saving!" << endl;
@@ -78,7 +82,7 @@ public:
         outFile.close();
 	}
 
-    void saveTheGameRogue(int round, int score, Rogue playerRogue)
+    void saveTheGameRogue(int& round, int& score, Rogue& playerRogue, Inventory& playerInventory)
     {
         //Saving the game if they are a rogue
         ofstream outFile("rogue.txt");
@@ -99,6 +103,7 @@ public:
             outFile << round << endl;
 
             cout << "Character saved successfully!" << endl;
+            saveInventory(playerInventory, "ranger_inventory.txt");
         }
         else {
             cout << "Unable to open the file for saving!" << endl;
@@ -106,4 +111,60 @@ public:
 
         outFile.close();
     }
+    void saveInventory(const Inventory& playerInventory, const string& filename) const {
+        ofstream outFile(filename);
+        if (outFile.is_open()) {
+            // Save health potion count
+            outFile << "HealthPotion," << playerInventory.getHealthPotion() << "\n";
+
+            // Save equipped armor details
+            for (const auto& armorSlot : playerInventory.getEquippedArmorSlots()) {
+                Armor* equippedArmor = armorSlot.second;
+                if (equippedArmor) {
+                    outFile << "EquippedArmor," << armorTypeToString(armorSlot.first) << ","
+                        << equippedArmor->defense << "," << equippedArmor->weight << ","
+                        << equippedArmor->value << "," << equippedArmor->name << ","
+                        << equippedArmor->material << "\n";
+                }
+            }
+
+            // Save equipped weapon details
+            Weapon* equippedWeapon = playerInventory.getEquippedWeapon();
+            if (equippedWeapon) {
+                outFile << "EquippedWeapon," << weaponTypeToString(equippedWeapon->type) << ","
+                    << equippedWeapon->damage << "," << equippedWeapon->weight << ","
+                    << equippedWeapon->value << "," << equippedWeapon->name << ","
+                    << equippedWeapon->material << "\n";
+            }
+
+            // Save gold
+            outFile << "Gold," << playerInventory.getGold() << "\n";
+
+            // Save individual items
+            const vector<Item*>& items = playerInventory.getItems();
+            for (const Item* item : items) {
+                if (const Armor* armorItem = dynamic_cast<const Armor*>(item)) {
+                    // This is an Armor item
+                    outFile << "Armor," << armorTypeToString(armorItem->type) << ","
+                        << armorItem->defense << "," << armorItem->weight << ","
+                        << armorItem->value << "," << armorItem->name << ","
+                        << armorItem->material << "\n";
+                }
+                else if (const Weapon* weaponItem = dynamic_cast<const Weapon*>(item)) {
+                    // This is a Weapon item
+                    outFile << "Weapon," << weaponTypeToString(weaponItem->type) << ","
+                        << weaponItem->damage << "," << weaponItem->weight << ","
+                        << weaponItem->value << "," << weaponItem->name << ","
+                        << weaponItem->material << "\n";
+                }
+            }
+            cout << "Inventory details saved to " << filename << endl;
+        }
+        else {
+            cout << "Unable to open the file for saving inventory details\n";
+        }
+        outFile.close();
+    }
+
+  
 };
