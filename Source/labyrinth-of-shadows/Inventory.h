@@ -9,7 +9,9 @@
 #include <map> // Added by Will
 #include "Armor.h" // Added by John
 #include "Dice.h"
-
+#include "Ranger.h"
+#include "Wizard.h"
+#include "Rogue.h"
 
 
 class Inventory
