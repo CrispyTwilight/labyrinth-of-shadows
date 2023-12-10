@@ -23,6 +23,7 @@ int main()
     //Infinite loop right now, will need a menu.
     while (true)
     {
+        srand(time(NULL));
         //This clears the cli
         util.setCursorPosition(0, 0);
 
@@ -34,15 +35,19 @@ int main()
         gameMap.updatePlayerPosition(playerX, playerY);
         gameMap.display();
 
-        //Updating other non static things on the map
-        gameMap.updateNonStatic();
-
         gameMap.mapSwitcher();
 
         player.handleInput();
 
+<<<<<<< Updated upstream
 
         util.visual();
+=======
+        gameMap.moveE();
+
+
+        visual();
+>>>>>>> Stashed changes
 
         //This is necessary to control speed of the game.
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
