@@ -39,15 +39,11 @@ int main()
 
         player.handleInput();
 
-<<<<<<< Updated upstream
-
         util.visual();
-=======
         gameMap.moveE();
 
 
         visual();
->>>>>>> Stashed changes
 
         //This is necessary to control speed of the game.
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
