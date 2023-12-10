@@ -13,6 +13,9 @@ RNG_Dice (super) - Hunter
 Map (super) - Christian
 
 Movement (super) - Christian
+- Sub enemyMvmt
+
+MapManager (super) - Christian
 
 Helper_Utilities (super) - All Team
 - EnemyName (arr)
@@ -31,27 +34,10 @@ Character (super) - Will
     - ShopOwner (sub)
     - Other (sub)
 
-Attack (super) - ??
-(find a way to subclass the attack functionality)
-
-Ability (super) - (Maybe??)
-
 Inventory (super) - CAB
 
 CAB:
-- EnemyLoot (struct)
-- RandomLoot (struct)
-
-- Bow (struct)
-- Staff (struct)
-- Sword (struct)
-- Dagger (struct)
-
-- Shield (struct)
+- Loot (struct)
+- Weapon (struct)
 - Armor (struct)
-- HealthPotion (struct)
-
-Counts:
-- Super: 15
-- Sub: 13
-- Struct: 9
+- Potion (struct)

@@ -1,12 +1,8 @@
 //Auth: Hunter Kauffman
 //Date: 11/30/23
 //Desc: Dice class for generating random numbers based on the max and min number put in
-
 #pragma once
-
-#include <iostream>
-#include <ctime>
-using namespace std;
+#include "All_Includes.h"
 
 class Dice
 {
@@ -60,8 +56,7 @@ public:
 	//Methods
 	int rollDice() //Rolls the dice with the given max and min and returns it as an integer
 	{
-		srand(time(0));
-		setPrevRoll(rand() % max + min);
+		setPrevRoll(rand() % (max - min + 1) + min); // JPO: Changed to use correct formula
 		return prevRoll;
 	}
 };

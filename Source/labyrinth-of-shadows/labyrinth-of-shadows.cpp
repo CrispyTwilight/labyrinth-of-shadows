@@ -1,31 +1,68 @@
 // Date: 11/27/2023
 // Auth: John O'Neal, William Brickner, Christian Botos, Hunter Kauffman, Christian Baack.
 // Desc: Main for final project.
+#include "All_Includes.h"
 
-#include <iostream>
-#include <chrono>
-#include <thread>
-#include <windows.h>
-
-// Header files for game objects
-#include "GameManager.h"
-#include "Map.h"
-#include "Player.h"
-#include "Utility.h"
+// Prototypes
+void testDriver();
+void mapDriver();
+void shopDriver();
 
 int main()
 {
+    srand(time(0)); // JPO: Moved from Dice.h to here so that it is only called once. Was causing issues with randomness in the shop.
+    testDriver();
+    return 0;
+}
+
+// JPO: This function asks which test to drive.
+void testDriver() {
+    char choice = '0'; // Default value to enter the loop
+
+    // Start a loop that will run until the user presses q
+    while (choice != 'q') {
+        // Welcome and menu
+        cout << "Pick an option to test:\n"
+            << "1. Test Map\n"
+            << "2. Test Shop\n"
+            << "q. Quit\n"
+            << "Choice: ";
+        choice = _getch(); // Get a single character from the user without echoing it to the console
+
+        switch (choice) {
+        case '1':
+            mapDriver();
+            break;
+        case '2':
+            shopDriver();
+            break;
+        case 'q':
+            cout << "Quitting..." << endl;
+            return;
+            break;
+        default:
+            cout << "Invalid choice. Try again." << endl;
+            break;
+        }
+        if (choice != 'q') {
+            system("pause");
+            system("cls");
+        }
+    }
+}
+
+// JPO: This function drives the map.
+void mapDriver() {
     //Game objects
     Map gameMap(51, 31); // JPO: Updated so that the @ is can actually be in the middle of the map.
-    Player player(gameMap,25, 15); // JPO: Updated so that the player starts in the middle of the map.
-    Utility util;
+    Player player(gameMap, 25, 15); // JPO: Updated so that the player starts in the middle of the map.
 
     //Infinite loop right now, will need a menu.
     while (true)
     {
         srand(time(NULL));
         //This clears the cli
-        util.setCursorPosition(0, 0);
+        setCursorPosition(0, 0);
 
 
         //Update player's position on the map
@@ -39,16 +76,20 @@ int main()
 
         player.handleInput();
 
-        util.visual();
+        visual();
         gameMap.moveE();
 
-
-        visual();
-
         //This is necessary to control speed of the game.
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-
+        this_thread::sleep_for(chrono::milliseconds(100));
     }
+}
 
-    return 0;
+
+
+Shop* Shop::instance = nullptr; // JPO: This is needed to initialize the static instance variable.
+
+// JPO: This function drives the shop for testing.
+void shopDriver() {
+    cout << endl << endl;
+    Shop::getInstance()->runShop();
 }

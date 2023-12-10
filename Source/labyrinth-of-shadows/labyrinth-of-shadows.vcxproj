@@ -104,6 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -130,15 +131,33 @@
     <ClCompile Include="labyrinth-of-shadows.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Armor.h" />
+    <ClInclude Include="Boss.h" />
+    <ClInclude Include="Bow.h" />
     <ClInclude Include="Character.h" />
+    <ClInclude Include="Dagger.h" />
     <ClInclude Include="Dice.h" />
+    <ClInclude Include="easyEnemy.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="All_Includes.h" />
+    <ClInclude Include="Inventory.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="Load.h" />
+    <ClInclude Include="Loot.h" />
     <ClInclude Include="Map.h" />
-    <ClInclude Include="MapManager.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Potion.h" />
     <ClInclude Include="Ranger.h" />
-    <ClInclude Include="Utility.h" />
+    <ClInclude Include="RangerLoadFile.h" />
+    <ClInclude Include="RogueLoadFile.h" />
+    <ClInclude Include="Save.h" />
+    <ClInclude Include="Staff.h" />
+    <ClInclude Include="Sword.h" />
+    <ClInclude Include="Shop.h" />
+    <ClInclude Include="Util.h" />
+    <ClInclude Include="Weapon.h" />
     <ClInclude Include="Wizard.h" />
+    <ClInclude Include="WizardLoadFile.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
