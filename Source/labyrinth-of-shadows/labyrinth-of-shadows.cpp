@@ -10,6 +10,7 @@ void shopDriver();
 
 int main()
 {
+    srand(time(0)); // JPO: Moved from Dice.h to here so that it is only called once. Was causing issues with randomness in the shop.
     testDriver();
     return 0;
 }
@@ -84,9 +85,12 @@ void mapDriver() {
     }
 }
 
+
+
+Shop* Shop::instance = nullptr; // JPO: This is needed to initialize the static instance variable.
+
 // JPO: This function drives the shop for testing.
 void shopDriver() {
     cout << endl << endl;
-    Shop shop;
-    shop.displayShopItems();
+    Shop::getInstance()->runShop();
 }

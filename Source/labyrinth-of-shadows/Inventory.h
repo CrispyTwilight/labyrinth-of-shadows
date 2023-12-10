@@ -3,7 +3,7 @@
 // Desc: header file for the Inventory class for the player's inventory
 #pragma once
 #include "All_Includes.h"
-#include "Item.h" //Jpo Temp
+#include "Item.h" //JPO: For some reason, this is needed here again?
 
 class Inventory
 {
@@ -14,7 +14,7 @@ private:
 
 public:
 	// constructor
-	Inventory(int initialGold = 0) : gold(initialGold) {}
+	Inventory(int initialGold = 100) : gold(initialGold) {}
 
 	// getters
 	int getGold() const {
@@ -25,16 +25,24 @@ public:
 		return items;
 	}
 
+	int getSize() const {
+		return items.size();
+	}
+
+	Item* getItem(int index) const {
+		if (index >= 0 && index < items.size()) {
+			return items[index];
+		}
+		return nullptr;
+	}
+
 	// setters
-	template <typename T>
-	void addItem(T* item) {
-		items.push_back(static_cast<Item*>(item));  // Assumes Item is a base class for T
+	void addItem(Item* item) {
+		items.push_back(item);
 	}
 
 	void removeItem(int index) {
-		if (index >= 0 && index < items.size()) {
-			items.erase(items.begin() + index);
-		}
+		items.erase(items.begin() + index);
 	}
 
 	void addGold(int g) {
@@ -44,5 +52,4 @@ public:
 	void deductGold(int g) {
 		gold -= g;
 	}
-
 };
