@@ -1,3 +1,7 @@
+// Auth: William Brickner
+// Date:12/10/2023
+// Desc: InventoryLoadFile struct
+
 #pragma once
 #include <iostream>
 #include <string>
@@ -14,4 +18,3 @@ struct InventoryLoadFile
     int damage, weightW, valueW; // Add more fields as per your Weapon structure
     int gold;
 };
-

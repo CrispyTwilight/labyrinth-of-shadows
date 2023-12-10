@@ -650,7 +650,6 @@ public:
         cout << enemy.getName() << "took " << d << " damage.\n";
     }
 
-
     void attackMonsterEasy(easyEnemy& easyEnemy, int d)
     {
         easyEnemy.takeDamage(d);
@@ -748,7 +747,7 @@ public:
     }
 
     //Taking a health potion
-     // We should also find a way for them to be used if their in their inventory.
+    // We should also find a way for them to be used if their in their inventory.
     void takePotion()
     {
         //Removing health potion from their inventory. When the inventory is fully setup we will remove it from the inventory class instead.
