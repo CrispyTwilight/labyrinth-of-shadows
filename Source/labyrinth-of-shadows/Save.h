@@ -73,7 +73,7 @@ public:
             outFile << round << endl;
 
             cout << "Character saved successfully!" << endl;
-            saveInventory(playerInventory, "ranger_inventory.txt");
+            saveInventory(playerInventory, "wizard_inventory.txt");
         }
         else {
             cout << "Unable to open the file for saving!" << endl;
@@ -103,7 +103,7 @@ public:
             outFile << round << endl;
 
             cout << "Character saved successfully!" << endl;
-            saveInventory(playerInventory, "ranger_inventory.txt");
+            saveInventory(playerInventory, "rogue_inventory.txt");
         }
         else {
             cout << "Unable to open the file for saving!" << endl;

@@ -9,6 +9,7 @@
 #include "Load.h"
 #include "Ranger.h"
 #include "Wizard.h"
+#include "Rogue.h"
 #include "Enemy.h"
 #include "easyEnemy.h"
 #include "Boss.h"
@@ -33,19 +34,20 @@ public:
         // These are the base stats for the class these are definitely are subject to change when playtesting.
         Ranger playerRanger(25, 25, 5, 5, 7, 1, 0, 5, 0, 0, 0, 0, 1);
         Wizard playerWizard(30, 30, 3, 8, 5, 1, 0, 5, 1, 1, 2, 1);
+        Rogue playerRogue(40, 40, 5, 3, 6, 1, 0, 5, 0, 0, 0, 1);
+
         int choice;
        // Introduction will go here
+        //Splash Screen goes here and Introduction
 
             cout << "1. Start New Game\n"
             << "2. Load Previous Game\n"
             << "0. Quit and Save the Game\n";
 
-
-
         do
         {
             cout << "Enter your choice: ";
-            choice = _getch();
+            choice = _getch() - '0';
             if (choice < 0 || choice > 2)
             {
                 cout << "Incorrect value. Please enter a valid value.\n";
@@ -66,6 +68,10 @@ public:
             {
                 save.saveTheGameWizard(round, score, playerWizard,playerInventory);
             }
+            else if (characterSelected == "Rogue")
+            {
+                save.saveTheGameRogue(round, score, playerRogue, playerInventory);
+            }
             else
             {
                 cout << "There is no character to be saved.";
@@ -78,19 +84,20 @@ public:
             choice = 0;
             cout << "Select a class to play as Ranger, Wizard, or Warrior.\n"
                 << "1. Ranger (A class focused on reflecting attacks and dodging attacks while doing massive damage)\n"
-                << "2. Wizard (A High Defense and High Damaging Wizard)\n";
+                << "2. Wizard (A High Defense and High Damaging Wizard)\n"
+                << "3. Rogue (A damaging Rogue that can vanish and do deadly sneak attacks\n";
 
             do
             {
                 cout << "Enter your choice: \n";
 
-                choice = _getch();
+                choice = _getch() - '0';
 
-                if (choice < 0 || choice > 2)
+                if (choice < 0 || choice > 3)
                 {
                     cout << "Incorrect value. Please enter a valid value.\n";
                 }
-            } while (choice < 0 || choice > 2);
+            } while (choice < 0 || choice > 3);
 
             switch (choice)
             {
@@ -106,13 +113,17 @@ public:
                 characterSelected = "Wizard";
                 break;
             }
+            case 3:
+            {
+                characterSelected = "Rogue";
+            }
             default:
             {
                 "You have encountered an error.";
                 break;
             }
             }
-
+            break;
         }
         //Load the game from previous save.
         case 2:
@@ -124,14 +135,15 @@ public:
             //Displaying the menu for the player
                 cout << "What class would you like to load?\n"
                 << "1. Ranger\n"
-                << "2. Wizard\n";
+                << "2. Wizard\n"
+                << "3. Rogue\n";
 
             //Average do-while loop.
             do
             {
                 cout << "Enter your choice: ";
-                choice = _getch();
-                if (choice < 0 || choice > 2)
+                choice = _getch() - '0';
+                if (choice < 0 || choice > 3)
                 {
                     cout << "Incorrect value. Please enter a valid value.\n";
                 }
@@ -142,7 +154,7 @@ public:
                 case 1:
                 {
                     //Loading the previously used Ranger class.
-                    load().loadTheGameRanger(score, round, playerRanger);
+                    load().loadTheGameRanger(score, round, playerRanger, playerInventory);
                     // Make the current class selected into the Ranger so the rest of the code will work properly.
                     characterSelected = "Ranger";
                     break;
@@ -150,10 +162,17 @@ public:
                 case 2:
                 {
                     //Loading the previous Wizard class.
-                    load().loadTheGameWizard(score, round, playerWizard);
+                    load().loadTheGameWizard(score, round, playerWizard, playerInventory);
                     // Make the current class selected into the wizard for loading.
                     characterSelected = "Wizard";
                     break;
+                }
+                case 3:
+                {
+                    //Loading the game for the rogue class.
+                    load().loadTheGameRogue(score, round, playerRogue, playerInventory);
+                    //Making the currently selected character the rogue after loading the game.
+                    characterSelected = "Rogue";
                 }
                 default:
                 {
@@ -167,9 +186,18 @@ public:
 
 
         }
+        default:
+        {
+            cout << "You have encountered an unexpected error.\n";
+            
+            break;
+        }
+       
 
         }
+        exit(0);
     }
+
 
 
 
@@ -182,7 +210,7 @@ public:
     }
 
 
-    void fighting(int& round, string& characterSelected, Ranger& playerRanger, Wizard& playerWizard)
+    void fighting(int& round, string& characterSelected, Ranger& playerRanger, Wizard& playerWizard, Rogue& playerRogue)
     {
         if (characterSelected == "Ranger") {
             if (round < 3) {
@@ -322,6 +350,85 @@ public:
                 }
 
             }
+        }
+        else if (characterSelected == "Rogue")
+        {
+        if (round < 3)
+        {
+            easyEnemy* easyEnemyPtr = new easyEnemy();
+
+            playerRogue.fightWeakEnemy(*easyEnemyPtr);
+
+            // Freeing the memory allocated for the easyEnemy object
+            delete easyEnemyPtr;
+            easyEnemyPtr = nullptr;
+
+            if (playerRogue.getHealth() > 0)
+            {
+                round++;
+                score = score + 5;
+                // This is a victory and should take them back to the map.
+            }
+            else
+            {
+                cout << "Your score was " << score << endl;
+                score = 0;
+                round = 0;
+                //This is a loss and should restart the game.
+            }
+        }
+
+        /* This is for how bosses used to be setup for.
+        if (round % 10 == 0)
+        {
+            Boss* bossPtr = new Boss(round);
+
+            playerWizard.fightBossEnemy(*bossPtr);
+
+
+            delete bossPtr;
+            bossPtr = nullptr;
+
+            if (playerWizard.getHealth() > 0)
+            {
+                round++;
+                score = score + 5;
+                // This is a victory and should take them back to the map.
+            }
+            else
+            {
+                cout << "Your score was " << score << endl;
+                score = 0;
+                round = 0;
+                //This is a lose and should restart the game.
+            }
+        }
+        */
+
+        else
+        {
+
+            Enemy* enemyPtr = new Enemy(round);
+            playerRogue.fightNormalEnemy(*enemyPtr);
+
+            delete enemyPtr;
+            enemyPtr = nullptr;
+
+            if (playerWizard.getHealth() > 0)
+            {
+                round++;
+                score = score + 10;
+                // This is a victory and should take them back to the map.
+            }
+            else
+            {
+                cout << "Your score was " << score << endl;
+                score = 0;
+                round = 0;
+                //This is a loss and should restart the game.
+            }
+
+        }
         }
     };
 
