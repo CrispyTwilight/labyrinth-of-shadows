@@ -23,18 +23,18 @@ private:
 	Staff staff;
 	Dice enemyDice;
 
-	
+
 
 public:
 	Enemy(int round)
-	{	
+	{
 		generateHealth(round);
 		generateStrength(round);
 		generateDexterity(round);
 		generateBattleStyle();
 		expWorth = round * 2;
 		generateNameAndDescription();
-		
+
 	}
 
 	int attack()

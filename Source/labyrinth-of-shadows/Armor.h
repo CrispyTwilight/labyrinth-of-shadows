@@ -59,7 +59,6 @@ struct Armor : public Item {
 	}
 
 	//Armor constructor for the load file
-
 	Armor(string armorType, int def, int wei, int val, const string& nm, const string& mat)
 	{
 		type = stringToArmorType(armorType);
@@ -98,6 +97,9 @@ struct Armor : public Item {
 		else if (armorTypeStr == "Gloves") {
 			return Armor::GLOVES;
 		}
+		else {
+			return Armor::NONE;
+	}
 	}
 };
 
@@ -113,4 +115,4 @@ string armorTypeToString(Armor::ArmorType type) {
 	case Armor::GLOVES: return "Gloves";
 	default: return "None";
 	}
-}
+};

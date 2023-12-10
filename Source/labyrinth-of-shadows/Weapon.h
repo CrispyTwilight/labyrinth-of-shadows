@@ -90,9 +90,9 @@ struct Weapon : public Item {
 		else if (weaponTypeStr == "Sword") {
 			return Weapon::SWORD;
 		}
-
-		// Return a default value in case of an unknown string
-		return Weapon::NONE;
+		else {
+			return Weapon::NONE;
+		}
 	}
 };
 
