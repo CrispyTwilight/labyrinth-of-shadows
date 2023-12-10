@@ -220,8 +220,18 @@ public:
 
 			switch (choice) {
 			case 1:
-				// Equip Item
-				// Add code to handle equipping an item
+				displayItemsInfo();
+				cout << "Enter index of item to equip: ";
+				int indexToEquip = _getch() - '0'; // Convert char input to integer
+				indexToEquip -= 1; // Adjust index to start from 0
+
+				if (indexToEquip >= 0 && indexToEquip < items.size()) {
+					Item* itemToEquip = items[indexToEquip];
+					equip(itemToEquip); // Equip the selected item
+				}
+				else {
+					cout << "Invalid index.\n";
+				}
 				break;
 
 			case 2:
