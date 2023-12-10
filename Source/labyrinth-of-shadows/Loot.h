@@ -4,7 +4,7 @@
 #pragma once
 #include "All_Includes.h"
 
-struct Loot {
+struct Loot : public Item {
     Weapon lootWeapon;
     Armor lootArmor;
     //Potion lootPotion;

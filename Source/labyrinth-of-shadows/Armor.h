@@ -4,8 +4,8 @@
 #pragma once
 #include "All_Includes.h"
 
-struct Armor {
-	// Define enumerated data type for Armor types that can be used to determine what kind of Armor it is. It is defined inside the struct and can be accessed as Armor::ArmorType.
+struct Armor : public Item {
+	// Define enumerated data type for Armor types that can be used to determine what kind of Armor it is.
 	enum ArmorType {
 		NONE, // Default value
 		BREASTPLATE,
@@ -22,33 +22,50 @@ struct Armor {
 	ArmorType type;
 	int defense;
 	int weight;
-	int value;
-	string name;
 	string material;
 
 	// Constructor with default arguments and initializer list.
 	// All parameters are pass by const reference to avoid copying the arguments for efficiency.
-	Armor(const ArmorType& type = NONE, const int& defense = 0, const int& weight = 0, const int& value = 0, const string& name = "Default Name", const string& material = "Default Material")
-		: type(type), defense(defense), weight(weight), value(value), name(name), material(material) {}
+	Armor(const bool& randomize = false, const ArmorType& type = NONE, const int& defense = 0, const int& weight = 0, const int& value = 0, const string& name = "Default Name", const string& material = "Default Material") {
+		if (randomize) {
+			Dice typeDie(Armor::ARMOR_TYPE_COUNT - 1, 1);
+			this->type = static_cast<ArmorType>(typeDie.rollDice());
 
-	// Random armor generator
-	explicit Armor(bool randomize) {
-		Dice typeDie(Armor::ARMOR_TYPE_COUNT - 1, 1);
-		type = static_cast<Armor::ArmorType>(typeDie.rollDice());
+			Dice defDie(20, 1);
+			this->defense = defDie.rollDice();
 
-		Dice defDie(20, 1);
-		defense = defDie.rollDice();
+			Dice weightDie(20, 1);
+			this->weight = weightDie.rollDice();
 
-		Dice weightDie(20, 1);
-		weight = weightDie.rollDice();
+			Dice valueDie(20, 1);
+			this->value = valueDie.rollDice();
 
-		Dice valueDie(20, 1);
-		value = valueDie.rollDice();
+			Dice nameDie(possibleArmorNames.size() - 1);
+			this->name = possibleArmorNames[nameDie.rollDice()];
 
-		Dice nameDie(Item::possibleArmorNames.size() - 1);
-		name = Item::possibleArmorNames[nameDie.rollDice()];
-
-		Dice materialDie(Item::possibleArmorMaterials.size() - 1);
-		material = Item::possibleArmorMaterials[materialDie.rollDice()];
+			Dice materialDie(possibleArmorMaterials.size() - 1);
+			this->material = possibleArmorMaterials[materialDie.rollDice()];
+		} else {
+			this->type = type;
+			this->defense = defense;
+			this->weight = weight;
+			this->value = value;
+			this->name = name;
+			this->material = material;
+		}
 	}
 };
+
+// Operating globally on the Armor struct. It is put in this file because it is related to the Armor struct.
+string armorTypeToString(Armor::ArmorType type) {
+	switch (type) {
+	case Armor::BREASTPLATE: return "Breastplate";
+	case Armor::HELMET: return "Helmet";
+	case Armor::CAP: return "Cap";
+	case Armor::GAUNTLETS: return "Gauntlets";
+	case Armor::GREAVES: return "Greaves";
+	case Armor::SHIELD: return "Shield";
+	case Armor::GLOVES: return "Gloves";
+	default: return "None";
+	}
+}

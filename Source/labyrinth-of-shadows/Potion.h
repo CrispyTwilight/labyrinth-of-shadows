@@ -4,7 +4,7 @@
 #pragma once
 #include "All_Includes.h"
 
-struct Potion
+struct Potion : public Item
 {
 	enum PotionType {
 		NONE, // Default value
@@ -19,33 +19,48 @@ struct Potion
 	PotionType type;
 	int heal;
 	int weight;
-	int value;
-	string name;
 	string material;
 
-	// Constructor with default arguments and initializer list.
+	// Constructor with default arguments.
 	// All parameters are passed by const reference to avoid copying the arguments for efficiency.
-	Potion(const PotionType& = NONE, const int& heal = 10, const int& weight = 5, const int& value = 20, const string& name = "Default Name", const string& material = "Default Material")
-		: type(type), heal(heal), weight(weight), value(value), name(name), material(material) {}
+	Potion(const bool& randomize = false, const PotionType& type = NONE, const int& heal = 10, const int& weight = 5, const int& value = 20, const string& name = "Default Name", const string& material = "Default Material")
+	{
+		if (randomize) {
+			Dice typeDie(Potion::POTION_TYPE_COUNT - 1, 1);
+			this->type = static_cast<PotionType>(typeDie.rollDice());
 
-	// Randomized constructor. The randomize parameter has no use or effect, it is just there to differentiate it from the other constructor.
-	explicit Potion(bool randomize) {
-		Dice typeDie(Potion::POTION_TYPE_COUNT - 1, 1);
-		type = static_cast<Potion::PotionType>(typeDie.rollDice());
+			Dice dmgDie(20, 1);
+			this->heal = dmgDie.rollDice();
 
-		Dice dmgDie(20, 1);
-		heal = dmgDie.rollDice();
+			Dice weightDie(20, 1);
+			this->weight = weightDie.rollDice();
 
-		Dice weightDie(20, 1);
-		weight = weightDie.rollDice();
+			Dice valueDie(20, 1);
+			this->value = valueDie.rollDice();
 
-		Dice valueDie(20, 1);
-		value = valueDie.rollDice();
+			Dice nameDie(possiblePotionNames.size() - 1);
+			this->name = possiblePotionNames[nameDie.rollDice()];
 
-		Dice nameDie(Item::possiblePotionNames.size() - 1);
-		name = Item::possiblePotionNames[nameDie.rollDice()];
-
-		Dice materialDie(Item::possiblePotionMaterials.size() - 1);
-		material = Item::possiblePotionMaterials[materialDie.rollDice()];
+			Dice materialDie(possiblePotionMaterials.size() - 1);
+			this->material = possiblePotionMaterials[materialDie.rollDice()];
+		} else {
+			this->type = type;
+			this->heal = heal;
+			this->weight = weight;
+			this->value = value;
+			this->name = name;
+			this->material = material;
+		}
 	}
 };
+
+// Operating globally on the Potion struct. It is put in this file because it is related to the Potion struct.
+string potionTypeToString(Potion::PotionType type) {
+	switch (type) {
+	case Potion::SMALL_HEAL: return "Small Heal";
+	case Potion::HALF_HEAL: return "Half Heal";
+	case Potion::FULL_HEAL: return "Full Heal";
+	case Potion::DOUBLE_HEAL: return "Double Heal";
+	default: return "None";
+	}
+}

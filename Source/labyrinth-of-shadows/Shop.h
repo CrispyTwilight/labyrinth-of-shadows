@@ -1,18 +1,25 @@
 // Auth: John O'Neal
 // Date: 12/04/2023
-// Desc: shop class driver function.
+// Desc: The Shop class contains all code needed to build a shop. This will be access by the character entering an 'S' tile.
 #pragma once
 #include "All_Includes.h"
 
-class Shop {
+class Shop
+{
 private:
+	// Fields
+	static Shop* instance;
     static const int MAX_ITEMS = 3;
-	static const int SIZE = 4;
-    vector<Weapon> weapons;
-	vector<Armor> armor;
-	//vector<Potion> potions;
-    int goldBalance;
-	int charCounter = 0;
+    static const int SIZE = 4;
+    vector<Item*> shopInventory;
+    vector<Weapon*> weaponsInventory;
+    vector<Armor*> armorsInventory;
+    vector<Potion*> potionsInventory;
+    Character character;
+	int charCounter;
+	string randShopName;
+	string randShopOwner;
+	string randOwnerAttribute;
 
 	array<string, SIZE> shopNames = {
 		"General Shop",
@@ -39,117 +46,246 @@ private:
         "p) Purchase an item.",
         "s) Sell an item.",
 		"i) Inventory Lists.",
-        "ESC) Exit from building."
+        "q) Exit from building."
     };
 
-public:
-    Shop() : goldBalance(0) {
-        for (int i = 0; i < MAX_ITEMS; i++) {
-            weapons.push_back(Weapon(true));
-        }
+    // Private constructor so that no objects can be created.
+    Shop() {
+        initializeShopInformation();
+        initializeInventory();
+		charCounter = 0;
     }
 
-    void printShopItems() {
-        // Randomly select the shop name, owner, attribute, and race
-        Dice shopNameDie(shopNames.size());
-        string randShopName = shopNames[shopNameDie.rollDice()];
+public:
+	// I need to make logic for initializing the shop. The first time a player hits the 's' tile, the shop should be constructed using the initializeInventory and initializeShopInformation. Any time afterwards, the shop should retain the data it had before and should not be reinitialized.
+	 // Static access method.
 
-        Dice shopOwnerDie(shopOwners.size());
-        string randShopOwner = shopOwners[shopOwnerDie.rollDice()];
-
-        Dice shopAttributeDie(ownerAttributes.size());
-        string randOwnerAttribute = ownerAttributes[shopOwnerDie.rollDice()];
-
-        // Display the shop's owner, name, and headings. Use endl to make character count easier.
-        cout << right << setw(16 + 8) << randShopOwner << " " << randOwnerAttribute << setw(7 + 4) << randShopName << endl;
-        cout << right << setw(4 + 3) << "Item" << setw(58) << "Asking Price" << endl;
-
-        for (int i = 0; i < MAX_ITEMS; i++) {
-            cout << char('a' + charCounter) << ") " << left << setw(55) << weapons[i].name << right << setw(4) << "$" << weapons[i].value << endl;
-			charCounter++;
+    static Shop* getInstance() {
+        if (instance == nullptr) {
+            instance = new Shop();
         }
+        return instance;
+    }
+
+	void displayFullShop() {
+		displayShopInformation();
+		displayShopInventory();
+		displayGoldAndMenu();
+	}
+
+	void runShop() {
+		displayFullShop();
+		char input;
+		do {
+			input = _getch();
+			switch (input) {
+				case 'p':
+					handlePurchase();
+					break;
+				case 's':
+					handleSale();
+					break;
+				case 'q':
+					return; // Return to the map.
+				default:
+					cout << "Invalid input. Please try again" << endl;
+					break;
+			}
+		} while (input != 'q');
+	}
+
+	void initializeShopInformation() {
+		// Randomly select the shop name, owner, and attribute.
+        Dice shopNameDie(SIZE - 1);
+        randShopName = shopNames[shopNameDie.rollDice()];
+
+        Dice shopOwnerDie(SIZE - 1);
+        randShopOwner = shopOwners[shopOwnerDie.rollDice()];
+
+        Dice shopAttributeDie(SIZE - 1);
+        randOwnerAttribute = ownerAttributes[shopOwnerDie.rollDice()];
+	}
+
+	void displayShopInformation() const {
+		// Display the shop's owner, name, and headings. Use endl to make character count easier.
+		stringstream ss;
+		ss << randShopOwner << " " << randOwnerAttribute;
+		cout << right << setw(19 + 9) << ss.str() << setw(14 + 10) << randShopName << endl;
+		cout << right << setw(4 + 3) << "Item" << setw(55 + 4) << "Asking Price" << endl;
+	}
+
+	void initializeInventory() {
+		// Fill the shop's inventory with items.
+		for (int i = 0; i < MAX_ITEMS; i++) {
+			Weapon* weapon = new Weapon(true);
+			weaponsInventory.push_back(weapon); // add to the weapons inventory
+			shopInventory.push_back(weapon); // add to the shop's inventory
+		}
 
 		for (int i = 0; i < MAX_ITEMS; i++) {
-			cout << char('a' + charCounter) << ") " << left << setw(55) << armor[i].name << right << setw(4) << "$" << armor[i].value << endl;
+			Armor* armor = new Armor(true);
+			armorsInventory.push_back(armor);
+			shopInventory.push_back(armor);
+		}
+
+		for (int i = 0; i < MAX_ITEMS; i++) {
+			Potion* potion = new Potion(true);
+			potionsInventory.push_back(potion);
+			shopInventory.push_back(potion);
+        }
+    }
+
+    void displayShopInventory() {
+		// Display weapons
+		for (int i = 0; i < weaponsInventory.size(); i++) {
+			stringstream ss;
+			ss << weaponsInventory[i]->name << " - " << weaponsInventory[i]->material << " " << weaponTypeToString(weaponsInventory[i]->type);
+			cout << char('a' + charCounter) << ") " << left << setw(55) << ss.str() << right << setw(4) << "$" << weaponsInventory[i]->value << endl;
 			charCounter++;
 		}
 
-		//for (int i = 0; i < MAX_ITEMS; i++) {
-		//	cout << char('a' + i) << ") " << left << setw(55) << potions[i].name << right << setw(4) << "$" << potions[i].value << endl;
-		//  charCounter++;
-		//}
+		// Display armor
+		for (int i = 0; i < armorsInventory.size(); i++) {
+			stringstream ss;
+			ss << armorsInventory[i]->name << " - " << armorsInventory[i]->material << " " << armorTypeToString(armorsInventory[i]->type);
+			cout << char('a' + charCounter) << ") " << left << setw(55) << ss.str() << right << setw(4) << "$" << armorsInventory[i]->value << endl;
+			charCounter++;
+		}
 
-        // Display gold left.
-        cout << left << "\nGold Balance: " << goldBalance << endl;
+		// Display potions
+		for (int i = 0; i < potionsInventory.size(); i++) {
+			stringstream ss;
+			ss << potionsInventory[i]->name << " " << potionTypeToString(potionsInventory[i]->type) << " potion of " << potionsInventory[i]->material;
+			cout << char('a' + charCounter) << ") " << left << setw(55) << ss.str() << right << setw(4) << "$" << potionsInventory[i]->value << endl;
+			charCounter++;
+		}
 
-        // Display the shop's menu options.
-        cout << "\nYou may:\n";
-        for (int i = 0; i < SIZE; i++) {
-            cout << setw(35) << menuOptions[i] << endl;
-        }
-
-		menuChoice();
+		// Reset the character counter.
+		charCounter = 0;
     }
 
-	void menuChoice() {
-		char input = _getch();
-		switch (input) {
-			case 'p': {
-				cout << "Purchase what?";
-				input = _getch();
-				// purchaseItem(input - 'a', player);
-				break;
-			}
-			case 's': {
-				cout << "Sell what?";
-				input = _getch();
-				// sellItem(input - 'a', player);
-				break;
-			}
-			// Add more cases as needed
-			default: {
-				cout << "Invalid input." << endl;
-				break;
-			}
+	void displayGoldAndMenu() {
+		// Display gold balance.
+        cout << left << "\nGold Balance: " << character.getInventory().getGold() << endl;
+		// Display the shop's menu options.
+		cout << "\nYou may:\n";
+		for (int i = 0; i < SIZE; i++) {
+			cout << setw(35) << menuOptions[i] << endl;
 		}
 	}
 
-	// When the player selects a menu option, the item needs to be copied to the player's inventory. Then the item needs to be removed from the shop's inventory. A new item should be created to take the place of the removed on. The letters should stay the same. The gold balance needs to be updated.
-	//void purchaseItem(int itemIndex, Player& player) {
-	//	// Check if the player has enough gold
-	//	if (player.getGold() < weapons[itemIndex].value) {
-	//		cout << "You don't have enough gold to purchase this item." << endl;
-	//		return;
-	//	}
-
-	//	// Add the item to the player's inventory
-	//	player.addItem(weapons[itemIndex]);
-
-	//	// Deduct the cost of the item from the player's gold
-	//	player.deductGold(weapons[itemIndex].value);
-
-	//	// Remove the item from the shop's inventory
-	//	weapons.erase(weapons.begin() + itemIndex);
-
-	//	// Add a new item to the shop's inventory at the same index
-	//	weapons.insert(weapons.begin() + itemIndex, Weapon(true));
-
-	//	cout << "You have purchased the item." << endl;
-	//}
-
-	void sellItem() {
-		cout << "You have sold an item.\n";
-		goldBalance += weapons[0].value;
-		printShopItems();
+	// Convert the character input to an integer index or -1 if 'q' is pressed.
+	int getItemIndexFromInput() const {
+		char input = _getch();
+		if (input == 'q') {
+			return -1;
+		}
+		int index = input - 'a';
+		return index;
 	}
 
-	void inventoryList() {
-		cout << "Inventory list.\n";
+	void handlePurchase() {
+		cout << "Purchase what?";
+		int index = getItemIndexFromInput();
+		if (index == -1) {
+			return; // Early return if 'q' was pressed
+		}
+		if (index >= 0 && index < shopInventory.size()) {
+			Item* item = shopInventory[index];
+			if (character.getInventory().getGold() >= item->value) {
+				character.getInventory().deductGold(item->value);
+				character.getInventory().addItem(item);
+				removeAndReplaceFromInventories(item);
+				cout << "\nPurchase successful!\n";
+			} else {
+				cout << "\nYou do not have enough gold!\n";
+			}
+			system("pause");
+			system("cls");
+			displayFullShop();
+		} else {
+			cout << "\nInvalid item index. Please try again.\n" << endl;
+		}
 	}
 
-	void exitShop() {
-		cout << "You are exiting the shop...\n";
-		// save the shop's inventory
-		// call a display map function
+	void handleSale() {
+		cout << "Sell what?";
+		int index = getItemIndexFromInput();
+		if (index == -1) {
+			return;
+    	}
+		if (index >= 0 && index < character.getInventory().getSize()) {
+			shopInventory.push_back(character.getInventory().getItem(index));
+			character.getInventory().removeItem(index);
+			cout << "\nSale successful!\n";
+			system("pause");
+			system("cls");
+			displayFullShop();
+		} else {
+			cout << "\nInvalid item index. Please try again.\n" << endl;
+		}
 	}
+
+	// JPO: This is in progress.
+	// Seach for the index (0-8) in shopInventory and replace it with the new item. The search for the index (0-2) in each inventory (weapon, armor, potion) and replace it with the new item.
+	void removeAndReplaceFromInventories(Item* item) {
+		// Find the index of the item in shopInventory
+		auto itemIterator = find(shopInventory.begin(), shopInventory.end(), item);
+		if (itemIterator != shopInventory.end()) {
+			int index = distance(shopInventory.begin(), itemIterator);
+
+			// Create a new item
+			Item* newItem = nullptr;
+			if (Weapon* weapon = dynamic_cast<Weapon*>(item)) {
+				newItem = new Weapon(true);
+				// Calculate the index for weaponsInventory
+				auto weaponIterator = find(weaponsInventory.begin(), weaponsInventory.end(), weapon);
+				if (weaponIterator != weaponsInventory.end()) {
+					int weaponIndex = distance(weaponsInventory.begin(), weaponIterator);
+					// Remove from weaponsInventory and insert the new item
+					weaponsInventory.erase(weaponsInventory.begin() + weaponIndex);
+					weaponsInventory.insert(weaponsInventory.begin() + weaponIndex, dynamic_cast<Weapon*>(newItem));
+				}
+			}
+
+			else if (Armor* armor = dynamic_cast<Armor*>(item)) {
+				newItem = new Armor(true);
+				auto armorIterator = find(armorsInventory.begin(), armorsInventory.end(), armor);
+				if (armorIterator != armorsInventory.end()) {
+					int armorIndex = distance(armorsInventory.begin(), armorIterator);
+					armorsInventory.erase(armorsInventory.begin() + armorIndex);
+					armorsInventory.insert(armorsInventory.begin() + armorIndex, dynamic_cast<Armor*>(newItem));
+				}
+			}
+
+			else if (Potion* potion = dynamic_cast<Potion*>(item)) {
+				newItem = new Potion(true);
+				auto potionIterator = find(potionsInventory.begin(), potionsInventory.end(), potion);
+				if (potionIterator != potionsInventory.end()) {
+					int potionIndex = distance(potionsInventory.begin(), potionIterator);
+					potionsInventory.erase(potionsInventory.begin() + potionIndex);
+					potionsInventory.insert(potionsInventory.begin() + potionIndex, dynamic_cast<Potion*>(newItem));
+				}
+			}
+
+			else {
+				cout << "Error: Invalid item type.\n";
+			}
+
+			// Remove from shopInventory
+			shopInventory.erase(itemIterator);
+			// Insert the new item at the same index in shopInventory
+			shopInventory.insert(shopInventory.begin() + index, newItem);
+		}
+	}
+
+	// void inventoryList() {
+	// 	cout << "Inventory list.\n";
+	// }
+
+	// void exitShop() {
+	// 	cout << "You are exiting the shop...\n";
+	// 	// save the shop's inventory
+	// 	// call a display map function
+	// }
 };
