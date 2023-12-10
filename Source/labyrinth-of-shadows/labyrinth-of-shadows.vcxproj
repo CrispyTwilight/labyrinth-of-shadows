@@ -131,6 +131,7 @@
     <ClCompile Include="labyrinth-of-shadows.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="All_Includes.h" />
     <ClInclude Include="Armor.h" />
     <ClInclude Include="Boss.h" />
     <ClInclude Include="Bow.h" />
@@ -139,28 +140,25 @@
     <ClInclude Include="Dice.h" />
     <ClInclude Include="easyEnemy.h" />
     <ClInclude Include="Enemy.h" />
-<<<<<<< Updated upstream
-    <ClInclude Include="All_Includes.h" />
     <ClInclude Include="GameManager.h" />
-=======
-    <ClInclude Include="Screens.h" />
-    <ClInclude Include="Headers.h" />
->>>>>>> Stashed changes
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Load.h" />
     <ClInclude Include="Loot.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapManager.h" />
+    <ClInclude Include="Placeholder.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Potion.h" />
     <ClInclude Include="Ranger.h" />
     <ClInclude Include="RangerLoadFile.h" />
+    <ClInclude Include="Rogue.h" />
     <ClInclude Include="RogueLoadFile.h" />
     <ClInclude Include="Save.h" />
+    <ClInclude Include="Screens.h" />
+    <ClInclude Include="Shop.h" />
     <ClInclude Include="Staff.h" />
     <ClInclude Include="Sword.h" />
-    <ClInclude Include="Shop.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="Weapon.h" />
     <ClInclude Include="Wizard.h" />
