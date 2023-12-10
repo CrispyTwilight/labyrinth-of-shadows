@@ -1,3 +1,8 @@
+// Auth: Christian A. Botos, John O'Neal
+// Date: 12/07/2023
+// Desc: Header file for the Armor struct.
+#pragma once
+#include "All_Includes.h"
 struct Weapon : public Item {
 	// Define enum for weapon types that can be used to determine what kind of weapon it is.
 	enum WeaponType {
