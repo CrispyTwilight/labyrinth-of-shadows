@@ -207,7 +207,7 @@ public:
         do {
             std::cout << "Enter your choice: ";
             // Here is the use of getch.
-            choice = _getch();
+            choice = _getch() - '0';
             if (choice < 0 || choice > 2) {
                 cout << "Incorrect value. Please enter a valid value.\n";
             }
@@ -278,7 +278,7 @@ public:
                 do {
                     bool incorrectChoice = false;
                     cout << "Enter your choice: ";
-                    choice = _getch();
+                    choice = _getch() - '0';
 
                     if (choice == 3 && healthPotions < 0) {
                         cout << "You are out of health potions, pick another option.\n";

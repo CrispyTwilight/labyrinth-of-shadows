@@ -128,6 +128,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="InventoryLoadFile.cpp" />
     <ClCompile Include="labyrinth-of-shadows.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -141,6 +142,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="All_Includes.h" />
     <ClInclude Include="Inventory.h" />
+    <ClInclude Include="InventoryLoadFile.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Load.h" />
     <ClInclude Include="Loot.h" />

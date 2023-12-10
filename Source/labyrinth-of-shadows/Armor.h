@@ -57,7 +57,28 @@ struct Armor : public Item {
 			this->material = material;
 		}
 	}
+
+	//Armor constructor for the load file
+
+	Armor(string armorType, int def, int wei, int val, const string& nm, const string& mat)
+	{
+		type = stringToArmorType(armorType);
+		defense = def;
+		weight = wei;
+		value = val;
+		name = nm;
+		material = mat;
+	}
+
+	ArmorType getArmorType()
+	{
+		return type;
+	}
+
 };
+
+//Armor constructor for the load file
+
 
 // Operating globally on the Armor struct. It is put in this file because it is related to the Armor struct.
 string armorTypeToString(Armor::ArmorType type) {
@@ -71,4 +92,32 @@ string armorTypeToString(Armor::ArmorType type) {
 	case Armor::GLOVES: return "Gloves";
 	default: return "None";
 	}
+}
+
+Armor::ArmorType stringToArmorType(const string& armorTypeStr) 
+{
+	if (armorTypeStr == "Breastplate") {
+		return Armor::BREASTPLATE;
+	}
+	else if (armorTypeStr == "Helmet") {
+		return Armor::HELMET;
+	}
+	else if (armorTypeStr == "Cap") {
+		return Armor::CAP;
+	}
+	else if (armorTypeStr == "Gauntlets") {
+		return Armor::GAUNTLETS;
+	}
+	else if (armorTypeStr == "Greaves") {
+		return Armor::GREAVES;
+	}
+	else if (armorTypeStr == "Shield") {
+		return Armor::SHIELD;
+	}
+	else if (armorTypeStr == "Gloves") {
+		return Armor::GLOVES;
+	}
+
+	// Return a default value in case of an unknown string
+	return Armor::NONE;
 }

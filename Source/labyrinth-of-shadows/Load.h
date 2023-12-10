@@ -9,7 +9,11 @@
 #include <fstream>
 #include "RangerLoadFile.h"
 #include "WizardLoadFile.h"
+#include "Inventory.h"
+#include "Armor.h"
+#include "Weapon.h"
 
+using namespace std;
 
 //Before this finished I need the inventory system to be finished.
 class Load
@@ -85,4 +89,41 @@ public:
         cout << "Character Loaded Sucessfully\n";
 	}
 
+    void loadInventory(Inventory& playerInventory, const string& filename) {
+        ifstream inFile(filename);
+        if (inFile.is_open()) {
+            InventoryLoadFile loadFile;
+            string itemType, itemName;
+
+            while (inFile >> itemType >> itemName) {
+                if (itemType == "HealthPotion") {
+                    inFile >> loadFile.healthPotion;
+                    playerInventory.setHealthPotion(loadFile.healthPotion);
+                }
+                else if (itemType == "EquippedArmor") {
+                    inFile >> loadFile.armorType >> loadFile.defense >> loadFile.weight >> loadFile.value >> loadFile.material;
+                    Armor* equippedArmor = new Armor(loadFile.armorType, loadFile.defense, loadFile.weight, loadFile.value, itemName, loadFile.material);
+                    playerInventory.setEquippedArmorByType(equippedArmor->getArmorType(), equippedArmor);
+                }
+
+                else if (itemType == "EquippedWeapon") {
+                    inFile >> loadFile.weaponType >> loadFile.damage >> loadFile.weightW >> loadFile.valueW >> loadFile.materialW;
+                    Weapon* equippedWeapon = new Weapon(loadFile.weaponType, loadFile.damage, loadFile.weightW, loadFile.valueW, itemName, loadFile.materialW);
+                    playerInventory.setEquippedWeapon(equippedWeapon);
+                }
+                else if (itemType == "Gold") {
+                    inFile >> loadFile.gold;
+                    playerInventory.setGold(loadFile.gold);
+                }
+                // Add more conditions based on your saved inventory structure
+            }
+
+            cout << "Inventory details loaded from " << filename << endl;
+        }
+        else {
+            cout << "Unable to open the file for loading inventory details\n";
+        }
+
+        inFile.close();
+    }
 };

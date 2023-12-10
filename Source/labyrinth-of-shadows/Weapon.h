@@ -55,6 +55,15 @@ struct Weapon : public Item {
 			this->material = material;
 		}
 	}
+
+	Weapon(string& type, int damage, int weight,int value, const string& name, const string& material) {
+		this->type = stringToWeaponType(type);
+		this->damage = damage;
+		this->weight = weight;
+		this->value = value;
+		this->name = name;
+		this->material = material;
+	}
 };
 
 // Operating globally on the Weapon struct. It is put in this file because it is related to the Weapon struct.
@@ -68,4 +77,33 @@ string weaponTypeToString(Weapon::WeaponType type) {
 	case Weapon::SWORD: return "Sword";
 	default: return "None";
 	}
+}
+
+Weapon::WeaponType stringToWeaponType(const string& weaponTypeStr) {
+	if (weaponTypeStr == "Axe") 
+	{
+		return Weapon::AXE;
+	}
+	else if (weaponTypeStr == "Bow") 
+	{
+		return Weapon::BOW;
+	}
+	else if (weaponTypeStr == "Dagger") 
+	{
+		return Weapon::DAGGER;
+	}
+	else if (weaponTypeStr == "Spear") 
+	{
+		return Weapon::SPEAR;
+	}
+	else if (weaponTypeStr == "Staff") 
+	{
+		return Weapon::STAFF;
+	}
+	else if (weaponTypeStr == "Sword") {
+		return Weapon::SWORD;
+	}
+
+	// Return a default value in case of an unknown string
+	return Weapon::NONE;
 }

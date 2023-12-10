@@ -196,7 +196,7 @@ public:
         do
         {
             cout << "Enter your choice: \n";
-            choice = _getch();
+            choice = _getch() - '0';
             if (choice < 0 || choice > 3) {
                 cout << "Incorrect value. Please enter a valid value.\n";
             }
@@ -268,7 +268,7 @@ public:
             do {
                 bool incorrectChoice = false;
                 cout << "Enter your choice: \n";
-                choice = _getch();
+                choice = _getch() - '0';
 
                 if (choice == 2 && healthPotions < 0) {
                     cout << "You are out of health potions, pick another option.\n";
