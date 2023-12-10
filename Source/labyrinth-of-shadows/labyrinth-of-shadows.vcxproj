@@ -139,8 +139,13 @@
     <ClInclude Include="Dice.h" />
     <ClInclude Include="easyEnemy.h" />
     <ClInclude Include="Enemy.h" />
+<<<<<<< Updated upstream
     <ClInclude Include="All_Includes.h" />
     <ClInclude Include="GameManager.h" />
+=======
+    <ClInclude Include="Screens.h" />
+    <ClInclude Include="Headers.h" />
+>>>>>>> Stashed changes
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Load.h" />
