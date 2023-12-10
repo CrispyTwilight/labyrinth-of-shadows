@@ -8,9 +8,12 @@ void testDriver();
 void mapDriver();
 void shopDriver();
 
+// Initialization stuff
+Shop* Shop::instance = nullptr; // JPO: Needed to initialize the static instance variable for the shop.
+
 int main()
 {
-    srand(time(0)); // JPO: Moved from Dice.h to here so that it is only called once. Was causing issues with randomness in the shop.
+    srand(time(0)); // JPO: Moved from Dice.h to so  it is only called once. Was causing issues with randomness in the shop.
     testDriver();
     return 0;
 }
@@ -27,7 +30,7 @@ void testDriver() {
             << "2. Test Shop\n"
             << "q. Quit\n"
             << "Choice: ";
-        choice = _getch(); // Get a single character from the user without echoing it to the console
+        choice = _getch();
 
         switch (choice) {
         case '1':
@@ -64,7 +67,6 @@ void mapDriver() {
         //This clears the cli
         setCursorPosition(0, 0);
 
-
         //Update player's position on the map
         int playerX, playerY;
 
@@ -83,10 +85,6 @@ void mapDriver() {
         this_thread::sleep_for(chrono::milliseconds(100));
     }
 }
-
-
-
-Shop* Shop::instance = nullptr; // JPO: This is needed to initialize the static instance variable.
 
 // JPO: This function drives the shop for testing.
 void shopDriver() {

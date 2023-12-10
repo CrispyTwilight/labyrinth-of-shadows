@@ -140,11 +140,13 @@
     <ClInclude Include="easyEnemy.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="All_Includes.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Load.h" />
     <ClInclude Include="Loot.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="MapManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Potion.h" />
     <ClInclude Include="Ranger.h" />

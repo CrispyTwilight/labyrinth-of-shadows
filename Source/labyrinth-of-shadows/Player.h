@@ -48,10 +48,8 @@ public:
         if (map.getGrid()[py][px] == 'A')
         {
             map.setLevel(map.getLevel() - 1);
-            px = x = 25; // JPO: These assignments don't modify the "p" variables at all, so I changed to double assignment.
+            px = x = 25; // JPO: These assignments didn't modify the "p" variables at all, so I changed to double assignment.
             py = y = 15;
-
-
         }
         if (map.getGrid()[py][px] == '?')
         {
@@ -74,12 +72,10 @@ public:
             y += dy;
         }
 
-
         px = x;
         py = y;
 
         resetOrBoss();
-
     }
 
     void getPosition(int& outX, int& outY) const
