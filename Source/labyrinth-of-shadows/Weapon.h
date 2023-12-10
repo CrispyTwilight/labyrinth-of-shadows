@@ -2,7 +2,8 @@
 // Date: 12/07/2023
 // Desc: Header file for the Armor struct.
 #pragma once
-#include "All_Includes.h"
+#include "Item.h"
+#include "Dice.h"
 struct Weapon : public Item {
 	// Define enum for weapon types that can be used to determine what kind of weapon it is.
 	enum WeaponType {
@@ -64,6 +65,35 @@ struct Weapon : public Item {
 		this->name = name;
 		this->material = material;
 	}
+
+	WeaponType stringToWeaponType(const string& weaponTypeStr) {
+		if (weaponTypeStr == "Axe")
+		{
+			return Weapon::AXE;
+		}
+		else if (weaponTypeStr == "Bow")
+		{
+			return Weapon::BOW;
+		}
+		else if (weaponTypeStr == "Dagger")
+		{
+			return Weapon::DAGGER;
+		}
+		else if (weaponTypeStr == "Spear")
+		{
+			return Weapon::SPEAR;
+		}
+		else if (weaponTypeStr == "Staff")
+		{
+			return Weapon::STAFF;
+		}
+		else if (weaponTypeStr == "Sword") {
+			return Weapon::SWORD;
+		}
+
+		// Return a default value in case of an unknown string
+		return Weapon::NONE;
+	}
 };
 
 // Operating globally on the Weapon struct. It is put in this file because it is related to the Weapon struct.
@@ -79,31 +109,3 @@ string weaponTypeToString(Weapon::WeaponType type) {
 	}
 }
 
-Weapon::WeaponType stringToWeaponType(const string& weaponTypeStr) {
-	if (weaponTypeStr == "Axe") 
-	{
-		return Weapon::AXE;
-	}
-	else if (weaponTypeStr == "Bow") 
-	{
-		return Weapon::BOW;
-	}
-	else if (weaponTypeStr == "Dagger") 
-	{
-		return Weapon::DAGGER;
-	}
-	else if (weaponTypeStr == "Spear") 
-	{
-		return Weapon::SPEAR;
-	}
-	else if (weaponTypeStr == "Staff") 
-	{
-		return Weapon::STAFF;
-	}
-	else if (weaponTypeStr == "Sword") {
-		return Weapon::SWORD;
-	}
-
-	// Return a default value in case of an unknown string
-	return Weapon::NONE;
-}

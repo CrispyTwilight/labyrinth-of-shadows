@@ -2,10 +2,15 @@
 // Date: 12/07/2023
 // Desc: header file for the Inventory class for the player's inventory
 #pragma once
-#include "All_Includes.h"
+#include "Weapon.h"
+#include <vector>
 #include "Item.h"
+#include <conio.h>
 #include <map> // Added by Will
 #include "Armor.h" // Added by John
+#include "Dice.h"
+
+
 
 class Inventory
 {
@@ -215,56 +220,64 @@ public:
 			choice = _getch() - '0'; // Convert char input to integer
 
 			int index; // JPO: Moved declaration out of case 2
-			switch (choice) {
-			case 1:
-				displayItemsInfo();
-				cout << "Enter index of item to equip: ";
-				int indexToEquip = _getch() - '0'; // Convert char input to integer
-				indexToEquip -= 1; // Adjust index to start from 0
+			switch (choice) 
+			{
+				case 1:
+				{
+					displayItemsInfo();
+					cout << "Enter index of item to equip: ";
+					int indexToEquip = _getch() - '0'; // Convert char input to integer
+					indexToEquip -= 1; // Adjust index to start from 0
 
-				if (indexToEquip >= 0 && indexToEquip < items.size()) {
-					Item* itemToEquip = items[indexToEquip];
-					equip(itemToEquip); // Equip the selected item
+					if (indexToEquip >= 0 && indexToEquip < items.size()) {
+						Item* itemToEquip = items[indexToEquip];
+						equip(itemToEquip); // Equip the selected item
+					}
+					else {
+						cout << "Invalid index.\n";
+					}
+					break;
 				}
-				else {
-					cout << "Invalid index.\n";
+				case 2:
+				{
+					displayItemsInfo();
+					cout << "Enter index of item to discard: ";
+					index = _getch() - '0'; // Convert char input to integer
+					index -= 1; // Adjust index to start from 0
+
+					if (index >= 0 && index < items.size()) {
+						// Remove item from the inventory
+						delete items[index]; // Free memory
+						items.erase(items.begin() + index);
+						cout << "Item discarded.\n";
+					}
+					else {
+						cout << "Invalid index.\n";
+					}
+					break;
 				}
-				break;
-
-			case 2:
-				displayItemsInfo();
-				cout << "Enter index of item to discard: ";
-				index = _getch() - '0'; // Convert char input to integer
-				index -= 1; // Adjust index to start from 0
-
-				if (index >= 0 && index < items.size()) {
-					// Remove item from the inventory
-					delete items[index]; // Free memory
-					items.erase(items.begin() + index);
-					cout << "Item discarded.\n";
+				case 3:
+				{
+					if (!hasPotion) // JPO: reduced nesting by using early error test
+						cout << "You don't have any health potions.\n";
+					else if (selectedCharacter == "Ranger")
+						playerRanger.takePotion();
+					else if (selectedCharacter == "Wizard")
+						playerWizard.takePotion();
+					else if (selectedCharacter == "Rogue")
+						playerRogue.takePotion();
+					break;
 				}
-				else {
-					cout << "Invalid index.\n";
+				case 4:
+				{
+					cout << "Exiting Inventory.\n";
+					break;
 				}
-				break;
-
-			case 3:
-				if (!hasPotion) // JPO: reduced nesting by using early error test
-					cout << "You don't have any health potions.\n";
-				else if (selectedCharacter == "Ranger")
-					playerRanger.takePotion();
-				else if (selectedCharacter == "Wizard")
-					playerWizard.takePotion();
-				else if (selectedCharacter == "Rogue")
-					playerRogue.takePotion();
-				break;
-			case 4:
-				cout << "Exiting Inventory.\n";
-				break;
-
-			default:
-				cout << "Invalid choice.\n";
-				break;
+				default:
+				{
+					cout << "Invalid choice.\n";
+					break;
+				}
 			}
 		} while (choice != 4);
 	}

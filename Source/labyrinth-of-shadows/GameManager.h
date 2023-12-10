@@ -12,6 +12,7 @@
 #include "Enemy.h"
 #include "easyEnemy.h"
 #include "Boss.h"
+#include "Inventory.h"
 // Will need to #include all of the other classes here.
 
 class GameManager
@@ -21,6 +22,7 @@ private:
     int round;
     int score;
     std::string characterSelected;
+    Inventory playerInventory;
 public:
     // Initializes the game, loads resources, etc.
     void init()
@@ -58,11 +60,11 @@ public:
             Save save;
             if (characterSelected == "Ranger")
             {
-                save.saveTheGameRanger(round, score, playerRanger);
+                save.saveTheGameRanger(round, score, playerRanger,playerInventory);
             }
             else if (characterSelected == "Wizard")
             {
-                save.saveTheGameWizard(round, score, playerWizard);
+                save.saveTheGameWizard(round, score, playerWizard,playerInventory);
             }
             else
             {

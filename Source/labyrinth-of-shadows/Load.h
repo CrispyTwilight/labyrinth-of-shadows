@@ -9,6 +9,7 @@
 #include <fstream>
 #include "RangerLoadFile.h"
 #include "WizardLoadFile.h"
+#include "InventoryLoadFile.h"
 #include "Inventory.h"
 #include "Armor.h"
 #include "Weapon.h"
@@ -101,14 +102,14 @@ public:
                     playerInventory.setHealthPotion(loadFile.healthPotion);
                 }
                 else if (itemType == "EquippedArmor") {
-                    inFile >> loadFile.armorType >> loadFile.defense >> loadFile.weight >> loadFile.value >> loadFile.material;
-                    Armor* equippedArmor = new Armor(loadFile.armorType, loadFile.defense, loadFile.weight, loadFile.value, itemName, loadFile.material);
+                    inFile >> loadFile.type >> loadFile.defense >> loadFile.weight >> loadFile.value >> loadFile.material;
+                    Armor* equippedArmor = new Armor(loadFile.type, loadFile.defense, loadFile.weight, loadFile.value, itemName, loadFile.material);
                     playerInventory.setEquippedArmorByType(equippedArmor->getArmorType(), equippedArmor);
                 }
 
                 else if (itemType == "EquippedWeapon") {
-                    inFile >> loadFile.weaponType >> loadFile.damage >> loadFile.weightW >> loadFile.valueW >> loadFile.materialW;
-                    Weapon* equippedWeapon = new Weapon(loadFile.weaponType, loadFile.damage, loadFile.weightW, loadFile.valueW, itemName, loadFile.materialW);
+                    inFile >> loadFile.wType >> loadFile.damage >> loadFile.weightW >> loadFile.valueW >> loadFile.materialW;
+                    Weapon* equippedWeapon = new Weapon(loadFile.wType, loadFile.damage, loadFile.weightW, loadFile.valueW, itemName, loadFile.materialW);
                     playerInventory.setEquippedWeapon(equippedWeapon);
                 }
                 else if (itemType == "Gold") {

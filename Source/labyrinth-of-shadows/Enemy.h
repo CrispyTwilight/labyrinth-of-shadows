@@ -7,6 +7,7 @@
 #include "Sword.h"
 #include "Bow.h"
 #include "Staff.h"
+#include "Dice.h"
 
 
 class Enemy : public Character

@@ -2,7 +2,8 @@
 // Date: 12/07/2023
 // Desc: Header file for the Armor struct.
 #pragma once
-#include "All_Includes.h"
+#include "Item.h"
+#include "Dice.h"
 
 struct Armor : public Item {
 	// Define enumerated data type for Armor types that can be used to determine what kind of Armor it is.
@@ -75,13 +76,40 @@ struct Armor : public Item {
 		return type;
 	}
 
-};
+	ArmorType stringToArmorType(const string& armorTypeStr)
+	{
+		if (armorTypeStr == "Breastplate") {
+			return Armor::BREASTPLATE;
+		}
+		else if (armorTypeStr == "Helmet") {
+			return Armor::HELMET;
+		}
+		else if (armorTypeStr == "Cap") {
+			return Armor::CAP;
+		}
+		else if (armorTypeStr == "Gauntlets") {
+			return Armor::GAUNTLETS;
+		}
+		else if (armorTypeStr == "Greaves") {
+			return Armor::GREAVES;
+		}
+		else if (armorTypeStr == "Shield") {
+			return Armor::SHIELD;
+		}
+		else if (armorTypeStr == "Gloves") {
+			return Armor::GLOVES;
+		}
 
-//Armor constructor for the load file
+		// Return a default value in case of an unknown string
+		return Armor::NONE;
+	}
+
+	
+};
 
 
 // Operating globally on the Armor struct. It is put in this file because it is related to the Armor struct.
-string armorTypeToString(Armor::ArmorType type) {
+std::string armorTypeToString(Armor::ArmorType type) {
 	switch (type) {
 	case Armor::BREASTPLATE: return "Breastplate";
 	case Armor::HELMET: return "Helmet";
@@ -94,30 +122,3 @@ string armorTypeToString(Armor::ArmorType type) {
 	}
 }
 
-Armor::ArmorType stringToArmorType(const string& armorTypeStr) 
-{
-	if (armorTypeStr == "Breastplate") {
-		return Armor::BREASTPLATE;
-	}
-	else if (armorTypeStr == "Helmet") {
-		return Armor::HELMET;
-	}
-	else if (armorTypeStr == "Cap") {
-		return Armor::CAP;
-	}
-	else if (armorTypeStr == "Gauntlets") {
-		return Armor::GAUNTLETS;
-	}
-	else if (armorTypeStr == "Greaves") {
-		return Armor::GREAVES;
-	}
-	else if (armorTypeStr == "Shield") {
-		return Armor::SHIELD;
-	}
-	else if (armorTypeStr == "Gloves") {
-		return Armor::GLOVES;
-	}
-
-	// Return a default value in case of an unknown string
-	return Armor::NONE;
-}
