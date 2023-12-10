@@ -26,7 +26,7 @@ public:
     void init()
     {
 
-        // Since we need to be able to quit the game immediatley but still want to save and quit to be one function 
+        // Since we need to be able to quit the game immediatley but still want to save and quit to be one function
         //we need to make all of the player classes before we can continue to the other parts of the code.
         // These are the base stats for the class these are definitely are subject to change when playtesting.
         Ranger playerRanger(25, 25, 5, 5, 7, 1, 0, 5, 0, 0, 0, 0, 1);
@@ -78,13 +78,13 @@ public:
                 << "1. Ranger (A class focused on reflecting attacks and dodging attacks while doing massive damage)\n"
                 << "2. Wizard (A High Defense and High Damaging Wizard)\n";
 
-            do 
+            do
             {
                 cout << "Enter your choice: \n";
 
                 choice = _getch();
 
-                if (choice < 0 || choice > 2) 
+                if (choice < 0 || choice > 2)
                 {
                     cout << "Incorrect value. Please enter a valid value.\n";
                 }
@@ -110,7 +110,7 @@ public:
                 break;
             }
             }
-            
+
         }
         //Load the game from previous save.
         case 2:
@@ -133,7 +133,7 @@ public:
                 {
                     cout << "Incorrect value. Please enter a valid value.\n";
                 }
-            
+
 
                 switch (choice)
                 {
@@ -160,7 +160,7 @@ public:
                     break;
                 }
                 }
-            
+
             } while (choice < 0 || choice > 2);
 
 
@@ -172,7 +172,7 @@ public:
 
 
     // Starts the main game loop
-    void start() 
+    void start()
     {
 
         // We need to decide whether to display the map first or pop up a menu.
@@ -236,7 +236,7 @@ public:
                     cout << "Your score was " << score << endl;
                     score = 0;
                     round = 0;
-                   // Should Restart the game 
+                   // Should Restart the game
                 }
             }
         }
@@ -326,37 +326,37 @@ public:
 
 
     // Handles the game's update logic
-    void update() 
+    void update()
     {
 
     }
 
     // Renders the game to the screen
-    void render() 
+    void render()
     {
 
     }
 
     // Ends the game with message, releases resources, etc.
-    void end() 
+    void end()
     {
 
     }
 
     // Saves the current game state
-    void save() 
+    void save()
     {
 
     }
 
     // Loads a saved game state
-    void load() 
+    void load()
     {
 
     }
 
     // Quits the game
-    void SaveAndQuit() 
+    void SaveAndQuit()
     {
 
     }
