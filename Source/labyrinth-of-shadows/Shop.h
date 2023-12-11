@@ -342,3 +342,6 @@ public:
 		system("pause");
 	}
 };
+
+// Initialize the static instance to nullptr.
+Shop* Shop::instance = nullptr;

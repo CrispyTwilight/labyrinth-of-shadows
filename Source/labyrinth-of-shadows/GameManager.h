@@ -220,7 +220,7 @@ public:
         if (characterSelected == "Ranger") {
             if (round < 3) {
                 easyEnemy* easyEnemyPtr = new easyEnemy();
-                playerRanger.fightWeakEnemy(*easyEnemyPtr, playerInventory);
+                playerRanger.fightWeakEnemy(*easyEnemyPtr);
                 delete easyEnemyPtr;
                 easyEnemyPtr = nullptr;
 
@@ -240,7 +240,7 @@ public:
 
             else if (isBossFight) {
                 Boss* bossPtr = new Boss(round);
-                playerRanger.fightBossEnemy(*bossPtr, playerInventory);
+                playerRanger.fightBossEnemy(*bossPtr);
                 delete bossPtr;
                 bossPtr = nullptr;
 
@@ -259,7 +259,7 @@ public:
 
             else {
                 Enemy* enemyPtr = new Enemy(round);
-                playerRanger.fightNormalEnemy(*enemyPtr, playerInventory);
+                playerRanger.fightNormalEnemy(*enemyPtr);
                 delete enemyPtr;
                 enemyPtr = nullptr;
 
@@ -285,7 +285,7 @@ public:
             {
                 easyEnemy* easyEnemyPtr = new easyEnemy();
 
-                playerWizard.fightWeakEnemy(*easyEnemyPtr, playerInventory);
+                playerWizard.fightWeakEnemy(*easyEnemyPtr);
 
                 // Freeing the memory allocated for the easyEnemy object
                 delete easyEnemyPtr;
@@ -311,7 +311,7 @@ public:
             {
                 Boss* bossPtr = new Boss(round);
 
-                playerWizard.fightBossEnemy(*bossPtr ,playerInventory);
+                playerWizard.fightBossEnemy(*bossPtr);
 
 
                 delete bossPtr;
@@ -337,7 +337,7 @@ public:
             {
 
                 Enemy* enemyPtr = new Enemy(round);
-                playerWizard.fightNormalEnemy(*enemyPtr, playerInventory);
+                playerWizard.fightNormalEnemy(*enemyPtr);
                 delete enemyPtr;
                 enemyPtr = nullptr;
 
@@ -361,7 +361,7 @@ public:
         {
             easyEnemy* easyEnemyPtr = new easyEnemy();
 
-            playerRogue.fightWeakEnemy(*easyEnemyPtr, playerInventory);
+            playerRogue.fightWeakEnemy(*easyEnemyPtr);
 
             // Freeing the memory allocated for the easyEnemy object
             delete easyEnemyPtr;
@@ -388,7 +388,7 @@ public:
         {
             Boss* bossPtr = new Boss(round);
 
-            playerRogue.fightBossEnemy(*bossPtr, playerInventory);
+            playerRogue.fightBossEnemy(*bossPtr);
 
 
             delete bossPtr;
@@ -414,7 +414,7 @@ public:
         {
 
             Enemy* enemyPtr = new Enemy(round);
-            playerRogue.fightNormalEnemy(*enemyPtr, playerInventory);
+            playerRogue.fightNormalEnemy(*enemyPtr);
 
             delete enemyPtr;
             enemyPtr = nullptr;
@@ -439,8 +439,8 @@ public:
     };
 
     // Handles the game's update logic
-    void openInventory()
+    /*void openInventory()
     {
-        playerInventory.openInventory();
-    }
+        Inventory::getInstance()->openInventory();
+    }*/
 };

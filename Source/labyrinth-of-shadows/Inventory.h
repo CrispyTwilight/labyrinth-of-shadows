@@ -335,3 +335,6 @@ public:
 		} while (true);
 	}
 };
+
+// Initialize the singleton instance to nullptr
+Inventory* Inventory::instance = nullptr;

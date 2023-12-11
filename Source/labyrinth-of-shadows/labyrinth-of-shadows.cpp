@@ -9,10 +9,6 @@ void gameDriver();
 void shopDriver();
 void screenDriver();
 
-
-// Initialization stuff
-Shop* Shop::instance = nullptr; // JPO: Needed to initialize the static instance variable for the shop.
-
 int main()
 {
     srand(time(0)); // JPO: Moved from Dice.h to so  it is only called once. Was causing issues with randomness in the shop.
