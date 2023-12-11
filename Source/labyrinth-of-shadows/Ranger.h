@@ -5,6 +5,9 @@
 // #include "All_Includes.h"
 // JPO: Temp fix for the issue with the compiler not finding the files
 #include "Character.h"
+#include <iostream>
+#include <string>
+#include <iterator>
 #include "Enemy.h"
 #include "easyEnemy.h"
 #include "Boss.h"

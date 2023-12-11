@@ -2,7 +2,6 @@
 // Date: 12/07/2023
 // Desc: Inline definition of the Inventory Class for the player's inventory. It is a member of the Character Class. Inventory should be limited by weight, but our menu is limited to 9 items.
 #pragma once
-#include "All_Includes.h"
 #include "Weapon.h"
 #include "Armor.h"
 #include "Potion.h"

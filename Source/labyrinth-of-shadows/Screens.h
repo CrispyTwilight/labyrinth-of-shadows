@@ -3,10 +3,15 @@
 // Desc: This is a header file that holds modules that display the title screen that comes with instructions
 
 #pragma once
-#include "ALL_Includes.h"
+
+#include "GameManager.h"
+#include <iostream>
+#include <conio.h>
+#include <string>
 
 class Screens
 {
+
 public:
     void showTitle()
     {
@@ -37,8 +42,9 @@ public:
             choice = _getch();
             switch (choice)
             {
-            case '1': {
-                GameManager game;
+            case '1': 
+            {
+                
                 break;
             }
             case '2':
