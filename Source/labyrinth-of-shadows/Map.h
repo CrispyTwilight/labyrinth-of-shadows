@@ -7,6 +7,7 @@
 //Map class
 class Map {
 protected:
+    bool fightTrigger = false;
     int mapLevel = 0;
     int width, height;
     vector<vector<char>> grid;
@@ -52,6 +53,9 @@ public:
 
     void mapSwitcher()
     {
+        for (auto& row : grid) {
+            fill(row.begin(), row.end(), '.'); // Replace every cell with '.' to clear enemies and other characters
+        }
         switch (mapLevel)
         {
         case 0:
@@ -101,7 +105,7 @@ public:
     {
         static int currentDirection = -1;
         static bool stop = false;
-        const int moveProbability = 80;
+        const int moveProbability = 60;
 
         vector<pair<int, int>> results = manage.findE(grid);
         for (const auto& result : results)
@@ -109,7 +113,8 @@ public:
             int x = result.first;
             int y = result.second;
 
-            if (rand() % 100 >= moveProbability) {
+            if (rand() % 100 >= moveProbability) 
+            {
                 continue;
             }
 
@@ -122,7 +127,7 @@ public:
             switch (currentDirection)
             {
             case 1:
-                if (grid[x + 1][y] != '#' && grid[x + 1][y] != 'E')
+                if (grid[x + 1][y] != '#' && grid[x + 1][y] != 'E' && grid[x + 1][y] != 'A' && grid[x + 1][y] != 'D' && grid[x + 1][y] != '?')
                 {
                     manage.updateMap(x, y, mapLevel, '.');
                     manage.updateMap(x + 1, y, mapLevel, 'E');
@@ -133,7 +138,7 @@ public:
                 }
                 break;
             case 2:
-                if (grid[x - 1][y] != '#' && grid[x + 1][y] != 'E')
+                if (grid[x - 1][y] != '#' && grid[x - 1][y] != 'E' && grid[x - 1][y] != 'A' && grid[x - 1][y] != 'D' && grid[x - 1][y] != '?')
                 {
                     manage.updateMap(x, y, mapLevel, '.');
                     manage.updateMap(x - 1, y, mapLevel, 'E');
@@ -144,7 +149,7 @@ public:
                 }
                 break;
             case 3:
-                if (grid[x][y + 1] != '#' && grid[x + 1][y] != 'E')
+                if (grid[x][y + 1] != '#' && grid[x][y + 1] != 'E' && grid[x][y + 1] != 'A' && grid[x][y + 1] != 'D' && grid[x][y + 1] != '?')
                 {
                     manage.updateMap(x, y, mapLevel, '.');
                     manage.updateMap(x, y + 1, mapLevel, 'E');
@@ -155,7 +160,7 @@ public:
                 }
                 break;
             case 4:
-                if (grid[x + 1][y - 1] != '#' && grid[x + 1][y] != 'E')
+                if (grid[x][y - 1] != '#' && grid[x][y - 1] != 'E' && grid[x][y - 1] != 'A' && grid[x][y - 1] != 'D' && grid[x][y - 1] != '?')
                 {
                     manage.updateMap(x, y, mapLevel, '.');
                     manage.updateMap(x, y - 1, mapLevel, 'E');
@@ -179,33 +184,40 @@ public:
             int x = result.first;
             int y = result.second;
 
-            if (grid[x + 1][y] != '#' && grid[x + 1][y] != 'E')
+            if (px > x && grid[x + 1][y] != '#' && grid[x + 1][y] != 'A' && grid[x + 1][y] != 'D' && grid[x + 1][y] != '?')
             {
                 manage.updateMap(x, y, mapLevel, '.');
-                manage.updateMap(x + 1, y, mapLevel, 'E');
+                manage.updateMap(x + 1, y, mapLevel, 'L');
+                
+            }
+            else if (px < x && grid[x - 1][y] != '#' && grid[x - 1][y] != 'A' && grid[x - 1][y] != 'D' && grid[x - 1][y] != '?')
+            {
+               manage.updateMap(x, y, mapLevel, '.');
+               manage.updateMap(x - 1, y, mapLevel, 'L');
+                
+            }
+            else if (py > y && grid[x][y + 1] != '#' && grid[x][y + 1] != 'A' && grid[x][y + 1] != 'D' && grid[x][y + 1] != '?')
+            {
+                manage.updateMap(x, y, mapLevel, '.');
+                manage.updateMap(x, y + 1, mapLevel, 'L');
+            }
+            else if (py < y && grid[x][y - 1] != '#' && grid[x][y + 1] != 'A' && grid[x][y + 1] != 'D' && grid[x][y + 1] != '?')
+            {
+                manage.updateMap(x, y, mapLevel, '.');
+                manage.updateMap(x, y - 1, mapLevel, 'L');
             }
 
-            if (grid[x - 1][y] != '#' && grid[x + 1][y] != 'E')
-            {
-                manage.updateMap(x, y, mapLevel, '.');
-                manage.updateMap(x - 1, y, mapLevel, 'E');
-            }
-            else
-            {
-                // JPO: Fill in the rest
-            }
-
-            if (grid[x][y + 1] != '#' && grid[x + 1][y] != 'E')
-            {
-                manage.updateMap(x, y, mapLevel, '.');
-                manage.updateMap(x, y + 1, mapLevel, 'E');
-            }
-
-            if (grid[x + 1][y - 1] != '#' && grid[x + 1][y] != 'E')
-            {
-                manage.updateMap(x, y, mapLevel, '.');
-                manage.updateMap(x, y - 1, mapLevel, 'E');
-            }
         }
     }
+
+    void toggle()
+    {
+        fightTrigger = !fightTrigger;
+    }
+
+    bool getTrigger()
+    {
+        return fightTrigger;
+    }
+
 };
