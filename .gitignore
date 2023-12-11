@@ -9,6 +9,7 @@
 *.json
 enc_temp_folder/
 .vs/
+.txt
 # VS Code config files
 
 # User-specific files (MonoDevelop/Xamarin Studio)
