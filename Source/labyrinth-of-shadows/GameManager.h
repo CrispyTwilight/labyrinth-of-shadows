@@ -30,7 +30,7 @@ private:
     Wizard playerWizard;
     Rogue playerRogue;
     Inventory playerInventory;
-    
+
 public:
     GameManager()
     {
@@ -39,8 +39,6 @@ public:
     // Initializes the game, loads resources, etc.
     void init()
     {
-
-
         round = 0;
         score = 0;
         characterSelected = "";
@@ -52,7 +50,6 @@ public:
         // Since we need to be able to quit the game immediatley but still want to save and quit to be one function
         //we need to make all of the player classes before we can continue to the other parts of the code.
         // These are the base stats for the class these are definitely are subject to change when playtesting.
-       
 
         int choice;
        // Introduction will go here
@@ -152,7 +149,7 @@ public:
         case 2:
         {
             //Creating the load object.
-            Load load();
+            Load load; //JPO: changed from load() to load
             // Reseting the choice variable back to zero.
             choice = 0;
             //Displaying the menu for the player
@@ -177,7 +174,7 @@ public:
                 case 1:
                 {
                     //Loading the previously used Ranger class.
-                    load().loadTheGameRanger(score, round, playerRanger, playerInventory);
+                    load.loadTheGameRanger(score, round, playerRanger, playerInventory);
                     // Make the current class selected into the Ranger so the rest of the code will work properly.
                     characterSelected = "Ranger";
                     break;
@@ -185,7 +182,7 @@ public:
                 case 2:
                 {
                     //Loading the previous Wizard class.
-                    load().loadTheGameWizard(score, round, playerWizard, playerInventory);
+                    load.loadTheGameWizard(score, round, playerWizard, playerInventory);
                     // Make the current class selected into the wizard for loading.
                     characterSelected = "Wizard";
                     break;
@@ -193,7 +190,7 @@ public:
                 case 3:
                 {
                     //Loading the game for the rogue class.
-                    load().loadTheGameRogue(score, round, playerRogue, playerInventory);
+                    load.loadTheGameRogue(score, round, playerRogue, playerInventory);
                     //Making the currently selected character the rogue after loading the game.
                     characterSelected = "Rogue";
                 }
@@ -214,7 +211,7 @@ public:
             cout << "You have encountered an unexpected error.\n";
             break;
         }
-       
+
 
         }
         exit(0);
@@ -252,7 +249,7 @@ public:
                     // This is a victory and should take them back to the map.
                 }
             }
-            
+
             else if (isBossFight) {
                 Boss* bossPtr = new Boss(round);
                 playerRanger.fightBossEnemy(*bossPtr,playerInventory);
@@ -271,7 +268,7 @@ public:
                     //Should Restart the game
                 }
             }
-            
+
             else {
                 Enemy* enemyPtr = new Enemy(round);
                 playerRanger.fightNormalEnemy(*enemyPtr, playerInventory);
@@ -347,7 +344,7 @@ public:
                     //This is a lose and should restart the game.
                 }
             }
-           
+
 
             else
             {
@@ -403,7 +400,7 @@ public:
             }
         }
 
-       
+
         if (isBossFight)
         {
             Boss* bossPtr = new Boss(round);
@@ -429,7 +426,7 @@ public:
                 //This is a lose and should restart the game.
             }
         }
-        
+
 
         else
         {
