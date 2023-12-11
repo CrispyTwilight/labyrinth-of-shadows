@@ -25,7 +25,7 @@ public:
     // Initializes the game, loads resources, etc.
     void init()
     {
-
+     
         // Since we need to be able to quit the game immediatley but still want to save and quit to be one function 
         //we need to make all of the player classes before we can continue to the other parts of the code.
         // These are the base stats for the class these are definitely are subject to change when playtesting.
@@ -174,9 +174,7 @@ public:
     // Starts the main game loop
     void start() 
     {
-
-        // We need to decide whether to display the map first or pop up a menu.
-
+        // We need to decide whether to display the map first or pop up a menu
     }
 
 

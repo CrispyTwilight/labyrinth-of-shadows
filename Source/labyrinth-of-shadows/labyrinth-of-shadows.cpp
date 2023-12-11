@@ -10,6 +10,7 @@ void shopDriver();
 
 // Initialization stuff
 Shop* Shop::instance = nullptr; // JPO: Needed to initialize the static instance variable for the shop.
+GameManager game;
 
 int main()
 {
@@ -78,9 +79,20 @@ void mapDriver() {
 
         player.handleInput();
 
-        visual();
+        gameMap.mapSwitcher();
+
+        gameMap.moveL(playerY, playerX);
         gameMap.moveE();
 
+
+        visual();
+        if (gameMap.getTrigger())
+        {
+            gameMap.updateSpace(playerX, playerY, '.');
+            cout << "BATTLE"; //Battle function goes here
+            //gameMap.toggle();
+        }
+       
         //This is necessary to control speed of the game.
         this_thread::sleep_for(chrono::milliseconds(100));
     }

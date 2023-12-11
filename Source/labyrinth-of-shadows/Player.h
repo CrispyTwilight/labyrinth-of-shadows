@@ -10,7 +10,7 @@ private:
     Map& map;
     int x, y; //Player's position
     int px, py; //Proposed position. Checking for walls
-    int keys = 4;
+    int keys = 0;
 
 public:
     Player(Map& map, int initialX, int initialY) : map(map), x(initialX), y(initialY), px(initialX), py(initialY) {}
@@ -59,6 +59,11 @@ public:
             {
                 map.updateSpace(24, 14, '?');
             }
+        }
+        if (map.getGrid()[py][px] == 'E' || map.getGrid()[py][px] == 'L')
+        {
+            map.toggle();
+            cout << map.getTrigger();
         }
         if (map.getGrid()[py][px] == 'D')
         {
