@@ -2,7 +2,9 @@
 // Date: 12/07/2023
 // Desc: Header file for the Armor struct.
 #pragma once
-#include "All_Includes.h"
+// #include "All_Includes.h"
+#include "Item.h"
+#include "Dice.h"
 
 struct Armor : public Item {
 	// Define enumerated data type for Armor types that can be used to determine what kind of Armor it is.
@@ -45,7 +47,8 @@ struct Armor : public Item {
 
 			Dice materialDie(possibleArmorMaterials.size() - 1);
 			this->material = possibleArmorMaterials[materialDie.rollDice()];
-		} else {
+		}
+		else {
 			this->type = type;
 			this->defense = defense;
 			this->weight = weight;
@@ -53,6 +56,50 @@ struct Armor : public Item {
 			this->name = name;
 			this->material = material;
 		}
+	}
+
+	//Armor constructor for the load file
+	Armor(string armorType, int def, int wei, int val, const string& nm, const string& mat)
+	{
+		type = stringToArmorType(armorType);
+		defense = def;
+		weight = wei;
+		value = val;
+		name = nm;
+		material = mat;
+	}
+
+	ArmorType getArmorType()
+	{
+		return type;
+	}
+
+	ArmorType stringToArmorType(const string& armorTypeStr)
+	{
+		if (armorTypeStr == "Breastplate") {
+			return Armor::BREASTPLATE;
+		}
+		else if (armorTypeStr == "Helmet") {
+			return Armor::HELMET;
+		}
+		else if (armorTypeStr == "Cap") {
+			return Armor::CAP;
+		}
+		else if (armorTypeStr == "Gauntlets") {
+			return Armor::GAUNTLETS;
+		}
+		else if (armorTypeStr == "Greaves") {
+			return Armor::GREAVES;
+		}
+		else if (armorTypeStr == "Shield") {
+			return Armor::SHIELD;
+		}
+		else if (armorTypeStr == "Gloves") {
+			return Armor::GLOVES;
+		}
+		else {
+			return Armor::NONE;
+	}
 	}
 };
 
@@ -68,4 +115,4 @@ string armorTypeToString(Armor::ArmorType type) {
 	case Armor::GLOVES: return "Gloves";
 	default: return "None";
 	}
-}
+};

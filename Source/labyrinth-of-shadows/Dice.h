@@ -2,7 +2,7 @@
 //Date: 11/30/23
 //Desc: Dice class for generating random numbers based on the max and min number put in
 #pragma once
-#include "All_Includes.h"
+
 
 class Dice
 {

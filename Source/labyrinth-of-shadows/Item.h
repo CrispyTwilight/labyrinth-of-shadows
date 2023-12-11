@@ -2,7 +2,10 @@
 // Date: 12/07/2023
 // Desc: This is the file that holds Item names and materials.
 #pragma once
-#include "All_Includes.h"
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
 
 class Item {
 public:

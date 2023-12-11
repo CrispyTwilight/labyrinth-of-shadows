@@ -1,8 +1,10 @@
 // Auth: Christian A. Botos, John O'Neal
 // Date: 12/07/2023
-// Desc: Header file for the Weapon structure to hold and construct weapon data.
+// Desc: Header file for the Armor struct.
 #pragma once
-#include "All_Includes.h"
+// #include "All_Includes.h
+#include "Item.h"
+#include "Dice.h"
 
 struct Weapon : public Item {
 	// Define enum for weapon types that can be used to determine what kind of weapon it is.
@@ -14,7 +16,7 @@ struct Weapon : public Item {
 		SPEAR,
 		STAFF,
 		SWORD,
-		WEAPON_TYPE_COUNT // Used to determine the number of possible weapon types.0.
+		WEAPON_TYPE_COUNT // Used to determine the number of possible weapon types.
 	};
 
 	// Other fields
@@ -44,13 +46,52 @@ struct Weapon : public Item {
 
 			Dice materialDie(possibleWeaponMaterials.size() - 1);
 			this->material = possibleWeaponMaterials[materialDie.rollDice()];
-		} else {
+		}
+		else {
 			this->type = type;
 			this->damage = damage;
 			this->weight = weight;
 			this->value = value;
 			this->name = name;
 			this->material = material;
+		}
+	}
+
+	Weapon(string& type, int damage, int weight,int value, const string& name, const string& material) {
+		this->type = stringToWeaponType(type);
+		this->damage = damage;
+		this->weight = weight;
+		this->value = value;
+		this->name = name;
+		this->material = material;
+	}
+
+	WeaponType stringToWeaponType(const string& weaponTypeStr) {
+		if (weaponTypeStr == "Axe")
+		{
+			return Weapon::AXE;
+		}
+		else if (weaponTypeStr == "Bow")
+		{
+			return Weapon::BOW;
+		}
+		else if (weaponTypeStr == "Dagger")
+		{
+			return Weapon::DAGGER;
+		}
+		else if (weaponTypeStr == "Spear")
+		{
+			return Weapon::SPEAR;
+		}
+		else if (weaponTypeStr == "Staff")
+		{
+			return Weapon::STAFF;
+		}
+		else if (weaponTypeStr == "Sword") {
+			return Weapon::SWORD;
+		}
+		else {
+			return Weapon::NONE;
 		}
 	}
 };

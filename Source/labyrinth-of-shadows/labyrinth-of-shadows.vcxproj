@@ -105,6 +105,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <ShowIncludes>true</ShowIncludes>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -128,6 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="InventoryLoadFile.cpp" />
     <ClCompile Include="labyrinth-of-shadows.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -142,6 +144,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Inventory.h" />
+    <ClInclude Include="InventoryLoadFile.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Load.h" />
     <ClInclude Include="Loot.h" />
