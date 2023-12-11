@@ -2,7 +2,8 @@
 // Auth: Christian Baack
 // Desc: Class to define the map of the game.
 #pragma once
-#include "All_Includes.h"
+#include "MapManager.h"
+#include <vector>
 
 //Map class
 class Map {
