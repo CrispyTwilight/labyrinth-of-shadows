@@ -18,8 +18,7 @@ private:
 public:
     Character()
     {
-        health = 0;
-        name = "";
+        
     }
 
     Character(int hea, string n, int gold)

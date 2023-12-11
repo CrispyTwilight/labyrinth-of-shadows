@@ -14,6 +14,7 @@ GameManager game;
 
 int main()
 {
+   
     srand(time(0)); // JPO: Moved from Dice.h to so  it is only called once. Was causing issues with randomness in the shop.
     testDriver();
     return 0;
