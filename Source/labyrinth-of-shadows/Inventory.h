@@ -20,7 +20,6 @@ class Inventory
 private:
 	// fields
 	vector<Item*> items;
-
 	//Since we need linked pairs of Armor for their armorType so the player can equip more than one type of armor at a time.
 	//This is what I found that would allow us to keep track of it just inside of Inventory instead of having to call whatever character they are playing.
 	//It uses map which does require a header file but it seems to be the best way of storing these so that we could also easily save/load them later which is important.
@@ -35,17 +34,19 @@ private:
 	bool hasPotion;
 
 public:
+	
 	// Constructor
-	Inventory(const string& character = "", const int& max = 0) // JPO: added default args
+
+	Inventory()
 	{
-		selectedCharacter = character;
-		maxWeight = max;
+		selectedCharacter = "";
+		getItemWeight(selectedCharacter);
 		gold = 20;
 		hasPotion = false;
 	}
 
 	// getters
-	void getItemWeight() // JPO: Changed from in to void.
+	void getItemWeight(string& selectedCharacter) // JPO: Changed from in to void.
 	{
 		if (selectedCharacter == "Ranger")
 		{
@@ -74,7 +75,7 @@ public:
 
 		for (const Item* item : items)
 		{
-			//currentWeight += item->weight; Not done.
+			//currentWeight += item->weight; not done
 		}
 
 		return currentWeight;
@@ -113,6 +114,16 @@ public:
 	Weapon* getEquippedWeapon() const
 	{
 		return equippedWeapon;
+	}
+
+	int getEquippedWeaponDamage() const {
+		if (equippedWeapon) {
+			return equippedWeapon->damage;
+		}
+		else {
+			// Return a default value or handle the case when no weapon is equipped
+			return 2; // For example, returning 0 if no weapon is equipped
+		}
 	}
 
 	void displayItemsInfo() const {
@@ -169,7 +180,20 @@ public:
 	//These are for loading the game.
 	void setHealthPotion(int& health)
 	{
-		healthPotion += health;
+		healthPotion = health;
+	}
+
+	int getTotalEquippedDefense() const {
+		int totalDefense = 0;
+
+		for (const auto& armorSlot : equippedArmorSlots) {
+			Armor* armor = armorSlot.second;
+			if (armor) {
+				totalDefense += armor->defense;
+			}
+		}
+
+		return totalDefense;
 	}
 
 	void equip(Item* item)
@@ -205,83 +229,88 @@ public:
 	}
 
 	//Other Functions
-	//void openInventory(Ranger playerRanger, Wizard playerWizard, Rogue playerRogue)
-	//{
-	//	if (healthPotion > 0)
-	//	{
-	//		hasPotion = true;
-	//	}
-	//	int choice = -1;
-	//	do {
-	//		cout << "Inventory Menu:\n"
-	//			<< "1. Equip Item\n"
-	//			<< "2. Discard Item\n"
-	//			<< "3. Take Health Potion\n"
-	//			<< "4. Exit Inventory\n"
-	//			<< "Enter your choice: ";
 
-	//		choice = _getch() - '0'; // Convert char input to integer
+	void openInventory()
+	{
+		if (healthPotion > 0)
+		{
+			hasPotion = true;
+		}
+		int choice = -1;
+		do {
+			cout << "Inventory Menu:\n"
+				<< "1. Equip Item\n"
+				<< "2. Discard Item\n"
+				<< "3. Take Health Potion\n"
+				<< "4. Exit Inventory\n"
+				<< "Enter your choice: ";
 
-	//		int index; // JPO: Moved declaration out of case 2
-	//		switch (choice)
-	//		{
-	//		case 1:
-	//		{
-	//			displayItemsInfo();
-	//			cout << "Enter index of item to equip: ";
-	//			int indexToEquip = _getch() - '0'; // Convert char input to integer
-	//			indexToEquip -= 1; // Adjust index to start from 0
+			choice = _getch() - '0'; // Convert char input to integer
 
-	//			if (indexToEquip >= 0 && indexToEquip < items.size()) {
-	//				Item* itemToEquip = items[indexToEquip];
-	//				equip(itemToEquip); // Equip the selected item
-	//			}
-	//			else {
-	//				cout << "Invalid index.\n";
-	//			}
-	//			break;
-	//		}
-	//		case 2:
-	//		{
-	//			displayItemsInfo();
-	//			cout << "Enter index of item to discard: ";
-	//			index = _getch() - '0'; // Convert char input to integer
-	//			index -= 1; // Adjust index to start from 0
+			int index; // JPO: Moved declaration out of case 2
+			switch (choice) 
+			{
+				case 1:
+				{
+					displayItemsInfo();
+					cout << "Enter index of item to equip: ";
+					int indexToEquip;
+					cin >> indexToEquip;
+					indexToEquip -= 1; // Adjust index to start from 0
 
-	//			if (index >= 0 && index < items.size()) {
-	//				// Remove item from the inventory
-	//				delete items[index]; // Free memory
-	//				items.erase(items.begin() + index);
-	//				cout << "Item discarded.\n";
-	//			}
-	//			else {
-	//				cout << "Invalid index.\n";
-	//			}
-	//			break;
-	//		}
-	//		case 3:
-	//		{
-	//			if (!hasPotion) // JPO: reduced nesting by using early error test
-	//				cout << "You don't have any health potions.\n";
-	//			else if (selectedCharacter == "Ranger")
-	//				playerRanger.takePotion();
-	//			else if (selectedCharacter == "Wizard")
-	//				playerWizard.takePotion();
-	//			else if (selectedCharacter == "Rogue")
-	//				playerRogue.takePotion();
-	//			break;
-	//		}
-	//		case 4:
-	//		{
-	//			cout << "Exiting Inventory.\n";
-	//			break;
-	//		}
-	//		default:
-	//		{
-	//			cout << "Invalid choice.\n";
-	//			break;
-	//		}
-	//		}
-	//	} while (choice != 4);
-	//}
+					if (indexToEquip >= 0 && indexToEquip < items.size()) {
+						Item* itemToEquip = items[indexToEquip];
+						equip(itemToEquip); // Equip the selected item
+					}
+					else {
+						cout << "Invalid index.\n";
+					}
+					break;
+				}
+				case 2:
+				{
+					displayItemsInfo();
+					cout << "Enter index of item to discard: ";
+					cin >> index; // In case they have more than 9 items they won't be locked out discarding other items.
+					index -= 1; // Adjust index to start from 0
+
+					if (index >= 0 && index < items.size()) {
+						// Remove item from the inventory
+						delete items[index]; // Free memory
+						items.erase(items.begin() + index);
+						cout << "Item discarded.\n";
+					}
+					else {
+						cout << "Invalid index.\n";
+					}
+					break;
+				}
+				case 3:
+				{
+					/*
+					if (!hasPotion) // JPO: reduced nesting by using early error test
+						cout << "You don't have any health potions.\n";
+					else if (selectedCharacter == "Ranger")
+						playerRanger.takePotion();
+					else if (selectedCharacter == "Wizard")
+						playerWizard.takePotion();
+					else if (selectedCharacter == "Rogue")
+						playerRogue.takePotion();
+					break;
+					*/
+				}
+				case 4:
+				{
+					cout << "Exiting Inventory.\n";
+					break;
+				}
+				default:
+				{
+					cout << "Invalid choice.\n";
+					break;
+				}
+			}
+		} while (choice != 4);
+	}
+
 };

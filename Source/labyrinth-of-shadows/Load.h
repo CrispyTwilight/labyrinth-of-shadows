@@ -9,6 +9,7 @@
 #include <fstream>
 #include "RangerLoadFile.h"
 #include "WizardLoadFile.h"
+#include "RogueLoadFile.h"
 #include "InventoryLoadFile.h"
 #include "Inventory.h"
 #include "Armor.h"
@@ -31,7 +32,7 @@ public:
     }
 
     //Passing by reference in order to properly load the game for the rest of the program.
-    void loadTheGameRanger(int &score, int &round, Ranger &playerRanger)
+    void loadTheGameRanger(int &score, int &round, Ranger &playerRanger, Inventory& playerInventory)
     {
         ifstream inFile("ranger.txt");
         if (inFile.is_open());
@@ -59,9 +60,11 @@ public:
 
         inFile.close();
         cout << "Character Loaded Sucessfully\n";
+
+        loadInventory(playerInventory, "ranger_inventory.txt");
     }
 
-    void loadTheGameWizard(int &score, int &round, Wizard &playerWizard)
+    void loadTheGameWizard(int &score, int &round, Wizard &playerWizard, Inventory& playerInventory)
     {
         ifstream inFile("wizard.txt");
         if (inFile.is_open());
@@ -88,7 +91,41 @@ public:
 
         inFile.close();
         cout << "Character Loaded Sucessfully\n";
+
+        loadInventory(playerInventory, "wizard_inventory.txt");
 	}
+
+    void loadTheGameRogue(int& score, int& round, Rogue& playerRogue, Inventory& playerInventory)
+    {
+        ifstream inFile("rogue.txt");
+        if (inFile.is_open());
+        RogueLoadFile loadFile;
+        inFile >> loadFile.max >> loadFile.health >> loadFile.strength >> loadFile.intelligence
+            >> loadFile.dexterity >> loadFile.level >> loadFile.numTurns >> loadFile.healthPotions
+            >> loadFile.exp >> loadFile.expNeed >> loadFile.dodgeLvl >> loadFile.sneakAttackLvl
+            >> loadFile.score >> loadFile.round;
+
+        playerRogue.setMaxHealth(loadFile.max);
+        playerRogue.setHealth(loadFile.health);
+        playerRogue.setStrength(loadFile.strength);
+        playerRogue.setIntelligence(loadFile.intelligence);
+        playerRogue.setDexterity(loadFile.dexterity);
+        playerRogue.setLevel(loadFile.level);
+        playerRogue.setNumTurns(loadFile.numTurns);
+        playerRogue.setHealthPotions(loadFile.healthPotions);
+        playerRogue.setExp(loadFile.exp);
+        playerRogue.setExpNeeded(loadFile.expNeed);
+        playerRogue.setDodgeLvl(loadFile.dodgeLvl);
+        playerRogue.setSneakAttackLvl(loadFile.sneakAttackLvl);
+        score = loadFile.score;
+        round = loadFile.round;
+
+        inFile.close();
+        cout << "Character Loaded Sucessfully\n";
+
+        loadInventory(playerInventory, "rogue_inventory.txt");
+
+    }
 
     void loadInventory(Inventory& playerInventory, const string& filename) {
         ifstream inFile(filename);

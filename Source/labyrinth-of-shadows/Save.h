@@ -20,7 +20,7 @@ public:
 	Save()
 	{}
 
-    void saveTheGameRanger(int round, int score, Ranger playerRanger , Inventory& playerInventory)
+    void saveTheGameRanger(int round, int score, Ranger& playerRanger , Inventory& playerInventory)
     {
         //Saving the game if they are a ranger
         ofstream outFile("ranger.txt");
@@ -51,7 +51,7 @@ public:
         outFile.close();
     }
 
-    void saveTheGameWizard(int round, int score, Wizard playerWizard, Inventory& playerInventory)
+    void saveTheGameWizard(int round, int score, Wizard& playerWizard, Inventory& playerInventory)
     {
         // Saving the game if they are a wizard
         ofstream outFile("wizard.txt");
@@ -73,7 +73,7 @@ public:
             outFile << round << endl;
 
             cout << "Character saved successfully!" << endl;
-            saveInventory(playerInventory, "ranger_inventory.txt");
+            saveInventory(playerInventory, "wizard_inventory.txt");
         }
         else {
             cout << "Unable to open the file for saving!" << endl;
@@ -103,7 +103,7 @@ public:
             outFile << round << endl;
 
             cout << "Character saved successfully!" << endl;
-            saveInventory(playerInventory, "ranger_inventory.txt");
+            saveInventory(playerInventory, "rogue_inventory.txt");
         }
         else {
             cout << "Unable to open the file for saving!" << endl;
