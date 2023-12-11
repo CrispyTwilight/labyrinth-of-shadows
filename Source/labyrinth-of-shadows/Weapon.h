@@ -2,8 +2,10 @@
 // Date: 12/07/2023
 // Desc: Header file for the Armor struct.
 #pragma once
+// #include "All_Includes.h
 #include "Item.h"
 #include "Dice.h"
+
 struct Weapon : public Item {
 	// Define enum for weapon types that can be used to determine what kind of weapon it is.
 	enum WeaponType {
@@ -14,15 +16,13 @@ struct Weapon : public Item {
 		SPEAR,
 		STAFF,
 		SWORD,
-		WEAPON_TYPE_COUNT // Used to determine the number of possible weapon types.0.
+		WEAPON_TYPE_COUNT // Used to determine the number of possible weapon types.
 	};
 
 	// Other fields
 	WeaponType type;
 	int damage;
 	int weight;
-	int value;
-	string name;
 	string material;
 
 	// Constructor with default arguments and initializer list.
@@ -90,9 +90,9 @@ struct Weapon : public Item {
 		else if (weaponTypeStr == "Sword") {
 			return Weapon::SWORD;
 		}
-
-		// Return a default value in case of an unknown string
-		return Weapon::NONE;
+		else {
+			return Weapon::NONE;
+		}
 	}
 };
 
@@ -108,4 +108,3 @@ string weaponTypeToString(Weapon::WeaponType type) {
 	default: return "None";
 	}
 }
-

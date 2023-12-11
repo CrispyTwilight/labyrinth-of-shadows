@@ -13,6 +13,7 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <sstream>
 #include <thread>
 #include <vector>
 #include <windows.h>
@@ -30,10 +31,11 @@ using namespace std;
 #include "Map.h"
 
 // Item includes
-#include "Inventory.h"
 #include "Item.h"
+#include "Inventory.h"
 #include "Weapon.h"
 #include "Armor.h"
+#include "Potion.h"
 #include "Shop.h"
 #include "Loot.h"
 

@@ -19,7 +19,6 @@ public:
 		setMax(mx);
 		setMin(mn);
 		setPrevRoll(pr);
-		int srand(time(0)); // JPO: Moved to constructor
 	}
 
 	//Getters

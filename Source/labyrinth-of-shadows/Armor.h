@@ -2,6 +2,7 @@
 // Date: 12/07/2023
 // Desc: Header file for the Armor struct.
 #pragma once
+// #include "All_Includes.h"
 #include "Item.h"
 #include "Dice.h"
 
@@ -23,8 +24,6 @@ struct Armor : public Item {
 	ArmorType type;
 	int defense;
 	int weight;
-	int value;
-	string name;
 	string material;
 
 	// Constructor with default arguments and initializer list.
@@ -60,7 +59,6 @@ struct Armor : public Item {
 	}
 
 	//Armor constructor for the load file
-
 	Armor(string armorType, int def, int wei, int val, const string& nm, const string& mat)
 	{
 		type = stringToArmorType(armorType);
@@ -99,17 +97,14 @@ struct Armor : public Item {
 		else if (armorTypeStr == "Gloves") {
 			return Armor::GLOVES;
 		}
-
-		// Return a default value in case of an unknown string
-		return Armor::NONE;
+		else {
+			return Armor::NONE;
 	}
-
-	
+	}
 };
 
-
 // Operating globally on the Armor struct. It is put in this file because it is related to the Armor struct.
-std::string armorTypeToString(Armor::ArmorType type) {
+string armorTypeToString(Armor::ArmorType type) {
 	switch (type) {
 	case Armor::BREASTPLATE: return "Breastplate";
 	case Armor::HELMET: return "Helmet";
@@ -120,5 +115,4 @@ std::string armorTypeToString(Armor::ArmorType type) {
 	case Armor::GLOVES: return "Gloves";
 	default: return "None";
 	}
-}
-
+};

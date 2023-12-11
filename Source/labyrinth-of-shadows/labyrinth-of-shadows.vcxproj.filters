@@ -122,10 +122,22 @@
     <ClInclude Include="Item.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Screens.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Rogue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="InventoryLoadFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MapManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Placeholder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

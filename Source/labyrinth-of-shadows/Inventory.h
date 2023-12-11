@@ -2,6 +2,9 @@
 // Date: 12/07/2023
 // Desc: header file for the Inventory class for the player's inventory
 #pragma once
+//#include "Ranger.h"
+//#include "Rogue.h"
+//#include "Wizard.h"
 #include "Weapon.h"
 #include <vector>
 #include "Item.h"
@@ -33,6 +36,7 @@ private:
 public:
 	
 	// Constructor
+
 	Inventory()
 	{
 		selectedCharacter = "";
@@ -141,7 +145,7 @@ public:
 
 	// setters
 	void addItem(Item* item) {
-			items.push_back(item);
+		items.push_back(item);
 	}
 
 	void setEquippedArmorByType(Armor::ArmorType type, Armor* armor)
@@ -174,7 +178,7 @@ public:
 	}
 
 	//These are for loading the game.
-	void setHealthPotion(int &health)
+	void setHealthPotion(int& health)
 	{
 		healthPotion = health;
 	}
@@ -225,6 +229,7 @@ public:
 	}
 
 	//Other Functions
+
 	void openInventory()
 	{
 		if (healthPotion > 0)
@@ -307,4 +312,5 @@ public:
 			}
 		} while (choice != 4);
 	}
+
 };

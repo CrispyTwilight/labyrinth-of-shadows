@@ -4,14 +4,13 @@
 #pragma once
 #include "All_Includes.h"
 
-MapManager manage;
-
 //Map class
 class Map {
-private:
+protected:
     int mapLevel = 0;
     int width, height;
     vector<vector<char>> grid;
+    MapManager manage; // JPO: Moved from gloabal to inside the class. Everything still seems to work. If there is a reason it was global, let me know.
 
 public:
     Map(int w, int h) : width(w), height(h) // JPO: We could get rid of the default map I think.
@@ -22,7 +21,7 @@ public:
     void updatePlayerPosition(int x, int y)
     {
         //Only clear the player's previous position
-        for (auto& row : grid)
+       /* for (auto& row : grid)
         {
             for (auto& cell : row)
             {
@@ -32,22 +31,22 @@ public:
                 }
             }
         }
+        */
         //Update new position
-        if (x >= 0 && x < width && y >= 0 && y < height)
-        {
-            grid[y][x] = '@'; // '@' represents the player
-        }
+
+        grid[y][x] = '@'; // '@' represents the player
+
     }
 
     void display() const
-    { // JPO: const because it doesn't modify the object
+    {
         for (const auto& row : grid)
         {
             for (char cell : row)
             {
                 cout << cell << " ";
             }
-            cout << endl; // JPO: removed the std:: prefix because we're using the namespace std
+            cout << endl;
         }
     }
 
@@ -66,7 +65,6 @@ public:
             break;
         case 3:
             grid = manage.getMap3();
-            finalKeys();
             break;
         default:
             cout << "There was an error in map generation";
@@ -89,19 +87,125 @@ public:
         return mapLevel;
     }
 
-    void finalKeys()
+    void updateSpace(int x, int y, char u)
     {
-        int x[4] = {18, 3, 28, 48};
-        int y[4] = { 6, 20, 20, 1 };
+        manage.updateMap(y, x, mapLevel, u);
+    }
 
-        for (int i = 0; i < 4; i++)
+    void reset()
+    {
+        manage.reset();
+    }
+
+    void moveE() // JPO: could this be refactored into two shorter functions?
+    {
+        static int currentDirection = -1;
+        static bool stop = false;
+        const int moveProbability = 80;
+
+        vector<pair<int, int>> results = manage.findE(grid);
+        for (const auto& result : results)
         {
-            grid[y[i]][x[i]] = '?';
+            int x = result.first;
+            int y = result.second;
+
+            if (rand() % 100 >= moveProbability) {
+                continue;
+            }
+
+            if (currentDirection == -1 || stop)
+            {
+                currentDirection = rand() % 4 + 1;
+                stop = false;
+            }
+
+            switch (currentDirection)
+            {
+            case 1:
+                if (grid[x + 1][y] != '#' && grid[x + 1][y] != 'E')
+                {
+                    manage.updateMap(x, y, mapLevel, '.');
+                    manage.updateMap(x + 1, y, mapLevel, 'E');
+                }
+                else
+                {
+                    stop = true;
+                }
+                break;
+            case 2:
+                if (grid[x - 1][y] != '#' && grid[x + 1][y] != 'E')
+                {
+                    manage.updateMap(x, y, mapLevel, '.');
+                    manage.updateMap(x - 1, y, mapLevel, 'E');
+                }
+                else
+                {
+                    stop = true;
+                }
+                break;
+            case 3:
+                if (grid[x][y + 1] != '#' && grid[x + 1][y] != 'E')
+                {
+                    manage.updateMap(x, y, mapLevel, '.');
+                    manage.updateMap(x, y + 1, mapLevel, 'E');
+                }
+                else
+                {
+                    stop = true;
+                }
+                break;
+            case 4:
+                if (grid[x + 1][y - 1] != '#' && grid[x + 1][y] != 'E')
+                {
+                    manage.updateMap(x, y, mapLevel, '.');
+                    manage.updateMap(x, y - 1, mapLevel, 'E');
+                }
+                else
+                {
+                    stop = true;
+                }
+                break;
+            default:
+                break;
+            }
         }
     }
 
-    void updateNonStatic()
+    void moveL(int px, int py)
     {
-        finalKeys();
+        vector<pair<int, int>> results = manage.findL(grid);
+        for (const auto& result : results)
+        {
+            int x = result.first;
+            int y = result.second;
+
+            if (grid[x + 1][y] != '#' && grid[x + 1][y] != 'E')
+            {
+                manage.updateMap(x, y, mapLevel, '.');
+                manage.updateMap(x + 1, y, mapLevel, 'E');
+            }
+
+            if (grid[x - 1][y] != '#' && grid[x + 1][y] != 'E')
+            {
+                manage.updateMap(x, y, mapLevel, '.');
+                manage.updateMap(x - 1, y, mapLevel, 'E');
+            }
+            else
+            {
+                // JPO: Fill in the rest
+            }
+
+            if (grid[x][y + 1] != '#' && grid[x + 1][y] != 'E')
+            {
+                manage.updateMap(x, y, mapLevel, '.');
+                manage.updateMap(x, y + 1, mapLevel, 'E');
+            }
+
+            if (grid[x + 1][y - 1] != '#' && grid[x + 1][y] != 'E')
+            {
+                manage.updateMap(x, y, mapLevel, '.');
+                manage.updateMap(x, y - 1, mapLevel, 'E');
+            }
+        }
     }
 };
