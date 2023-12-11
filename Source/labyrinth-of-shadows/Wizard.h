@@ -2,6 +2,8 @@
 //Date: 11/30/23
 //Desc: Creating the subclass Wizard for the player.
 #pragma once
+#include <iostream>
+#include <string>
 #include "Character.h"
 #include "Enemy.h"
 #include "easyEnemy.h"
