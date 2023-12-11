@@ -4,6 +4,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <iterator>
 #include "Character.h"
 #include "Enemy.h"
 #include "easyEnemy.h"
