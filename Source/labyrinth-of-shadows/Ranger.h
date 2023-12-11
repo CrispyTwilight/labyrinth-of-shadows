@@ -10,6 +10,7 @@
 #include "Boss.h"
 #include "Inventory.h"
 
+
 class Ranger : public Character
 {
 private:
@@ -33,6 +34,7 @@ private:
     bool isStunned;
     bool isEnemyStunned;
     Dice d100;
+
 
 public:
     Ranger()
@@ -63,6 +65,7 @@ public:
         repulsionUses = repulsionLvl;
         d100.setMin(1);
         d100.setMax(100);
+       
 
     }
     Ranger(int max, int hea, int  str, int intel, int  dex, int lev, int ex, int need, int rai, int charg, int re, int potion, int turns)
@@ -449,7 +452,8 @@ public:
                     << "3. Take Health Potion\n"
                     << "4. Rain of Arrows\n"
                     << "5. Charged Shot\n"
-                    << "6. Repulsion\n" << endl << endl;
+                    << "6. Repulsion\n" << endl;
+
 
 
 
@@ -458,6 +462,7 @@ public:
                 {
                     incorrectChoice = false;
                     cout << "Enter your choice: \n";
+
                     choice = _getch() - '0';
 
                     if (choice == 3 && healthPotions < 0) {

@@ -6,7 +6,7 @@
 
 bool checkForLevelUp(int& exp, int& expNeeded)
 {
-    if (exp == expNeeded)
+    if (exp > expNeeded)
     {
         return true;
     }
