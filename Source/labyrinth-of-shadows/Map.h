@@ -8,6 +8,7 @@
 class Map {
 protected:
     bool fightTrigger = false;
+    bool bossTrigger = false;
     int mapLevel = 0;
     int width, height;
     vector<vector<char>> grid;
@@ -131,6 +132,7 @@ public:
                 {
                     manage.updateMap(x, y, mapLevel, '.');
                     manage.updateMap(x + 1, y, mapLevel, 'E');
+                    toggle();
                 }
                 else
                 {
@@ -215,9 +217,19 @@ public:
         fightTrigger = !fightTrigger;
     }
 
+    void toggle2()
+    {
+        bossTrigger = !bossTrigger;
+    }
+
     bool getTrigger()
     {
         return fightTrigger;
+    }
+
+    bool getTrigger2()
+    {
+        return bossTrigger;
     }
 
 };
