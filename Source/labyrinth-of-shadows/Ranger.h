@@ -356,7 +356,12 @@ public:
                         cout << "Charged shot is still on cooldown. You have to wait " << chargedCooldown << " number of turns.\n";
                         incorrectChoice = true;
                     }
-                    else if (choice < 0 || choice > 5) {
+                    else if (choice == 6 && repulsionUses < 0)
+                    {
+                        cout << "You are out of Repulsion uses please try something else.\n";
+                        incorrectChoice = true;
+                    }
+                    else if (choice < 0 || choice > 6) {
                         cout << "Incorrect value. Please enter a valid value.\n";
                         incorrectChoice = true;
                     }
@@ -484,7 +489,12 @@ public:
                         cout << "Charged shot is still on cooldown. You have to wait " << chargedCooldown << " number of turns.\n";
                         incorrectChoice = true;
                     }
-                    else if (choice < 0 || choice > 5) {
+                    else if (choice == 6 && repulsionUses < 0)
+                    {
+                        cout << "You are out of Repulsion uses please try something else.\n";
+                        incorrectChoice = true;
+                    }
+                    else if (choice < 0 || choice > 6) {
                         cout << "Incorrect value. Please enter a valid value.\n";
                         incorrectChoice = true;
                     }
@@ -613,7 +623,12 @@ public:
                         cout << "Charged shot is still on cooldown. You have to wait " << chargedCooldown << " number of turns.\n";
                         incorrectChoice = true;
                     }
-                    else if (choice < 0 || choice > 5) {
+                    else if (choice == 6 && repulsionUses < 0)
+                    {
+                        cout << "You are out of Repulsion uses please try something else.\n";
+                        incorrectChoice = true;
+                    }
+                    else if (choice < 0 || choice > 6) {
                         cout << "Incorrect value. Please enter a valid value.\n";
                         incorrectChoice = true;
                     }
