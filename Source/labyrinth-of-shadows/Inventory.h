@@ -13,8 +13,6 @@
 #include "Armor.h" // Added by John
 #include "Dice.h"
 
-
-
 class Inventory
 {
 private:
@@ -34,9 +32,7 @@ private:
 	bool hasPotion;
 
 public:
-	
 	// Constructor
-
 	Inventory()
 	{
 		selectedCharacter = "";
@@ -248,7 +244,7 @@ public:
 			choice = _getch() - '0'; // Convert char input to integer
 
 			int index; // JPO: Moved declaration out of case 2
-			switch (choice) 
+			switch (choice)
 			{
 				case 1:
 				{
@@ -312,5 +308,4 @@ public:
 			}
 		} while (choice != 4);
 	}
-
 };

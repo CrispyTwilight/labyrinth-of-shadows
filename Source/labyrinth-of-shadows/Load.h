@@ -142,6 +142,7 @@ public:
                     inFile >> loadFile.type >> loadFile.defense >> loadFile.weight >> loadFile.value >> loadFile.material;
                     Armor* equippedArmor = new Armor(loadFile.type, loadFile.defense, loadFile.weight, loadFile.value, itemName, loadFile.material);
                     playerInventory.setEquippedArmorByType(equippedArmor->getArmorType(), equippedArmor);
+
                     playerInventory.addItem(equippedArmor);
                     delete equippedArmor;
                 }
@@ -149,8 +150,12 @@ public:
                 else if (itemType == "EquippedWeapon") {
                     inFile >> loadFile.wType >> loadFile.damage >> loadFile.weightW >> loadFile.valueW >> loadFile.materialW;
                     Weapon* equippedWeapon = new Weapon(loadFile.wType, loadFile.damage, loadFile.weightW, loadFile.valueW, itemName, loadFile.materialW);
+
                     playerInventory.setEquippedWeapon(equippedWeapon);
                     playerInventory.addItem(equippedWeapon);
+
+                    playerInventory.setEquippedWeapon(equippedWeapon);\
+
                     delete equippedWeapon;
                 }
                 else if (itemType == "Gold") {
