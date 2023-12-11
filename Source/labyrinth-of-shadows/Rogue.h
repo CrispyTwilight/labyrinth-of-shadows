@@ -279,9 +279,9 @@ public:
                     << "4. Sneak Attack\n"
                     << "5. Dodge\n" << endl << endl;
 
-
+                bool incorrectChoice = false;
                 do {
-                    bool incorrectChoice = false;
+                    incorrectChoice = false;
                     cout << "Enter your choice: ";
                     choice = _getch() - '0';
 
@@ -312,7 +312,7 @@ public:
                         continue;
                     }
 
-                } while (choice > 5 || choice < 0);
+                } while (choice > 5 || choice < 0 || incorrectChoice);
 
 
                 switch (choice)

@@ -124,7 +124,6 @@ public:
             {
                 // Make the Ranger the currently selected class.
                 characterSelected = "Ranger";
-                cout << playerRanger.getHealth();
                 playerInventory.setMaxWeight(characterSelected);
                 cout << "Health: " << playerRanger.getHealth() << endl;
                 break;
@@ -227,7 +226,7 @@ public:
 
     void fighting(bool isBossFight)
     {
-        cout << playerRanger.getHealth();
+      
         if (characterSelected == "Ranger") {
             if (round < 3) {
                 easyEnemy* easyEnemyPtr = new easyEnemy();
@@ -350,23 +349,20 @@ public:
 
                 Enemy* enemyPtr = new Enemy(round);
                 playerWizard.fightNormalEnemy(*enemyPtr, playerInventory);
-
                 delete enemyPtr;
                 enemyPtr = nullptr;
 
-                if (playerWizard.getHealth() > 0)
-                {
+                if (playerWizard.getHealth() > 0) {
                     round++;
                     score = score + 10;
                     // This is a victory and should take them back to the map.
                 }
-                else
-                {
+                else {
                     cout << "Your score was " << score << endl;
                     score = 0;
                     round = 0;
                     init();
-                   //This is a loss and should restart the game.
+                    // Should Restart the game
                 }
 
             }
