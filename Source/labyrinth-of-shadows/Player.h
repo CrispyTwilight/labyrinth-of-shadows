@@ -3,6 +3,7 @@
 // Desc: Class to represent the player in the game for movement and position.
 #pragma once
 #include "All_Includes.h"
+#include "Shop.h" // JPO: Added to allow access to the shop.
 
 class Player
 {
@@ -70,6 +71,10 @@ public:
             map.setLevel(map.getLevel() + 1);
             px = x = 25;
             py = y = 15;
+        }
+        if (map.getGrid()[py][px] == 'S')
+        {
+            Shop::getInstance()->runShop(); // Call to handle the shop logic.
         }
         else if (map.getGrid()[py][px] != '#')
         {
