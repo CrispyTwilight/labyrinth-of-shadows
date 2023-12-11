@@ -95,6 +95,8 @@ void mapDriver() {
             game.fighting(false);
             
             gameMap.toggle();
+
+            system("cls");
         }
         if (gameMap.getTrigger2())
         {

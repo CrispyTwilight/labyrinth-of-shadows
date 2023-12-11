@@ -54,8 +54,9 @@ public:
 
     void mapSwitcher()
     {
-        for (auto& row : grid) {
-            fill(row.begin(), row.end(), '.'); // Replace every cell with '.' to clear enemies and other characters
+        for (auto& row : grid) 
+        {
+            fill(row.begin(), row.end(), '.'); //Replace every cell with '.' to clear enemies and other characters
         }
         switch (mapLevel)
         {
@@ -132,7 +133,6 @@ public:
                 {
                     manage.updateMap(x, y, mapLevel, '.');
                     manage.updateMap(x + 1, y, mapLevel, 'E');
-                    toggle();
                 }
                 else
                 {
