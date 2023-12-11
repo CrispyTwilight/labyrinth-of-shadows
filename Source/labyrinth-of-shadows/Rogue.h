@@ -786,14 +786,16 @@ public:
         {
             setHealth(maxHealth);
         }
-        std::cout << "Your health is now at " << getHealth() << std::endl;
+        cout << "Your health is now at " << getHealth() << std::endl;
     }
 
     void fightNormalEnemy(Enemy& enemy, Inventory& playerInventory)
     {
+        sneakAttackCooldown = 0;
+        dodgeCooldown = 0;
 
 
-        std::cout << "You encounter " << enemy.getName() << " with " << enemy.getHealth() << " health!\n";
+        cout << "You encounter " << enemy.getName() << " with " << enemy.getHealth() << " health!\n";
 
         while (getHealth() > 0 && enemy.getHealth() > 0) {
             // Player's turn
@@ -837,6 +839,8 @@ public:
     // Fighting for the boss enemy.
     void fightBossEnemy(Boss& boss, Inventory& playerInventory)
     {
+        sneakAttackCooldown = 0;
+        dodgeCooldown = 0;
         int turnCount = 0;
         cout << "You encounter " << boss.getName() << " with " << boss.getHealth() << " health!\n";
 
@@ -895,6 +899,8 @@ public:
     // The function when the player has to fight a weak enemy (The first three enemies).
     void fightWeakEnemy(easyEnemy& easyEnemy, Inventory & playerInventory)
     {
+        sneakAttackCooldown = 0;
+        dodgeCooldown = 0;
         // Display the enemy's details
         cout << "You encounter " << easyEnemy.getName() << " with " << easyEnemy.getHealth() << " health!\n";
 

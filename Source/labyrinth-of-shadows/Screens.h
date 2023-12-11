@@ -96,7 +96,6 @@ public:
                                      YOU HAVE OVERCOME THE LABYRINTH!
                                  PRESS ENTER TO RETURN TO THE MAIN MENU.)";
         _getch(); // Pause for user input
-        processMainMenu();
     }
 
     void showHelp()

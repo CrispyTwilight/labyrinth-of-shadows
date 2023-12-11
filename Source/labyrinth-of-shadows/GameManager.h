@@ -15,6 +15,7 @@
 #include "easyEnemy.h"
 #include "Boss.h"
 #include "Inventory.h"
+#include "Screens.h"
 
 using namespace std;
 // Will need to #include all of the other classes here.
@@ -30,6 +31,7 @@ private:
     Wizard playerWizard;
     Rogue playerRogue;
     Inventory playerInventory;
+    Screens screen;
 
 
 public:
@@ -55,13 +57,13 @@ public:
         //we need to make all of the player classes before we can continue to the other parts of the code.
         // These are the base stats for the class these are definitely are subject to change when playtesting.
 
+
+        screen.showTitle();
         int choice;
        // Introduction will go here
         //Splash Screen goes here and Introduction
 
-            cout << "1. Start New Game\n"
-            << "2. Load Previous Game\n"
-            << "0. Quit and Save the Game\n";
+            
 
         do
         {
@@ -213,6 +215,12 @@ public:
 
 
         }
+        case '?':
+        {
+            screen.showHelp();
+
+            break;
+        }
         default:
         {
             cout << "You have encountered an unexpected error.\n";
@@ -244,8 +252,9 @@ public:
                     cout << "Your score was " << score << endl;
                     score = 0;
                     round = 0;
+                    screen.showDeath();
                     init();
-                    // This is a victory and should take them back to the map.
+                    // This is a lose scenario and should take them back to the map.
                 }
             }
 
@@ -258,12 +267,14 @@ public:
                 if (playerRanger.getHealth() > 0) {
                     round++;
                     score = score + 5;
+                    screen.showVictory();
                     // This is a victory and should take them back to the map.
                 }
                 else {
                     cout << "Your score was " << score << endl;
                     score = 0;
                     round = 0;
+                    screen.showDeath();
                     //Should Restart the game
                 }
             }
@@ -283,6 +294,7 @@ public:
                     cout << "Your score was " << score << endl;
                     score = 0;
                     round = 0;
+                    screen.showDeath();
                     init();
                    // Should Restart the game
                 }
@@ -313,12 +325,13 @@ public:
                     cout << "Your score was " << score << endl;
                     score = 0;
                     round = 0;
+                    screen.showDeath();
                     init();
                     //This is a loss and should restart the game.
                 }
             }
 
-            if (isBossFight)
+            else if (isBossFight)
             {
                 Boss* bossPtr = new Boss(round);
 
@@ -339,6 +352,7 @@ public:
                     cout << "Your score was " << score << endl;
                     score = 0;
                     round = 0;
+                    screen.showDeath();
                     init();
                     //This is a lose and should restart the game.
                 }
@@ -362,6 +376,7 @@ public:
                     cout << "Your score was " << score << endl;
                     score = 0;
                     round = 0;
+                    screen.showDeath();
                     init();
                     // Should Restart the game
                 }
@@ -391,13 +406,12 @@ public:
                 cout << "Your score was " << score << endl;
                 score = 0;
                 round = 0;
+                screen.showDeath();
                 init();
                 //This is a loss and should restart the game.
             }
         }
-
-
-        if (isBossFight)
+        else if (isBossFight)
         {
             Boss* bossPtr = new Boss(round);
 
@@ -418,12 +432,11 @@ public:
                 cout << "Your score was " << score << endl;
                 score = 0;
                 round = 0;
+                screen.showDeath();
                 init();
                 //This is a lose and should restart the game.
             }
         }
-
-
         else
         {
 
@@ -444,6 +457,7 @@ public:
                 cout << "Your score was " << score << endl;
                 score = 0;
                 round = 0;
+                screen.showDeath();
                 init();
                 //This is a loss and should restart the game.
             }
