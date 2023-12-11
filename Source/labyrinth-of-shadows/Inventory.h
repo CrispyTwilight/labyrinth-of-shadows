@@ -9,9 +9,7 @@
 #include <map> // Added by Will
 #include "Armor.h" // Added by John
 #include "Dice.h"
-#include "Ranger.h"
-#include "Wizard.h"
-#include "Rogue.h"
+
 
 
 class Inventory
@@ -19,7 +17,6 @@ class Inventory
 private:
 	// fields
 	vector<Item*> items;
-
 	//Since we need linked pairs of Armor for their armorType so the player can equip more than one type of armor at a time.
 	//This is what I found that would allow us to keep track of it just inside of Inventory instead of having to call whatever character they are playing.
 	//It uses map which does require a header file but it seems to be the best way of storing these so that we could also easily save/load them later which is important.
@@ -34,17 +31,18 @@ private:
 	bool hasPotion;
 
 public:
+	
 	// Constructor
-	Inventory(string& character, int& max)
+	Inventory()
 	{
-		selectedCharacter = character;
-		maxWeight = max;
+		selectedCharacter = "";
+		getItemWeight(selectedCharacter);
 		gold = 20;
 		hasPotion = false;
 	}
 
 	// getters
-	void getItemWeight() // JPO: Changed from in to void.
+	void getItemWeight(string& selectedCharacter) // JPO: Changed from in to void.
 	{
 		if (selectedCharacter == "Ranger")
 		{
@@ -73,7 +71,7 @@ public:
 
 		for (const Item* item : items)
 		{
-			//currentWeight += item->weight; Not done.
+			//currentWeight += item->weight; not done
 		}
 
 		return currentWeight;
@@ -112,6 +110,16 @@ public:
 	Weapon* getEquippedWeapon() const
 	{
 		return equippedWeapon;
+	}
+
+	int getEquippedWeaponDamage() const {
+		if (equippedWeapon) {
+			return equippedWeapon->damage;
+		}
+		else {
+			// Return a default value or handle the case when no weapon is equipped
+			return 2; // For example, returning 0 if no weapon is equipped
+		}
 	}
 
 	void displayItemsInfo() const {
@@ -168,7 +176,20 @@ public:
 	//These are for loading the game.
 	void setHealthPotion(int &health)
 	{
-		healthPotion += health;
+		healthPotion = health;
+	}
+
+	int getTotalEquippedDefense() const {
+		int totalDefense = 0;
+
+		for (const auto& armorSlot : equippedArmorSlots) {
+			Armor* armor = armorSlot.second;
+			if (armor) {
+				totalDefense += armor->defense;
+			}
+		}
+
+		return totalDefense;
 	}
 
 	void equip(Item* item)
@@ -204,7 +225,7 @@ public:
 	}
 
 	//Other Functions
-	void openInventory(Ranger playerRanger, Wizard playerWizard, Rogue playerRogue)
+	void openInventory()
 	{
 		if (healthPotion > 0)
 		{
@@ -228,7 +249,8 @@ public:
 				{
 					displayItemsInfo();
 					cout << "Enter index of item to equip: ";
-					int indexToEquip = _getch() - '0'; // Convert char input to integer
+					int indexToEquip;
+					cin >> indexToEquip;
 					indexToEquip -= 1; // Adjust index to start from 0
 
 					if (indexToEquip >= 0 && indexToEquip < items.size()) {
@@ -244,7 +266,7 @@ public:
 				{
 					displayItemsInfo();
 					cout << "Enter index of item to discard: ";
-					index = _getch() - '0'; // Convert char input to integer
+					cin >> index; // In case they have more than 9 items they won't be locked out discarding other items.
 					index -= 1; // Adjust index to start from 0
 
 					if (index >= 0 && index < items.size()) {
@@ -260,6 +282,7 @@ public:
 				}
 				case 3:
 				{
+					/*
 					if (!hasPotion) // JPO: reduced nesting by using early error test
 						cout << "You don't have any health potions.\n";
 					else if (selectedCharacter == "Ranger")
@@ -269,6 +292,7 @@ public:
 					else if (selectedCharacter == "Rogue")
 						playerRogue.takePotion();
 					break;
+					*/
 				}
 				case 4:
 				{
