@@ -199,7 +199,7 @@ public:
         cout << "What Spell would you like to level up\n"
              << "Leveling up Fireball will increase its damage\n"
              << "Leveling up Ice wall will increase its effect duration but also increase cooldown duration.\n"
-             << "Your cooldown will be two more than the level of the Ice wall spell."
+             << "Your cooldown will be two more than the level of the Ice wall spell.\n"
              << "1. FireBall " << fireballLvl << endl
              << "2. Ice Wall " << iceWallLvl << endl;
 
@@ -207,10 +207,10 @@ public:
         {
             cout << "Enter your choice: \n";
             choice = _getch() - '0';
-            if (choice < 0 || choice > 3) {
+            if (choice < 0 || choice > 2) {
                 cout << "Incorrect value. Please enter a valid value.\n";
             }
-        } while (choice < 0 || choice > 3);
+        } while (choice < 0 || choice > 2);
 
         switch (choice)
         {
@@ -229,7 +229,7 @@ public:
         }
         default:
         {
-            cout << "You have encountered an error.";
+            cout << "You have encountered an error.\n";
             break;
         }
         //Checking if they need to be leveled up again its in the util because it is an easy check that all characters use.
@@ -444,7 +444,7 @@ public:
                 }
                 default:
                 {
-                    cout << "You have encountered an error.";
+                    cout << "You have encountered an error.\n";
                     break;
                 }
                 }
@@ -486,16 +486,16 @@ public:
         for (int turn = 1; turn <= numberTurns; ++turn)
         {
 
-            cout << "It's your turn, what would you like to do?\n";
-            cout << "1. Basic Attack\n"
-
+            cout << "It's your turn, what would you like to do?\n"
+                << "1. Basic Attack\n"
                 << "2. Take Health Potion\n"
                 << "3. Ice Wall\n"
                 << "4. Fireball\n";
 
+            bool incorrectChoice = false;
             do
             {
-                bool incorrectChoice = false;
+                incorrectChoice = false;
                 cout << "Enter your choice: \n";
                 cin >> choice;
 
@@ -516,13 +516,9 @@ public:
                     incorrectChoice = true;
                 }
 
-                // Check if the choice is invalid due to cooldown or lack of resources
-                if (incorrectChoice) {
-                    // The do-while loop will continue if the choice was incorrect
-                    continue;
-                }
+                
 
-            } while (choice > 5 || choice < 0);
+            } while (choice > 4 || choice < 0 || incorrectChoice);
 
             switch (choice)
             {
