@@ -32,40 +32,6 @@ public:
                                       2) Load Previous Game
                                       ESC) Quit and Save the Game
                                       ?) Help and Controls)";
-
-    }
-
-    void processMainMenu() {
-        char choice;
-        do {
-            showTitle();
-            choice = _getch();
-            switch (choice)
-            {
-            case '1': 
-            {
-                
-                break;
-            }
-            case '2':
-                cout << "\nLoading previous game...\n";
-                system ("pause");
-                // call to load game
-                break;
-            case 27: // ESC
-                cout << "\nSaving and quitting game...\n";
-                //system("pause");
-                return;
-                // call to save game
-            case '?':
-                showHelp();
-                break;
-            default:
-                cout << "\nInvalid choice. Try again." << endl;
-                system("pause");
-                break;
-            }
-        } while (true);
     }
 
     void showDeath()
@@ -80,9 +46,8 @@ public:
                                                   |||||
 
                                             YOU HAVE PERISHED.
-                                 PRESS ENTER TO RETURN TO THE MAIN MENU.)" << endl;
+                                 PRESS ENTER TO RETURN TO THE MAIN MENU.)";
         _getch(); // Pause for user input
-        processMainMenu();
     }
 
     void showVictory()
@@ -119,10 +84,10 @@ public:
         ENTER - SAVE GAME
         CTRL - LOAD GAME
         ESC - RETURN TO MENU
-        
+
         PRESS ANY KEY TO EXIT
         )";
-        
+
         _getch(); // Pause for user input
         // This should return to whatever screen the user was on before.
     }

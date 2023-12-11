@@ -33,7 +33,6 @@ private:
     Inventory playerInventory;
     Screens screen;
 
-
 public:
     GameManager()
     {
@@ -47,174 +46,149 @@ public:
         round = 0;
         score = 0;
         characterSelected = "";
-        init();
     }
-    // Initializes the game, loads resources, etc.
-    void init()
-    {
-        system("cls");
-        // Since we need to be able to quit the game immediatley but still want to save and quit to be one function
-        //we need to make all of the player classes before we can continue to the other parts of the code.
-        // These are the base stats for the class these are definitely are subject to change when playtesting.
 
-
-        screen.showTitle();
-        int choice;
-       // Introduction will go here
-        //Splash Screen goes here and Introduction
-
-            
-
-        do
-        {
-            cout << "Enter your choice: ";
-            choice = _getch() - '0';
-            if (choice < 0 || choice > 2)
-            {
-                cout << "Incorrect value. Please enter a valid value.\n";
-            }
-        } while (choice < 0 || choice > 2);
-
-
-        switch (choice)
-        {
-        case 0:
-        {
-            Save save;
-            if (characterSelected == "Ranger")
-            {
-                save.saveTheGameRanger(round, score, playerRanger, playerInventory);
-            }
-            else if (characterSelected == "Wizard")
-            {
-                save.saveTheGameWizard(round, score, playerWizard,playerInventory);
-            }
-            else if (characterSelected == "Rogue")
-            {
-                save.saveTheGameRogue(round, score, playerRogue, playerInventory);
-            }
-            else
-            {
-                cout << "There is no character to be saved.";
-            }
-            exit(0);
-
-        }
-        case 1:
-        {
-            choice = 0;
-            cout << "Select a class to play as Ranger, Wizard, or Warrior.\n"
-                << "1. Ranger (A class focused on reflecting attacks and dodging attacks while doing massive damage)\n"
-                << "2. Wizard (A High Defense and High Damaging Wizard)\n"
-                << "3. Rogue (A damaging Rogue that can vanish and do deadly sneak attacks\n";
-
-            do
-            {
-                cout << "Enter your choice: \n";
-
-                choice = _getch() - '0';
-
-                if (choice < 0 || choice > 3)
-                {
-                    cout << "Incorrect value. Please enter a valid value.\n";
-                }
-            } while (choice < 0 || choice > 3);
-
+    void processMainMenu() {
+        char choice;
+        do {
+            screen.showTitle();
+            choice = _getch();
             switch (choice)
             {
-            case 1:
-            {
-                // Make the Ranger the currently selected class.
+            case '1': {
+                startNewGame();
+                break;
+            }
+            case '2':
+                cout << "\nLoading previous game...\n";
+                loadGame();
+                startNewGame();
+                system("pause");
+                break;
+            case 27: // ESC
+                cout << "\nSaving and quitting game...\n";
+                saveGame();
+                system("pause");
+                return;
+            case '?':
+                screen.showHelp();
+                break;
+            default:
+                cout << "\nInvalid choice. Try again." << endl;
+                system("pause");
+                break;
+            }
+        } while (true);
+    }
+
+    void saveGame() {
+        Save save;
+        if (characterSelected == "Ranger") {
+            save.saveTheGameRanger(round, score, playerRanger, playerInventory);
+            cout << "Your game has been saved.\n";
+        } else if (characterSelected == "Wizard") {
+            save.saveTheGameWizard(round, score, playerWizard, playerInventory);
+            cout << "Your game has been saved.\n";
+        } else if (characterSelected == "Rogue") {
+            save.saveTheGameRogue(round, score, playerRogue, playerInventory);
+            cout << "Your game has been saved.\n";
+        } else {
+            cout << "There is no character to be saved.";
+        }
+        return;
+    }
+
+    void startNewGame() {
+        cout << "\n\nSelect a class to play as:\n"
+            << "1) Ranger (A class focused on reflecting attacks and dodging attacks while doing massive damage)\n"
+            << "2) Wizard (A High Defense and High Damaging Wizard)\n"
+            << "3) Rogue (A damaging Rogue that can vanish and do deadly sneak attacks)\n"
+            << "ESC) Exit";
+
+        char choice;
+        do {
+            choice = _getch();
+            switch (choice) {
+            case '1':
                 characterSelected = "Ranger";
                 playerInventory.setMaxWeight(characterSelected);
-                cout << "Health: " << playerRanger.getHealth() << endl;
+                startMap();
                 break;
-            }
-            case 2:
-            {
-                // Make the Wizard the curren1tly selected class.
+            case '2':
                 characterSelected = "Wizard";
                 playerInventory.setMaxWeight(characterSelected);
+                startMap();
                 break;
-            }
-            case 3:
-            {
-                //Make the Rogue the currently selected class.
+            case '3':
                 characterSelected = "Rogue";
                 playerInventory.setMaxWeight(characterSelected);
+                startMap();
                 break;
-            }
+            case 27: // ESC
+                return;
             default:
-            {
-                "You have encountered an error.";
+                cout << "\nInvalid choice. Try again.\n";
                 break;
             }
+        } while (true);
+    }
+
+    void loadGame() {
+        int choice = 0;
+        Load load;
+        cout << "\nWhat class would you like to load?\n"
+            << "1. Ranger\n"
+            << "2. Wizard\n"
+            << "3. Rogue\n";
+
+        do {
+            cout << "Enter your choice: ";
+            choice = _getch() - '0';
+
+            switch (choice) {
+            case 1:
+                load.loadTheGameRanger(score, round, playerRanger, playerInventory);
+                characterSelected = "Ranger";
+                break;
+            case 2:
+                load.loadTheGameWizard(score, round, playerWizard, playerInventory);
+                characterSelected = "Wizard";
+                break;
+            case 3:
+                load.loadTheGameRogue(score, round, playerRogue, playerInventory);
+                characterSelected = "Rogue";
+                break;
+            default:
+                cout << "Incorrect value. Please enter a valid value.\n";
+                choice = 0; // Reset choice to ensure the loop continues
+                break;
             }
-            break;
-        }
-        //Load the game from previous save.
-        case 2:
+        } while (choice < 1 || choice > 3);
+    }
+
+    void startMap()
+    {
+        Map gameMap(51, 31); // JPO: Updated so that the @ is can actually be in the middle of the map.
+        Player player(gameMap, 25, 15); // JPO: Updated so that the player starts in the middle of the map.
+        while (true)
         {
-            //Creating the load object.
-            Load load; //JPO: changed from load() to load
-            // Reseting the choice variable back to zero.
-            choice = 0;
-            //Displaying the menu for the player
-                cout << "What class would you like to load?\n"
-                << "1. Ranger\n"
-                << "2. Wizard\n"
-                << "3. Rogue\n";
+            srand(time(NULL));
+            //This clears the cli
+            setCursorPosition(0, 0);
 
-            //Average do-while loop.
-            do
-            {
-                cout << "Enter your choice: ";
-                choice = _getch() - '0';
-                if (choice < 0 || choice > 3)
-                {
-                    cout << "Incorrect value. Please enter a valid value.\n";
-                }
+            //Update player's position on the map
+            int playerX, playerY;
 
+            player.getPosition(playerX, playerY);
+            gameMap.updatePlayerPosition(playerX, playerY);
+            gameMap.display();
 
-                switch (choice)
-                {
-                case 1:
-                {
-                    //Loading the previously used Ranger class.
-                    load.loadTheGameRanger(score, round, playerRanger, playerInventory);
-                    // Make the current class selected into the Ranger so the rest of the code will work properly.
-                    characterSelected = "Ranger";
+            gameMap.mapSwitcher();
 
-                    break;
-                }
-                case 2:
-                {
-                    //Loading the previous Wizard class.
-                    load.loadTheGameWizard(score, round, playerWizard, playerInventory);
-                    // Make the current class selected into the wizard for loading.
-                    characterSelected = "Wizard";
-                    break;
-                }
-                case 3:
-                {
-                    //Loading the game for the rogue class.
-                    load.loadTheGameRogue(score, round, playerRogue, playerInventory);
-                    //Making the currently selected character the rogue after loading the game.
-                    characterSelected = "Rogue";
-                    break;
-                }
-                default:
-                {
-                    //Input validation.
-                    cout << "You have entered in an incorrect value. Please try again.\n";
-                    break;
-                }
-                }
+            player.handleInput();
 
-            } while (choice < 0 || choice > 3);
+            gameMap.mapSwitcher();
 
-
-        }
         case '?':
         {
             screen.showHelp();
@@ -226,16 +200,34 @@ public:
             cout << "You have encountered an unexpected error.\n";
             break;
         }
+            gameMap.moveL(playerY, playerX);
+            gameMap.moveE();
 
+
+            visual();
+            if (gameMap.getTrigger())
+            {
+                gameMap.updateSpace(playerX, playerY, '.');
+
+                //Calls the fighting.
+                fighting(false);
+
+                gameMap.toggle();
+
+                system("cls");
+            }
+            if (gameMap.getTrigger2())
+            {
+                fighting(true);
+            }
+
+            //This is necessary to control speed of the game.
+            this_thread::sleep_for(chrono::milliseconds(100));
         }
-
     }
-
-
 
     void fighting(bool isBossFight)
     {
-      
         if (characterSelected == "Ranger") {
             if (round < 3) {
                 easyEnemy* easyEnemyPtr = new easyEnemy();
@@ -253,7 +245,7 @@ public:
                     score = 0;
                     round = 0;
                     screen.showDeath();
-                    init();
+                    processMainMenu();
                     // This is a lose scenario and should take them back to the map.
                 }
             }
@@ -295,7 +287,7 @@ public:
                     score = 0;
                     round = 0;
                     screen.showDeath();
-                    init();
+                    processMainMenu();
                    // Should Restart the game
                 }
             }
@@ -326,7 +318,7 @@ public:
                     score = 0;
                     round = 0;
                     screen.showDeath();
-                    init();
+                    processMainMenu();
                     //This is a loss and should restart the game.
                 }
             }
@@ -353,11 +345,10 @@ public:
                     score = 0;
                     round = 0;
                     screen.showDeath();
-                    init();
+                    processMainMenu();
                     //This is a lose and should restart the game.
                 }
             }
-
 
             else
             {
@@ -377,10 +368,9 @@ public:
                     score = 0;
                     round = 0;
                     screen.showDeath();
-                    init();
-                    // Should Restart the game
+                    processMainMenu();
+                   // This is a loss and should restart the game.
                 }
-
             }
         }
         else if (characterSelected == "Rogue")
@@ -407,8 +397,8 @@ public:
                 score = 0;
                 round = 0;
                 screen.showDeath();
-                init();
-                //This is a loss and should restart the game.
+                processMainMenu();
+                // This is a loss and should restart the game.
             }
         }
         else if (isBossFight)
@@ -433,13 +423,13 @@ public:
                 score = 0;
                 round = 0;
                 screen.showDeath();
-                init();
+                processMainMenu();
                 //This is a lose and should restart the game.
             }
         }
+
         else
         {
-
             Enemy* enemyPtr = new Enemy(round);
             playerRogue.fightNormalEnemy(*enemyPtr, playerInventory);
 
@@ -458,10 +448,9 @@ public:
                 score = 0;
                 round = 0;
                 screen.showDeath();
-                init();
+                processMainMenu();
                 //This is a loss and should restart the game.
             }
-
         }
         }
     };
@@ -471,5 +460,4 @@ public:
     {
         playerInventory.openInventory();
     }
-
 };
