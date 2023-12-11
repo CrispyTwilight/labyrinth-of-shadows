@@ -61,52 +61,7 @@ void testDriver() {
 // JPO: This function drives the map.
 void gameDriver() {
     GameManager game;
-    //Game objects
-    Map gameMap(51, 31); // JPO: Updated so that the @ is can actually be in the middle of the map.
-    Player player(gameMap, 25, 15); // JPO: Updated so that the player starts in the middle of the map.
-
-    //Infinite loop right now, will need a menu.
-    while (true)
-    {
-        srand(time(NULL));
-        //This clears the cli
-        setCursorPosition(0, 0);
-
-        //Update player's position on the map
-        int playerX, playerY;
-
-        player.getPosition(playerX, playerY);
-        gameMap.updatePlayerPosition(playerX, playerY);
-        gameMap.display();
-
-        gameMap.mapSwitcher();
-
-        player.handleInput();
-
-        gameMap.mapSwitcher();
-
-        gameMap.moveL(playerY, playerX);
-        gameMap.moveE();
-
-
-        visual();
-        if (gameMap.getTrigger())
-        {
-            gameMap.updateSpace(playerX, playerY, '.');
-
-            //Calls the fighting.
-            game.fighting(false);
-
-            gameMap.toggle();
-        }
-        if (gameMap.getTrigger2())
-        {
-            game.fighting(true);
-        }
-
-        //This is necessary to control speed of the game.
-        this_thread::sleep_for(chrono::milliseconds(100));
-    }
+    game.processMainMenu();
 }
 
 // JPO: This function drives the shop for testing.
@@ -130,7 +85,7 @@ void screenDriver() {
         switch (choice) {
         case '1':
             screens.showTitle();
-            screens.processMainMenu();
+            // screens.processMainMenu(); broken
             break;
         case '2':
             screens.showDeath();
