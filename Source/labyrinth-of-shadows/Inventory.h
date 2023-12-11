@@ -24,12 +24,21 @@ private:
 	//It uses map which does require a header file but it seems to be the best way of storing these so that we could also easily save/load them later which is important.
 	map<Armor::ArmorType, Armor*> equippedArmorSlots;
 
+	static Inventory* instance; // Singleton instance
+
+	// Private constructor so that only the singleton instance can be created
+    Inventory(int maxWeight = 0, int maxItems = 9, int gold = 100, string selectedCharacter = "", Armor* equippedArmor = nullptr, Weapon* equippedWeapon = nullptr)
+    : maxWeight(maxWeight), maxItems(maxItems), gold(gold), selectedCharacter(selectedCharacter), equippedArmor(equippedArmor), equippedWeapon(equippedWeapon) {
+        setMaxWeight(selectedCharacter);
+    }
+
 public:
-	// Constructor
-	Inventory(int maxWeight = 0, int maxItems = 9, int gold = 100, string selectedCharacter = "", Armor* equippedArmor = nullptr, Weapon* equippedWeapon = nullptr)
-	: maxWeight(maxWeight), maxItems(maxItems), gold(gold), selectedCharacter(selectedCharacter), equippedArmor(equippedArmor), equippedWeapon(equippedWeapon) {
-		setMaxWeight(selectedCharacter);
-	}
+	static Inventory* getInstance() {
+        if (instance == nullptr) {
+            instance = new Inventory();
+        }
+        return instance;
+    }
 
 	// Destructor
 	~Inventory() {
@@ -292,6 +301,7 @@ public:
 	}
 
 	void openInventory() {
+		system("cls");
 		char choice;
 		do {
 			displayCurrentInventory();

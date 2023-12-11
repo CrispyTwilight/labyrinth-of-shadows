@@ -32,7 +32,7 @@ public:
     }
 
     //Passing by reference in order to properly load the game for the rest of the program.
-    void loadTheGameRanger(int &score, int &round, Ranger &playerRanger, Inventory& playerInventory)
+    void loadTheGameRanger(int &score, int &round, Ranger &playerRanger)
     {
         ifstream inFile("ranger.txt");
         if (inFile.is_open());
@@ -61,10 +61,10 @@ public:
         inFile.close();
         cout << "Character Loaded Sucessfully\n";
 
-        loadInventory(playerInventory, "ranger_inventory.txt");
+        loadInventory("ranger_inventory.txt");
     }
 
-    void loadTheGameWizard(int &score, int &round, Wizard &playerWizard, Inventory& playerInventory)
+    void loadTheGameWizard(int &score, int &round, Wizard &playerWizard)
     {
         ifstream inFile("wizard.txt");
         if (inFile.is_open());
@@ -92,10 +92,10 @@ public:
         inFile.close();
         cout << "Character Loaded Sucessfully\n";
 
-        loadInventory(playerInventory, "wizard_inventory.txt");
+        loadInventory("wizard_inventory.txt");
 	}
 
-    void loadTheGameRogue(int& score, int& round, Rogue& playerRogue, Inventory& playerInventory)
+    void loadTheGameRogue(int& score, int& round, Rogue& playerRogue)
     {
         ifstream inFile("rogue.txt");
         if (inFile.is_open());
@@ -123,11 +123,12 @@ public:
         inFile.close();
         cout << "Character Loaded Sucessfully\n";
 
-        loadInventory(playerInventory, "rogue_inventory.txt");
+        loadInventory("rogue_inventory.txt");
 
     }
 
-    void loadInventory(Inventory& playerInventory, const string& filename) {
+    void loadInventory(const string& filename) {
+        Inventory& playerInventory = *Inventory::getInstance();
         ifstream inFile(filename);
         if (inFile.is_open()) {
             InventoryLoadFile loadFile;

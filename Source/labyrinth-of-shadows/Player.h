@@ -35,8 +35,6 @@ public:
         case 'D': case 'd':
             move(1, 0);
             break;
-            //Add more controls as needed
-        //JPO: Add a default case to handle invalid input.
         }
     }
 

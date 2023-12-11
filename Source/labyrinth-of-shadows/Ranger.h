@@ -34,7 +34,7 @@ private:
     bool isStunned;
     bool isEnemyStunned;
     Dice d100;
-
+    Inventory* playerInventory;
 
 public:
     Ranger()
@@ -68,7 +68,7 @@ public:
        
 
     }
-    Ranger(int max, int hea, int  str, int intel, int  dex, int lev, int ex, int need, int rai, int charg, int re, int potion, int turns)
+    Ranger(int max, int hea, int  str, int intel, int  dex, int lev, int ex, int need, int rai, int charg, int re, int potion, int turns) : playerInventory(getInventory())
     {
         maxHealth = max;
         //This is a placeholder because the playername
@@ -297,7 +297,7 @@ public:
     }
 
     //Player turn for the base enemy type
-    void playerTurn(Enemy& enemy, Inventory& playerInventory)
+    void playerTurn(Enemy& enemy)
     {
         //Setting blocking back to off at the start of their next turn.
         isBlocking = false;
@@ -369,7 +369,7 @@ public:
                 {
                     cout << "You did a basic attack\n";
                     // attack monster
-                    attackMonster(enemy, playerInventory.getEquippedWeaponDamage());
+                    attackMonster(enemy, playerInventory->getEquippedWeaponDamage());
                     break;
                 }
                 case 2:
@@ -423,7 +423,7 @@ public:
     }
 
     // Player for the easy enemy
-    void playerTurnEasy(easyEnemy& easyEnemy, Inventory& playerInventory)
+    void playerTurnEasy(easyEnemy& easyEnemy)
     {
         isBlocking = false;
         // Only lowering the cooldowns when they are above zero.
@@ -496,7 +496,7 @@ public:
 
                     // attack monster
                     cout << "You did a basic attack\n";
-                    attackMonsterEasy(easyEnemy, playerInventory.getEquippedWeaponDamage());
+                    attackMonsterEasy(easyEnemy, playerInventory->getEquippedWeaponDamage());
                     break;
                 }
                 case 2:
@@ -552,7 +552,7 @@ public:
     }
 
     // Player turn for the boss class
-    void playerTurnBoss(Boss& boss, Inventory& playerInventory)
+    void playerTurnBoss(Boss& boss)
     {
         isBlocking = false;
         // Only lowering the cooldowns when they are above zero.
@@ -623,7 +623,7 @@ public:
 
                     // attack monster
                     cout << "You did a basic attack\n";
-                    attackMonsterBoss(boss, playerInventory.getEquippedWeaponDamage());
+                    attackMonsterBoss(boss, playerInventory->getEquippedWeaponDamage());
                     break;
                 }
                 case 2:
@@ -698,7 +698,7 @@ public:
     }
 
     // Taking damage from the easy enemy.
-    void takeDamageEasyEnemy(easyEnemy& easyEnemy, int d, Inventory& playerInventory)
+    void takeDamageEasyEnemy(easyEnemy& easyEnemy, int d)
     {
         int enemyAttack = d100.rollDice();
 
@@ -717,7 +717,7 @@ public:
         }
         else
         {
-            d = d - playerInventory.getTotalEquippedDefense();
+            d = d - playerInventory->getTotalEquippedDefense();
             if (d < 0)
             {
                 d = 0;
@@ -728,7 +728,7 @@ public:
     }
 
     // Taking damage from a normal enemy.
-    void takeDamageBoss(Boss& boss, int d, Inventory& playerInventory)
+    void takeDamageBoss(Boss& boss, int d)
     {
         // Getting a random number and seeing if the players dex is higher and if it is they will dodge the attack.
         int enemyAttack = d100.rollDice();
@@ -749,7 +749,7 @@ public:
         }
         else
         {
-            d = d - playerInventory.getTotalEquippedDefense();
+            d = d - playerInventory->getTotalEquippedDefense();
             if (d < 0)
             {
                 d = 0;
@@ -760,7 +760,7 @@ public:
     }
 
     // Taking damage from a normal enemy.
-    void takeDamage(Enemy& enemy, int d, Inventory& playerInventory)
+    void takeDamage(Enemy& enemy, int d)
     {
         // Getting a random number and seeing if the players dex is higher and if it is they will dodge the attack.
         int enemyAttack = d100.rollDice();
@@ -780,7 +780,7 @@ public:
         }
         else
         {
-            d = d - playerInventory.getTotalEquippedDefense();
+            d = d - playerInventory->getTotalEquippedDefense();
             if (d < 0)
             {
                 d = 0;
@@ -814,18 +814,18 @@ public:
         cout << "Your health is now at " << getHealth() << endl;
     }
 
-    void fightNormalEnemy(Enemy& enemy, Inventory& playerInventory)
+    void fightNormalEnemy(Enemy& enemy)
     {
         cout << "You encounter " << enemy.getName() << " with " << enemy.getHealth() << " health!\n";
 
         while (getHealth() > 0 && enemy.getHealth() > 0) {
             // Player's turn
-            playerTurn(enemy, playerInventory);
+            playerTurn(enemy);
 
             if (!isEnemyStunned)
             {
                 // Enemy's turn
-                takeDamage(enemy, enemy.getDamage(),playerInventory);
+                takeDamage(enemy, enemy.getDamage());
             }
             else
             {
@@ -863,14 +863,14 @@ public:
     }
 
     // Fighting for the boss enemy.
-    void fightBossEnemy(Boss& boss, Inventory& playerInventory)
+    void fightBossEnemy(Boss& boss)
     {
         int turnCount = 0;
         cout << "You encounter " << boss.getName() << " with " << boss.getHealth() << " health!\n";
 
         while (getHealth() > 0 && boss.getHealth() > 0) {
             // Player's turn
-            playerTurnBoss(boss, playerInventory);
+            playerTurnBoss(boss);
 
             turnCount++;
 
@@ -879,7 +879,7 @@ public:
                 // Enemy's turn
                 if (turnCount % 2 != 0)
                 {
-                    takeDamageBoss(boss, boss.getDamage(), playerInventory);
+                    takeDamageBoss(boss, boss.getDamage());
                 }
                 else
                 {
@@ -924,21 +924,21 @@ public:
     }
 
     // The function when the player has to fight a weak enemy (The first three enemies).
-    void fightWeakEnemy(easyEnemy& easyEnemy, Inventory& playerInventory)
+    void fightWeakEnemy(easyEnemy& easyEnemy)
     {
         // Display the enemy's details
         cout << "You encounter " << easyEnemy.getName() << " with " << easyEnemy.getHealth() << " health!\n";
 
         while (getHealth() > 0 && easyEnemy.getHealth() > 0) {
             // Player's turn
-            playerTurnEasy(easyEnemy,playerInventory);
+            playerTurnEasy(easyEnemy);
 
             if (easyEnemy.getHealth() > 0)
             {
                 // Enemy's turn
                 if (!isEnemyStunned)
                 {
-                    takeDamageEasyEnemy(easyEnemy, easyEnemy.attack(), playerInventory);
+                    takeDamageEasyEnemy(easyEnemy, easyEnemy.attack());
                 }
                 else
                 {
