@@ -124,7 +124,7 @@ public:
                 // Make the Ranger the currently selected class.
                 characterSelected = "Ranger";
                 cout << playerRanger.getHealth();
-                playerInventory.getItemWeight(characterSelected);
+                playerInventory.setMaxWeight(characterSelected);
                 cout << "Health: " << playerRanger.getHealth() << endl;
                 break;
             }
@@ -132,14 +132,14 @@ public:
             {
                 // Make the Wizard the curren1tly selected class.
                 characterSelected = "Wizard";
-                playerInventory.getItemWeight(characterSelected);
+                playerInventory.setMaxWeight(characterSelected);
                 break;
             }
             case 3:
             {
                 //Make the Rogue the currently selected class.
                 characterSelected = "Rogue";
-                playerInventory.getItemWeight(characterSelected);
+                playerInventory.setMaxWeight(characterSelected);
                 break;
             }
             default:

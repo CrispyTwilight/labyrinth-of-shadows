@@ -30,3 +30,13 @@ void visual()
     cursorInfo.bVisible = false; // Set cursor visibility
     SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
 }
+
+
+// JPO: This is used in Inventory and Shop Classes to get the index of the item the user wants to select.
+int getZeroBasedIntOrQuit() {
+    char input = _getch();
+    if (input == 27) { // Escape key
+        return -1;
+    }
+    return input - 1 - '0'; // Convert to integer 0 based index
+}

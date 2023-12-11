@@ -115,7 +115,7 @@ public:
         ofstream outFile(filename);
         if (outFile.is_open()) {
             // Save health potion count
-            outFile << "HealthPotion," << playerInventory.getHealthPotion() << "\n";
+            // outFile << "HealthPotion," << playerInventory.getHealthPotion() << "\n"; JPO: We need to save the Items, health potions are one time use.
 
             // Save equipped armor details
             for (const auto& armorSlot : playerInventory.getEquippedArmorSlots()) {
@@ -166,5 +166,5 @@ public:
         outFile.close();
     }
 
-  
+
 };

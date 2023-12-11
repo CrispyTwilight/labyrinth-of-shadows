@@ -136,7 +136,7 @@ public:
             while (inFile >> itemType >> itemName) {
                 if (itemType == "HealthPotion") {
                     inFile >> loadFile.healthPotion;
-                    playerInventory.setHealthPotion(loadFile.healthPotion);
+                    //playerInventory.setHealthPotion(loadFile.healthPotion); JPO: We need to save the Items, health potions are one time use.
                 }
                 else if (itemType == "EquippedArmor") {
                     inFile >> loadFile.type >> loadFile.defense >> loadFile.weight >> loadFile.value >> loadFile.material;

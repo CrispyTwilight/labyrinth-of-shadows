@@ -100,7 +100,7 @@ void mapDriver() {
         {
             game.fighting(true);
         }
-       
+
         //This is necessary to control speed of the game.
         this_thread::sleep_for(chrono::milliseconds(100));
     }
