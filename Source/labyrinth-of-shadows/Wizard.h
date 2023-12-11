@@ -275,6 +275,7 @@ public:
                 << "3. Ice Wall\n"
                 << "4. Fireball\n";
 
+
             do {
                 bool incorrectChoice = false;
                 cout << "Enter your choice: \n";
@@ -339,7 +340,7 @@ public:
             }
             default:
             {
-                cout << "You have encountered an error.";
+                cout << "You have encountered an error.\n";
                 break;
             }
             }
@@ -386,7 +387,7 @@ public:
                 do {
                     bool incorrectChoice = false;
                     cout << "Enter your choice: ";
-                    cin >> choice;
+                    choice = _getch() - '0';
 
                     if (choice == 2 && healthPotions < 0) {
                         cout << "You are out of health potions, pick another option.\n";
@@ -497,7 +498,7 @@ public:
             {
                 incorrectChoice = false;
                 cout << "Enter your choice: \n";
-                cin >> choice;
+                choice = _getch() - '0';
 
                 if (choice == 2 && healthPotions < 0) {
                     cout << "You are out of health potions, pick another option.\n";

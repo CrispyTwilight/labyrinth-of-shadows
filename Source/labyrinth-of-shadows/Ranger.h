@@ -283,6 +283,9 @@ public:
                 break;
             }
         }
+
+        system("pause");
+        system("cls");
         //Checking for a level up.
         if (checkForLevelUp(exp, expNeeded))
         {
@@ -828,6 +831,8 @@ public:
                 << "Charged Shot cooldown " << chargedCooldown << endl
                 << "Repulsion uses remaining " << repulsionUses << endl
                 << "Enemy's health: " << enemy.getHealth() << endl;
+            system("pause");
+            system("cls");
         }
 
         if (getHealth() <= 0) {
@@ -886,6 +891,8 @@ public:
                 << "Charged Shot cooldown " << chargedCooldown << endl
                 << "Repulsion uses remaining " << repulsionUses << endl
                 << "Boss's health: " << boss.getHealth() << endl;
+            system("pause");
+            system("cls");
         }
 
         if (getHealth() <= 0)
@@ -940,6 +947,8 @@ public:
                 << "Charged Shot cooldown " << chargedCooldown << endl
                 << "Repulsion uses remaining " << repulsionUses << endl
                 << "Enemy's health: " << easyEnemy.getHealth() << endl;
+            system("pause");
+            system("cls");
         }
 
         if (getHealth() <= 0) {
