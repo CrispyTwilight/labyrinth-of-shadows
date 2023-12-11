@@ -199,6 +199,7 @@ public:
                     load.loadTheGameRogue(score, round, playerRogue, playerInventory);
                     //Making the currently selected character the rogue after loading the game.
                     characterSelected = "Rogue";
+                    break;
                 }
                 default:
                 {
