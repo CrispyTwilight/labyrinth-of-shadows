@@ -34,7 +34,7 @@ private:
     Rogue playerRogue;
     Inventory playerInventory;
     Screens screen;
-  
+
 public:
     GameManager()
     {
@@ -64,7 +64,7 @@ public:
             case '2':
                 cout << "\nLoading previous game...\n";
                 loadGame();
-                runGame();
+                startNewGame();
                 system("pause");
                 break;
             case 27: // ESC
