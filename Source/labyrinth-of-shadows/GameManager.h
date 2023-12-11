@@ -224,14 +224,6 @@ public:
 
 
 
-
-    // Starts the main game loop
-    void start()
-    {
-        // We need to decide whether to display the map first or pop up a menu
-    }
-
-
     void fighting(bool isBossFight)
     {
         cout << playerRanger.getHealth();
@@ -462,41 +454,10 @@ public:
         }
     };
 
-
-
     // Handles the game's update logic
     void openInventory()
     {
         playerInventory.openInventory();
     }
 
-    // Renders the game to the screen
-    void render()
-    {
-
-    }
-
-    // Ends the game with message, releases resources, etc.
-    void end()
-    {
-
-    }
-
-    // Saves the current game state
-    void save()
-    {
-
-    }
-
-    // Loads a saved game state
-    void load()
-    {
-
-    }
-
-    // Quits the game
-    void SaveAndQuit()
-    {
-
-    }
 };

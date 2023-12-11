@@ -6,10 +6,14 @@
 
 bool checkForLevelUp(int& exp, int& expNeeded)
 {
-    if (exp == expNeeded)
+    if (exp > expNeeded)
     {
         return true;
-    };
+    }
+    else
+    {
+        return false;
+    }
 }
 
 //This is for some visual issues I was having with the cli, Should be moved later to utilities.

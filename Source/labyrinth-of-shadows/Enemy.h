@@ -4,6 +4,8 @@
 #pragma once
 // #include "All_Includes.h"
 // JPO: Temp fix for the issue with the compiler not finding the files
+//Fixes the game crash.
+#include <iterator>
 #include "Sword.h"
 #include "Bow.h"
 #include "Staff.h"
