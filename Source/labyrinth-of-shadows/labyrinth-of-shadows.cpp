@@ -14,6 +14,7 @@ GameManager game;
 
 int main()
 {
+   
     srand(time(0)); // JPO: Moved from Dice.h to so  it is only called once. Was causing issues with randomness in the shop.
     testDriver();
     return 0;
@@ -89,8 +90,15 @@ void mapDriver() {
         if (gameMap.getTrigger())
         {
             gameMap.updateSpace(playerX, playerY, '.');
-            cout << "BATTLE"; //Battle function goes here
-            //gameMap.toggle();
+
+            //Calls the fighting.
+            game.fighting(false);
+            
+            gameMap.toggle();
+        }
+        if (gameMap.getTrigger2())
+        {
+            game.fighting(true);
         }
 
         //This is necessary to control speed of the game.

@@ -28,7 +28,6 @@ private:
     bool isBlocking;
     bool isStunned;
     bool isEnemyStunned;
-    Staff staff;
     Dice d100;
 public:
     Wizard()

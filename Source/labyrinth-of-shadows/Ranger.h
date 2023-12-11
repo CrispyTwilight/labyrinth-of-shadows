@@ -37,6 +37,32 @@ private:
 public:
     Ranger()
     {
+       
+        maxHealth = 25;
+        //This is a placeholder because the playername
+        setName("Ranger");
+        setHealth(25);
+        strength = 7;
+        intelligence = 3;
+        dexterity = 4;
+        level = 1;
+        numberTurns = 1;
+        healthPotions = 1;
+        exp = 0;
+        expNeeded = 5;
+        rainLvl = 1;
+        chargedLvl = 1;
+        repulsionLvl = 1;
+        // Since this an combat ability it will only be able to activated during combat so it starts off false
+        isRepulsionActivated = false;
+        isBlocking = false;
+        isStunned = false;
+        isEnemyStunned = false;
+        rainCooldown = 0;
+        chargedCooldown = 0;
+        repulsionUses = repulsionLvl;
+        d100.setMin(1);
+        d100.setMax(100);
 
     }
     Ranger(int max, int hea, int  str, int intel, int  dex, int lev, int ex, int need, int rai, int charg, int re, int potion, int turns)

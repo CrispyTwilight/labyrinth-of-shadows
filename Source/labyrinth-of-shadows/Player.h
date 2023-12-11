@@ -105,5 +105,9 @@ public:
             map.reset();
             map.setLevel(0);
         }
+        else if (c == 2)
+        {
+            map.toggle2();
+        }
     }
 };

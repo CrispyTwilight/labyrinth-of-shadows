@@ -30,23 +30,26 @@ private:
     Wizard playerWizard;
     Rogue playerRogue;
     Inventory playerInventory;
+    
 
 public:
     GameManager()
     {
+        Ranger playRanger(25, 25, 5, 5, 7, 1, 0, 5, 0, 0, 0, 0, 1);
+        playerRanger = playRanger;
+        Wizard playWizard(30, 30, 3, 8, 5, 1, 0, 5, 1, 1, 2, 1);
+        playerWizard = playWizard;
+        Rogue playRogue(40, 40, 5, 3, 6, 1, 0, 5, 0, 0, 0, 1);
+        playerRogue = playRogue;
+        Inventory playerInventory;
+        round = 0;
+        score = 0;
+        characterSelected = "";
         init();
     }
     // Initializes the game, loads resources, etc.
     void init()
     {
-        round = 0;
-        score = 0;
-        characterSelected = "";
-        Ranger playerRanger(25, 25, 5, 5, 7, 1, 0, 5, 0, 0, 0, 0, 1);
-        Wizard playerWizard(30, 30, 3, 8, 5, 1, 0, 5, 1, 1, 2, 1);
-        Rogue playerRogue(40, 40, 5, 3, 6, 1, 0, 5, 0, 0, 0, 1);
-        Inventory playerInventory;
-
         // Since we need to be able to quit the game immediatley but still want to save and quit to be one function
         //we need to make all of the player classes before we can continue to the other parts of the code.
         // These are the base stats for the class these are definitely are subject to change when playtesting.
@@ -120,7 +123,9 @@ public:
             {
                 // Make the Ranger the currently selected class.
                 characterSelected = "Ranger";
+                cout << playerRanger.getHealth();
                 playerInventory.setMaxWeight(characterSelected);
+                cout << "Health: " << playerRanger.getHealth() << endl;
                 break;
             }
             case 2:
@@ -177,6 +182,7 @@ public:
                     load.loadTheGameRanger(score, round, playerRanger, playerInventory);
                     // Make the current class selected into the Ranger so the rest of the code will work properly.
                     characterSelected = "Ranger";
+                   
                     break;
                 }
                 case 2:
@@ -211,10 +217,9 @@ public:
             cout << "You have encountered an unexpected error.\n";
             break;
         }
-
-
+     
         }
-        exit(0);
+       
     }
 
 
@@ -229,6 +234,7 @@ public:
 
     void fighting(bool isBossFight)
     {
+        cout << playerRanger.getHealth();
         if (characterSelected == "Ranger") {
             if (round < 3) {
                 easyEnemy* easyEnemyPtr = new easyEnemy();
