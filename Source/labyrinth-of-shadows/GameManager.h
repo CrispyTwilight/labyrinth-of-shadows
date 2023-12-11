@@ -30,7 +30,7 @@ private:
     Wizard playerWizard;
     Rogue playerRogue;
     Inventory playerInventory;
-    
+
 
 public:
     GameManager()
@@ -50,6 +50,7 @@ public:
     // Initializes the game, loads resources, etc.
     void init()
     {
+        system("cls");
         // Since we need to be able to quit the game immediatley but still want to save and quit to be one function
         //we need to make all of the player classes before we can continue to the other parts of the code.
         // These are the base stats for the class these are definitely are subject to change when playtesting.
@@ -182,7 +183,7 @@ public:
                     load.loadTheGameRanger(score, round, playerRanger, playerInventory);
                     // Make the current class selected into the Ranger so the rest of the code will work properly.
                     characterSelected = "Ranger";
-                   
+
                     break;
                 }
                 case 2:
@@ -217,9 +218,9 @@ public:
             cout << "You have encountered an unexpected error.\n";
             break;
         }
-     
+
         }
-       
+
     }
 
 

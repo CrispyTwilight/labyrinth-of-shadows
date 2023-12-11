@@ -26,6 +26,7 @@ using namespace std;
 #include "Util.h"
 #include "Dice.h"
 #include "GameManager.h"
+#include "Screens.h"
 
 // Map includes
 #include "MapManager.h"
