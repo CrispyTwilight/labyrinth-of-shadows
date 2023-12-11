@@ -89,8 +89,15 @@ void mapDriver() {
         if (gameMap.getTrigger())
         {
             gameMap.updateSpace(playerX, playerY, '.');
-            cout << "BATTLE"; //Battle function goes here
-            //gameMap.toggle();
+
+            //Calls the fighting.
+            game.fighting(false);
+            
+            gameMap.toggle();
+        }
+        if (gameMap.getTrigger2())
+        {
+            game.fighting(true);
         }
        
         //This is necessary to control speed of the game.

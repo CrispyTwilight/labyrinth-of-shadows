@@ -8,6 +8,7 @@
 class Map {
 protected:
     bool fightTrigger = false;
+    bool bossTrigger = false;
     int mapLevel = 0;
     int width, height;
     vector<vector<char>> grid;
@@ -130,7 +131,14 @@ public:
                 if (grid[x + 1][y] != '#' && grid[x + 1][y] != 'E' && grid[x + 1][y] != 'A' && grid[x + 1][y] != 'D' && grid[x + 1][y] != '?')
                 {
                     manage.updateMap(x, y, mapLevel, '.');
-                    manage.updateMap(x + 1, y, mapLevel, 'E');
+                    if (grid[x + 1][y] != '@') 
+                    {
+                        manage.updateMap(x + 1, y, mapLevel, 'E');
+                    }
+                    else
+                    {
+                        toggle();
+                    }
                 }
                 else
                 {
@@ -215,9 +223,19 @@ public:
         fightTrigger = !fightTrigger;
     }
 
+    void toggle2()
+    {
+        bossTrigger = !bossTrigger;
+    }
+
     bool getTrigger()
     {
         return fightTrigger;
+    }
+
+    bool getTrigger2()
+    {
+        return bossTrigger;
     }
 
 };
