@@ -15,6 +15,7 @@
 #include "easyEnemy.h"
 #include "Boss.h"
 #include "Inventory.h"
+#include "Screens.h"
 #include "Map.h"
 #include "Player.h"
 
@@ -32,8 +33,8 @@ private:
     Wizard playerWizard;
     Rogue playerRogue;
     Inventory playerInventory;
-
-   
+    Screens screen;
+  
 public:
     GameManager()
     {
@@ -47,416 +48,124 @@ public:
         round = 0;
         score = 0;
         characterSelected = "";
-        init();
     }
-    // Initializes the game, loads resources, etc.
-    void init()
-    {
-        system("cls");
-        // Since we need to be able to quit the game immediatley but still want to save and quit to be one function
-        //we need to make all of the player classes before we can continue to the other parts of the code.
-        // These are the base stats for the class these are definitely are subject to change when playtesting.
 
-        int choice;
-       // Introduction will go here
-        //Splash Screen goes here and Introduction
-
-            cout << "1. Start New Game\n"
-            << "2. Load Previous Game\n"
-            << "0. Quit and Save the Game\n";
-
-        do
-        {
-            cout << "Enter your choice: ";
-            choice = _getch() - '0';
-            if (choice < 0 || choice > 2)
-            {
-                cout << "Incorrect value. Please enter a valid value.\n";
-            }
-        } while (choice < 0 || choice > 2);
-
-
-        switch (choice)
-        {
-        case 0:
-        {
-            Save save;
-            if (characterSelected == "Ranger")
-            {
-                save.saveTheGameRanger(round, score, playerRanger, playerInventory);
-            }
-            else if (characterSelected == "Wizard")
-            {
-                save.saveTheGameWizard(round, score, playerWizard,playerInventory);
-            }
-            else if (characterSelected == "Rogue")
-            {
-                save.saveTheGameRogue(round, score, playerRogue, playerInventory);
-            }
-            else
-            {
-                cout << "There is no character to be saved.";
-            }
-            exit(0);
-
-        }
-        case 1:
-        {
-            choice = 0;
-            cout << "Select a class to play as Ranger, Wizard, or Warrior.\n"
-                << "1. Ranger (A class focused on reflecting attacks and dodging attacks while doing massive damage)\n"
-                << "2. Wizard (A High Defense and High Damaging Wizard)\n"
-                << "3. Rogue (A damaging Rogue that can vanish and do deadly sneak attacks\n";
-
-            do
-            {
-                cout << "Enter your choice: \n";
-
-                choice = _getch() - '0';
-
-                if (choice < 0 || choice > 3)
-                {
-                    cout << "Incorrect value. Please enter a valid value.\n";
-                }
-            } while (choice < 0 || choice > 3);
-
+    void processMainMenu() {
+        char choice;
+        do {
+            screen.showTitle();
+            choice = _getch();
             switch (choice)
             {
-            case 1:
-            {
-                // Make the Ranger the currently selected class.
-                characterSelected = "Ranger";
-                playerInventory.setMaxWeight(characterSelected);
-                cout << "Health: " << playerRanger.getHealth() << endl;
+            case '1': {
+                startNewGame();
                 break;
             }
-            case 2:
-            {
-                // Make the Wizard the curren1tly selected class.
-                characterSelected = "Wizard";
-                playerInventory.setMaxWeight(characterSelected);
+            case '2':
+                cout << "\nLoading previous game...\n";
+                loadGame();
+                runGame();
+                system("pause");
                 break;
-            }
-            case 3:
-            {
-                //Make the Rogue the currently selected class.
-                characterSelected = "Rogue";
-                playerInventory.setMaxWeight(characterSelected);
+            case 27: // ESC
+                cout << "\nSaving and quitting game...\n";
+                saveGame();
+                system("pause");
+                return;
+            case '?':
+                screen.showHelp();
                 break;
-            }
             default:
-            {
-                "You have encountered an error.";
+                cout << "\nInvalid choice. Try again." << endl;
+                system("pause");
                 break;
             }
-            }
-            break;
-        }
-        //Load the game from previous save.
-        case 2:
-        {
-            //Creating the load object.
-            Load load; //JPO: changed from load() to load
-            // Reseting the choice variable back to zero.
-            choice = 0;
-            //Displaying the menu for the player
-                cout << "What class would you like to load?\n"
-                << "1. Ranger\n"
-                << "2. Wizard\n"
-                << "3. Rogue\n";
-
-            //Average do-while loop.
-            do
-            {
-                cout << "Enter your choice: ";
-                choice = _getch() - '0';
-                if (choice < 0 || choice > 3)
-                {
-                    cout << "Incorrect value. Please enter a valid value.\n";
-                }
-
-
-                switch (choice)
-                {
-                case 1:
-                {
-                    //Loading the previously used Ranger class.
-                    load.loadTheGameRanger(score, round, playerRanger, playerInventory);
-                    // Make the current class selected into the Ranger so the rest of the code will work properly.
-                    characterSelected = "Ranger";
-
-                    break;
-                }
-                case 2:
-                {
-                    //Loading the previous Wizard class.
-                    load.loadTheGameWizard(score, round, playerWizard, playerInventory);
-                    // Make the current class selected into the wizard for loading.
-                    characterSelected = "Wizard";
-                    break;
-                }
-                case 3:
-                {
-                    //Loading the game for the rogue class.
-                    load.loadTheGameRogue(score, round, playerRogue, playerInventory);
-                    //Making the currently selected character the rogue after loading the game.
-                    characterSelected = "Rogue";
-                }
-                default:
-                {
-                    //Input validation.
-                    cout << "You have entered in an incorrect value. Please try again.\n";
-                    break;
-                }
-                }
-
-            } while (choice < 0 || choice > 3);
-
-
-        }
-        default:
-        {
-            cout << "You have encountered an unexpected error.\n";
-            break;
-        }
-
-        }
-
+        } while (true);
     }
 
-
-
-    void fighting(bool isBossFight)
-    {
-      
+    void saveGame() {
+        Save save;
         if (characterSelected == "Ranger") {
-            if (round < 3) {
-                easyEnemy* easyEnemyPtr = new easyEnemy();
-                playerRanger.fightWeakEnemy(*easyEnemyPtr,playerInventory);
-                delete easyEnemyPtr;
-                easyEnemyPtr = nullptr;
-
-                if (playerRanger.getHealth() > 0) {
-                    round++;
-                    score = score + 5;
-                    // This is a victory and should take them back to the map.
-                }
-                else {
-                    cout << "Your score was " << score << endl;
-                    score = 0;
-                    round = 0;
-                    init();
-                    // This is a victory and should take them back to the map.
-                }
-            }
-
-            else if (isBossFight) {
-                Boss* bossPtr = new Boss(round);
-                playerRanger.fightBossEnemy(*bossPtr,playerInventory);
-                delete bossPtr;
-                bossPtr = nullptr;
-
-                if (playerRanger.getHealth() > 0) {
-                    round++;
-                    score = score + 5;
-                    // This is a victory and should take them back to the map.
-                }
-                else {
-                    cout << "Your score was " << score << endl;
-                    score = 0;
-                    round = 0;
-                    //Should Restart the game
-                }
-            }
-
-            else {
-                Enemy* enemyPtr = new Enemy(round);
-                playerRanger.fightNormalEnemy(*enemyPtr, playerInventory);
-                delete enemyPtr;
-                enemyPtr = nullptr;
-
-                if (playerRanger.getHealth() > 0) {
-                    round++;
-                    score = score + 10;
-                    // This is a victory and should take them back to the map.
-                }
-                else {
-                    cout << "Your score was " << score << endl;
-                    score = 0;
-                    round = 0;
-                    init();
-                   // Should Restart the game
-                }
-            }
+            save.saveTheGameRanger(round, score, playerRanger, playerInventory);
+            cout << "Your game has been saved.\n";
+        } else if (characterSelected == "Wizard") {
+            save.saveTheGameWizard(round, score, playerWizard, playerInventory);
+            cout << "Your game has been saved.\n";
+        } else if (characterSelected == "Rogue") {
+            save.saveTheGameRogue(round, score, playerRogue, playerInventory);
+            cout << "Your game has been saved.\n";
+        } else {
+            cout << "There is no character to be saved.";
         }
+        return;
+    }
 
-        else if (characterSelected == "Wizard")
-        {
+    void startNewGame() {
+        cout << "\n\nSelect a class to play as:\n"
+            << "1) Ranger (A class focused on reflecting attacks and dodging attacks while doing massive damage)\n"
+            << "2) Wizard (A High Defense and High Damaging Wizard)\n"
+            << "3) Rogue (A damaging Rogue that can vanish and do deadly sneak attacks)\n"
+            << "ESC) Exit";
 
-            if (round < 3)
-            {
-                easyEnemy* easyEnemyPtr = new easyEnemy();
-
-                playerWizard.fightWeakEnemy(*easyEnemyPtr, playerInventory);
-
-                // Freeing the memory allocated for the easyEnemy object
-                delete easyEnemyPtr;
-                easyEnemyPtr = nullptr;
-
-                if (playerWizard.getHealth() > 0)
-                {
-                    round++;
-                    score = score + 5;
-                   // This is a victory and should take them back to the map.
-                }
-                else
-                {
-                    cout << "Your score was " << score << endl;
-                    score = 0;
-                    round = 0;
-                    init();
-                    //This is a loss and should restart the game.
-                }
+        char choice;
+        do {
+            choice = _getch();
+            switch (choice) {
+            case '1':
+                characterSelected = "Ranger";
+                playerInventory.setMaxWeight(characterSelected);
+                startMap();
+                break;
+            case '2':
+                characterSelected = "Wizard";
+                playerInventory.setMaxWeight(characterSelected);
+                startMap();
+                break;
+            case '3':
+                characterSelected = "Rogue";
+                playerInventory.setMaxWeight(characterSelected);
+                startMap();
+                break;
+            case 27: // ESC
+                return;
+            default:
+                cout << "\nInvalid choice. Try again.\n";
+                break;
             }
+        } while (true);
+    }
 
-            if (isBossFight)
-            {
-                Boss* bossPtr = new Boss(round);
+    void loadGame() {
+        int choice = 0;
+        Load load;
+        cout << "\nWhat class would you like to load?\n"
+            << "1. Ranger\n"
+            << "2. Wizard\n"
+            << "3. Rogue\n";
 
-                playerWizard.fightBossEnemy(*bossPtr ,playerInventory);
+        do {
+            cout << "Enter your choice: ";
+            choice = _getch() - '0';
 
-
-                delete bossPtr;
-                bossPtr = nullptr;
-
-                if (playerWizard.getHealth() > 0)
-                {
-                    round++;
-                    score = score + 5;
-                    // This is a victory and should take them back to the map.
-                }
-                else
-                {
-                    cout << "Your score was " << score << endl;
-                    score = 0;
-                    round = 0;
-                    init();
-                    //This is a lose and should restart the game.
-                }
+            switch (choice) {
+            case 1:
+                load.loadTheGameRanger(score, round, playerRanger, playerInventory);
+                characterSelected = "Ranger";
+                break;
+            case 2:
+                load.loadTheGameWizard(score, round, playerWizard, playerInventory);
+                characterSelected = "Wizard";
+                break;
+            case 3:
+                load.loadTheGameRogue(score, round, playerRogue, playerInventory);
+                characterSelected = "Rogue";
+                break;
+            default:
+                cout << "Incorrect value. Please enter a valid value.\n";
+                choice = 0; // Reset choice to ensure the loop continues
+                break;
             }
-
-
-            else
-            {
-
-                Enemy* enemyPtr = new Enemy(round);
-                playerWizard.fightNormalEnemy(*enemyPtr, playerInventory);
-                delete enemyPtr;
-                enemyPtr = nullptr;
-
-                if (playerWizard.getHealth() > 0) {
-                    round++;
-                    score = score + 10;
-                    // This is a victory and should take them back to the map.
-                }
-                else {
-                    cout << "Your score was " << score << endl;
-                    score = 0;
-                    round = 0;
-                    init();
-                    // Should Restart the game
-                }
-
-            }
-        }
-        else if (characterSelected == "Rogue")
-        {
-        if (round < 3)
-        {
-            easyEnemy* easyEnemyPtr = new easyEnemy();
-
-            playerRogue.fightWeakEnemy(*easyEnemyPtr, playerInventory);
-
-            // Freeing the memory allocated for the easyEnemy object
-            delete easyEnemyPtr;
-            easyEnemyPtr = nullptr;
-
-            if (playerRogue.getHealth() > 0)
-            {
-                round++;
-                score = score + 5;
-                // This is a victory and should take them back to the map.
-            }
-            else
-            {
-                cout << "Your score was " << score << endl;
-                score = 0;
-                round = 0;
-                init();
-                //This is a loss and should restart the game.
-            }
-        }
-
-
-        if (isBossFight)
-        {
-            Boss* bossPtr = new Boss(round);
-
-            playerRogue.fightBossEnemy(*bossPtr, playerInventory);
-
-
-            delete bossPtr;
-            bossPtr = nullptr;
-
-            if (playerRogue.getHealth() > 0)
-            {
-                round++;
-                score = score + 5;
-                // This is a victory and should take them back to the map.
-            }
-            else
-            {
-                cout << "Your score was " << score << endl;
-                score = 0;
-                round = 0;
-                init();
-                //This is a lose and should restart the game.
-            }
-        }
-
-
-        else
-        {
-
-            Enemy* enemyPtr = new Enemy(round);
-            playerRogue.fightNormalEnemy(*enemyPtr, playerInventory);
-
-            delete enemyPtr;
-            enemyPtr = nullptr;
-
-            if (playerRogue.getHealth() > 0)
-            {
-                round++;
-                score = score + 10;
-                // This is a victory and should take them back to the map.
-            }
-            else
-            {
-                cout << "Your score was " << score << endl;
-                score = 0;
-                round = 0;
-                init();
-                //This is a loss and should restart the game.
-            }
-
-        }
-        }
-    };
-
-    // Handles the game's update logic
-    void openInventory()
-    {
-        playerInventory.openInventory();
+        } while (choice < 1 || choice > 3);
     }
 
     void startMap()
@@ -508,4 +217,232 @@ public:
         }
     }
 
+    void fighting(bool isBossFight)
+    {
+        if (characterSelected == "Ranger") {
+            if (round < 3) {
+                easyEnemy* easyEnemyPtr = new easyEnemy();
+                playerRanger.fightWeakEnemy(*easyEnemyPtr,playerInventory);
+                delete easyEnemyPtr;
+                easyEnemyPtr = nullptr;
+
+                if (playerRanger.getHealth() > 0) {
+                    round++;
+                    score = score + 5;
+                    // This is a victory and should take them back to the map.
+                }
+                else {
+                    cout << "Your score was " << score << endl;
+                    score = 0;
+                    round = 0;
+                    processMainMenu();
+                    // This is a victory and should take them back to the map.
+                }
+            }
+
+            else if (isBossFight) {
+                Boss* bossPtr = new Boss(round);
+                playerRanger.fightBossEnemy(*bossPtr,playerInventory);
+                delete bossPtr;
+                bossPtr = nullptr;
+
+                if (playerRanger.getHealth() > 0) {
+                    round++;
+                    score = score + 5;
+                    // This is a victory and should take them back to the map.
+                }
+                else {
+                    cout << "Your score was " << score << endl;
+                    score = 0;
+                    round = 0;
+                    //Should Restart the game
+                }
+            }
+
+            else {
+                Enemy* enemyPtr = new Enemy(round);
+                playerRanger.fightNormalEnemy(*enemyPtr, playerInventory);
+                delete enemyPtr;
+                enemyPtr = nullptr;
+
+                if (playerRanger.getHealth() > 0) {
+                    round++;
+                    score = score + 10;
+                    // This is a victory and should take them back to the map.
+                }
+                else {
+                    cout << "Your score was " << score << endl;
+                    score = 0;
+                    round = 0;
+                    processMainMenu();
+                   // Should Restart the game
+                }
+            }
+        }
+
+        else if (characterSelected == "Wizard")
+        {
+
+            if (round < 3)
+            {
+                easyEnemy* easyEnemyPtr = new easyEnemy();
+
+                playerWizard.fightWeakEnemy(*easyEnemyPtr, playerInventory);
+
+                // Freeing the memory allocated for the easyEnemy object
+                delete easyEnemyPtr;
+                easyEnemyPtr = nullptr;
+
+                if (playerWizard.getHealth() > 0)
+                {
+                    round++;
+                    score = score + 5;
+                   // This is a victory and should take them back to the map.
+                }
+                else
+                {
+                    cout << "Your score was " << score << endl;
+                    score = 0;
+                    round = 0;
+                    processMainMenu();
+                    //This is a loss and should restart the game.
+                }
+            }
+
+            if (isBossFight)
+            {
+                Boss* bossPtr = new Boss(round);
+
+                playerWizard.fightBossEnemy(*bossPtr ,playerInventory);
+
+
+                delete bossPtr;
+                bossPtr = nullptr;
+
+                if (playerWizard.getHealth() > 0)
+                {
+                    round++;
+                    score = score + 5;
+                    // This is a victory and should take them back to the map.
+                }
+                else
+                {
+                    cout << "Your score was " << score << endl;
+                    score = 0;
+                    round = 0;
+                    processMainMenu();
+                    //This is a lose and should restart the game.
+                }
+            }
+
+            else
+            {
+
+                Enemy* enemyPtr = new Enemy(round);
+                playerWizard.fightNormalEnemy(*enemyPtr, playerInventory);
+                delete enemyPtr;
+                enemyPtr = nullptr;
+
+                if (playerWizard.getHealth() > 0) {
+                    round++;
+                    score = score + 10;
+                    // This is a victory and should take them back to the map.
+                }
+                else {
+                    cout << "Your score was " << score << endl;
+                    score = 0;
+                    round = 0;
+                    processMainMenu();
+                   //This is a loss and should restart the game.
+                }
+            }
+        }
+        else if (characterSelected == "Rogue")
+        {
+        if (round < 3)
+        {
+            easyEnemy* easyEnemyPtr = new easyEnemy();
+
+            playerRogue.fightWeakEnemy(*easyEnemyPtr, playerInventory);
+
+            // Freeing the memory allocated for the easyEnemy object
+            delete easyEnemyPtr;
+            easyEnemyPtr = nullptr;
+
+            if (playerRogue.getHealth() > 0)
+            {
+                round++;
+                score = score + 5;
+                // This is a victory and should take them back to the map.
+            }
+            else
+            {
+                cout << "Your score was " << score << endl;
+                score = 0;
+                round = 0;
+                processMainMenu();
+                //This is a loss and should restart the game.
+            }
+        }
+
+
+        if (isBossFight)
+        {
+            Boss* bossPtr = new Boss(round);
+
+            playerRogue.fightBossEnemy(*bossPtr, playerInventory);
+
+
+            delete bossPtr;
+            bossPtr = nullptr;
+
+            if (playerRogue.getHealth() > 0)
+            {
+                round++;
+                score = score + 5;
+                // This is a victory and should take them back to the map.
+            }
+            else
+            {
+                cout << "Your score was " << score << endl;
+                score = 0;
+                round = 0;
+                processMainMenu();
+                //This is a lose and should restart the game.
+            }
+        }
+
+        else
+        {
+
+            Enemy* enemyPtr = new Enemy(round);
+            playerRogue.fightNormalEnemy(*enemyPtr, playerInventory);
+
+            delete enemyPtr;
+            enemyPtr = nullptr;
+
+            if (playerRogue.getHealth() > 0)
+            {
+                round++;
+                score = score + 10;
+                // This is a victory and should take them back to the map.
+            }
+            else
+            {
+                cout << "Your score was " << score << endl;
+                score = 0;
+                round = 0;
+                processMainMenu();
+                //This is a loss and should restart the game.
+            }
+
+        }
+        }
+    };
+
+    // Handles the game's update logic
+    void openInventory()
+    {
+        playerInventory.openInventory();
+    }
 };

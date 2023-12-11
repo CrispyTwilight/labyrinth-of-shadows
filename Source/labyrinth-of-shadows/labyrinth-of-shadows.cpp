@@ -61,7 +61,7 @@ void testDriver() {
 // JPO: This function drives the map.
 void gameDriver() {
     GameManager game;
-    game.startMap();
+    game.processMainMenu();
 }
 
 // JPO: This function drives the shop for testing.
@@ -85,7 +85,7 @@ void screenDriver() {
         switch (choice) {
         case '1':
             screens.showTitle();
-            screens.processMainMenu();
+            // screens.processMainMenu(); broken
             break;
         case '2':
             screens.showDeath();
