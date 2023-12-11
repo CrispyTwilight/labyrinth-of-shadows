@@ -183,7 +183,7 @@ public:
     // Leveling up the player
     void levelUp()
     {
-        std::cout << "Congratulations you leveled up!";
+        cout << "Congratulations you leveled up!\n";
         // Increasing the players max health and healing them to full.
         maxHealth += 5;
         setHealth(maxHealth);
@@ -192,7 +192,7 @@ public:
         if (level % 5 == 0) {
             // Increment the number of turns when the player's level is a multiple of 5
             numberTurns++;
-            std::cout << "Congratulations! Your number of turns has increased to: " << numberTurns << endl;
+            cout << "Congratulations! Your number of turns has increased to: " << numberTurns << endl;
         }
 
         expNeeded = level * 5;
@@ -238,6 +238,8 @@ public:
         }
 
         }
+        system("pause");
+        system("cls");
         if (checkForLevelUp(exp, expNeeded))
         {
             levelUp();
@@ -364,6 +366,8 @@ public:
         {
             std::cout << "You turn has been skipped!\n";
         }
+        system("pause");
+        system("cls");
     }
 
     // Player for the easy enemy
@@ -486,6 +490,8 @@ public:
             {
                 cout << "You turn has been skipped!\n";
             }
+            system("pause");
+            system("cls");
         }
     }
 
@@ -608,6 +614,8 @@ public:
                 cout << "You turn has been skipped!\n";
                 isStunned = false;
             }
+            system("pause");
+            system("cls");
         }
     }
 
@@ -802,8 +810,12 @@ public:
             {
                 std::cout << "The enemies turn was skipped\n";
             }
-            std::cout << "Your health is " << getHealth() << " / " << maxHealth
-                << "Enemy's health: " << enemy.getHealth() << std::endl;
+            cout << "Enemy's health: " << enemy.getHealth() << endl
+                << "Dodge Cooldown " << dodgeCooldown << endl
+                << "Sneak Attack Cooldown " << sneakAttackCooldown << endl
+                << "Your Health is at " << getHealth() << endl;
+            system("pause");
+            system("cls");
         }
 
         if (getHealth() <= 0) {
@@ -854,7 +866,12 @@ public:
             }
             // Display updated stats after each round
 
-            cout << "Enemy's health: " << boss.getHealth() << endl;
+            cout << "Enemy's health: " << boss.getHealth() << endl
+                << "Dodge Cooldown " << dodgeCooldown << endl
+                << "Sneak Attack Cooldown " << sneakAttackCooldown << endl
+                << "Your Health is at " << getHealth() << endl;
+            system("pause");
+            system("cls");
         }
 
         if (getHealth() <= 0)
@@ -902,8 +919,12 @@ public:
             }
             // Display updated stats after each round
 
-            cout << "Enemy's health: " << easyEnemy.getHealth() << endl;
-            cout << "Your Health is at " << getHealth() << endl;
+            cout << "Enemy's health: " << easyEnemy.getHealth() << endl
+                << "Dodge Cooldown " << dodgeCooldown << endl
+                << "Sneak Attack Cooldown " << sneakAttackCooldown << endl
+                << "Your Health is at " << getHealth() << endl;
+            system("pause");
+            system("cls");
         }
 
         if (getHealth() <= 0) {

@@ -233,6 +233,8 @@ public:
             break;
         }
         //Checking if they need to be leveled up again its in the util because it is an easy check that all characters use.
+        system("pause");
+        system("cls");
         }
         if (checkForLevelUp(exp, expNeeded))
         {
@@ -344,6 +346,8 @@ public:
                 break;
             }
             }
+            system("pause");
+            system("cls");
         }
     }
 
@@ -456,6 +460,8 @@ public:
             cout << "You stunned your turn is skipped!\n";
             isStunned = false;
         }
+        system("pause");
+        system("cls");
 
     }
 
@@ -557,6 +563,8 @@ public:
                 cout << "You have entered an incorrect value.";
             }
             }
+            system("pause");
+            system("cls");
         }
 
     }
@@ -750,6 +758,9 @@ public:
                 << "Ice Wall Effect " << iceWallEffect << endl
                 << "Fireball Cooldown " << fireballCooldown << endl
                 << "Your Health is at " << getHealth() << endl;
+
+            system("pause");
+            system("cls");
         }
 
         if (getHealth() <= 0)
@@ -798,6 +809,9 @@ public:
                 << "Ice Wall Effect " << iceWallEffect << endl
                 << "Fireball Cooldown " << fireballCooldown << endl
                 << "Your Health is at " << getHealth() << endl;
+
+            system("pause");
+            system("cls");
         }
 
         if (getHealth() <= 0)
@@ -846,6 +860,9 @@ public:
                 << "Ice Wall Effect " << iceWallEffect << endl
                 << "Fireball Cooldown " << fireballCooldown << endl
                 << "Your Health is at " << getHealth() << endl;
+
+            system("pause");
+            system("cls");
         }
 
         if (getHealth() <= 0) {
