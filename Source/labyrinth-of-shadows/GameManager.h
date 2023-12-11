@@ -16,10 +16,8 @@
 #include "Boss.h"
 #include "Inventory.h"
 #include "Screens.h"
-#include "MapManager.h"
 #include "Map.h"
 #include "Player.h"
-#include "Util.h"
 
 using namespace std;
 // Will need to #include all of the other classes here.
@@ -36,7 +34,7 @@ private:
     Rogue playerRogue;
     Inventory playerInventory;
     Screens screen;
-
+  
 public:
     GameManager()
     {
@@ -116,17 +114,17 @@ public:
             case '1':
                 characterSelected = "Ranger";
                 playerInventory.setMaxWeight(characterSelected);
-                runGame();
+                startMap();
                 break;
             case '2':
                 characterSelected = "Wizard";
                 playerInventory.setMaxWeight(characterSelected);
-                runGame();
+                startMap();
                 break;
             case '3':
                 characterSelected = "Rogue";
                 playerInventory.setMaxWeight(characterSelected);
-                runGame();
+                startMap();
                 break;
             case 27: // ESC
                 return;
@@ -170,16 +168,19 @@ public:
         } while (choice < 1 || choice > 3);
     }
 
-    void runGame() {
-        Map gameMap(51, 31);
-        Player player(gameMap, 25, 15);
-
+    void startMap()
+    {
+        Map gameMap(51, 31); // JPO: Updated so that the @ is can actually be in the middle of the map.
+        Player player(gameMap, 25, 15); // JPO: Updated so that the player starts in the middle of the map.
         while (true)
         {
             srand(time(NULL));
+            //This clears the cli
             setCursorPosition(0, 0);
 
+            //Update player's position on the map
             int playerX, playerY;
+
             player.getPosition(playerX, playerY);
             gameMap.updatePlayerPosition(playerX, playerY);
             gameMap.display();
@@ -193,34 +194,31 @@ public:
             gameMap.moveL(playerY, playerX);
             gameMap.moveE();
 
+
             visual();
             if (gameMap.getTrigger())
             {
                 gameMap.updateSpace(playerX, playerY, '.');
 
-                fighting(false);  // Assuming fighting() is a method in GameManager
+                //Calls the fighting.
+                fighting(false);
 
                 gameMap.toggle();
+
+                system("cls");
             }
             if (gameMap.getTrigger2())
             {
-                fighting(true);  // Assuming fighting() is a method in GameManager
+                fighting(true);
             }
 
+            //This is necessary to control speed of the game.
             this_thread::sleep_for(chrono::milliseconds(100));
         }
     }
 
-    // Starts the main game loop
-    void start()
-    {
-        // We need to decide whether to display the map first or pop up a menu
-    }
-
-
     void fighting(bool isBossFight)
     {
-        cout << playerRanger.getHealth();
         if (characterSelected == "Ranger") {
             if (round < 3) {
                 easyEnemy* easyEnemyPtr = new easyEnemy();
@@ -337,31 +335,26 @@ public:
                 }
             }
 
-
             else
             {
 
                 Enemy* enemyPtr = new Enemy(round);
                 playerWizard.fightNormalEnemy(*enemyPtr, playerInventory);
-
                 delete enemyPtr;
                 enemyPtr = nullptr;
 
-                if (playerWizard.getHealth() > 0)
-                {
+                if (playerWizard.getHealth() > 0) {
                     round++;
                     score = score + 10;
                     // This is a victory and should take them back to the map.
                 }
-                else
-                {
+                else {
                     cout << "Your score was " << score << endl;
                     score = 0;
                     round = 0;
                     processMainMenu();
                    //This is a loss and should restart the game.
                 }
-
             }
         }
         else if (characterSelected == "Rogue")
@@ -419,7 +412,6 @@ public:
             }
         }
 
-
         else
         {
 
@@ -448,41 +440,9 @@ public:
         }
     };
 
-
-
     // Handles the game's update logic
     void openInventory()
     {
         playerInventory.openInventory();
-    }
-
-    // Renders the game to the screen
-    void render()
-    {
-
-    }
-
-    // Ends the game with message, releases resources, etc.
-    void end()
-    {
-
-    }
-
-    // Saves the current game state
-    void save()
-    {
-
-    }
-
-    // Loads a saved game state
-    void load()
-    {
-
-    }
-
-    // Quits the game
-    void SaveAndQuit()
-    {
-
     }
 };

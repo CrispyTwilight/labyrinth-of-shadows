@@ -10,6 +10,7 @@
 #include "Boss.h"
 #include "Inventory.h"
 
+
 class Ranger : public Character
 {
 private:
@@ -33,6 +34,7 @@ private:
     bool isStunned;
     bool isEnemyStunned;
     Dice d100;
+
 
 public:
     Ranger()
@@ -63,6 +65,7 @@ public:
         repulsionUses = repulsionLvl;
         d100.setMin(1);
         d100.setMax(100);
+       
 
     }
     Ranger(int max, int hea, int  str, int intel, int  dex, int lev, int ex, int need, int rai, int charg, int re, int potion, int turns)
@@ -283,6 +286,9 @@ public:
                 break;
             }
         }
+
+        system("pause");
+        system("cls");
         //Checking for a level up.
         if (checkForLevelUp(exp, expNeeded))
         {
@@ -326,9 +332,10 @@ public:
                     << "6. Repulsion\n" << endl;
 
 
+                   bool incorrectChoice = false;
                 do
                 {
-                    bool incorrectChoice = false;
+                    incorrectChoice = false;
                     cout << "Enter your choice: \n";
                     choice = _getch() - '0';
 
@@ -353,13 +360,7 @@ public:
                         incorrectChoice = true;
                     }
 
-                    // Check if the choice is invalid
-                    if (incorrectChoice) {
-                        // The do-while loop will continue if the choice was incorrect
-                        continue;
-                    }
-
-                } while (choice > 6 || choice < 0);
+                } while (choice > 6 || choice < 0 || incorrectChoice);
 
 
                 switch (choice)
@@ -425,8 +426,15 @@ public:
     void playerTurnEasy(easyEnemy& easyEnemy, Inventory& playerInventory)
     {
         isBlocking = false;
-        rainCooldown -= 1;
-        chargedCooldown -= 1;
+        // Only lowering the cooldowns when they are above zero.
+        if (rainCooldown > 0)
+        {
+            rainCooldown -= 1;
+        }
+        if (chargedCooldown > 0)
+        {
+            chargedCooldown -= 1;
+        }
         int choice = 0;
         // Dex + Bow damage
         if (chargedCooldown == 1)
@@ -444,13 +452,18 @@ public:
                     << "3. Take Health Potion\n"
                     << "4. Rain of Arrows\n"
                     << "5. Charged Shot\n"
-                    << "6. Repulsion\n" << endl << endl;
+                    << "6. Repulsion\n" << endl;
 
 
-                do {
-                    bool incorrectChoice = false;
-                    cout << "Enter your choice: ";
-                    cin >> choice;
+
+
+                bool incorrectChoice = false;
+                do
+                {
+                    incorrectChoice = false;
+                    cout << "Enter your choice: \n";
+
+                    choice = _getch() - '0';
 
                     if (choice == 3 && healthPotions < 0) {
                         cout << "You are out of health potions, pick another option.\n";
@@ -473,13 +486,7 @@ public:
                         incorrectChoice = true;
                     }
 
-                    // Check if the choice is invalid due to cooldown or lack of resources
-                    if (incorrectChoice) {
-                        // The do-while loop will continue if the choice was incorrect
-                        continue;
-                    }
-
-                } while (choice > 6 || choice < 0);
+                } while (choice > 6 || choice < 0 || incorrectChoice);
 
 
                 switch (choice)
@@ -577,10 +584,13 @@ public:
                     << "6. Repulsion\n " << endl << endl;
 
 
-                do {
-                    bool incorrectChoice = false;
-                    cout << "Enter your choice: ";
-                    cin >> choice;
+
+                bool incorrectChoice = false;
+                do
+                {
+                    incorrectChoice = false;
+                    cout << "Enter your choice: \n";
+                    choice = _getch() - '0';
 
                     if (choice == 3 && healthPotions < 0) {
                         cout << "You are out of health potions, pick another option.\n";
@@ -603,13 +613,7 @@ public:
                         incorrectChoice = true;
                     }
 
-                    // Check if the choice is invalid
-                    if (incorrectChoice) {
-                        // The do-while loop will continue if the choice was incorrect
-                        continue;
-                    }
-
-                } while (choice > 6 || choice < 0);
+                } while (choice > 6 || choice < 0 || incorrectChoice);
 
 
                 switch (choice)
@@ -827,16 +831,19 @@ public:
             {
                 cout << "The enemies turn was skipped\n";
             }
-            cout << "Your health is " << getHealth() << " / " << maxHealth
+            cout << "Your health is " << getHealth() << " / " << maxHealth << endl
                 << "Rain of Arrows cooldown " << rainCooldown << endl
                 << "Charged Shot cooldown " << chargedCooldown << endl
                 << "Repulsion uses remaining " << repulsionUses << endl
                 << "Enemy's health: " << enemy.getHealth() << endl;
+            system("pause");
+            system("cls");
         }
 
         if (getHealth() <= 0) {
             // Game over logic
             cout << "You were defeated! Game Over.\n";
+            
 
         }
         else {
@@ -847,6 +854,7 @@ public:
             //currently fights just give out health potions but later will be drawn from the loot pool and added to their inventory.
             healthPotions++;
             exp += enemy.giveEXP();
+            system("pause");
             if (checkForLevelUp(exp, expNeeded))
             {
                 levelUp();
@@ -883,11 +891,13 @@ public:
                 cout << "The Bosses turn was skipped\n";
             }
             // Display updated stats after each round
-            cout << "Your health is " << getHealth() << " / " << maxHealth
+            cout << "Your health is " << getHealth() << " / " << maxHealth << endl
                 << "Rain of Arrows cooldown " << rainCooldown << endl
                 << "Charged Shot cooldown " << chargedCooldown << endl
                 << "Repulsion uses remaining " << repulsionUses << endl
                 << "Boss's health: " << boss.getHealth() << endl;
+            system("pause");
+            system("cls");
         }
 
         if (getHealth() <= 0)
@@ -904,6 +914,7 @@ public:
             //currently fights just give out health potions but later will be drawn from the loot pool and added to their inventory.
             healthPotions++;
             exp += boss.giveEXP();
+            system("pause");
             //Checking if they can level up.
             if (checkForLevelUp(exp, expNeeded))
             {
@@ -936,11 +947,13 @@ public:
             }
             // Display updated stats after each round
 
-            cout << "Your health is " << getHealth() << " / " << maxHealth
+            cout << "Your health is " << getHealth() << " / " << maxHealth << endl
                 << "Rain of Arrows cooldown " << rainCooldown << endl
                 << "Charged Shot cooldown " << chargedCooldown << endl
                 << "Repulsion uses remaining " << repulsionUses << endl
                 << "Enemy's health: " << easyEnemy.getHealth() << endl;
+            system("pause");
+            system("cls");
         }
 
         if (getHealth() <= 0) {
@@ -953,6 +966,7 @@ public:
             isEnemyStunned = false;
             //currently fights just give out health potions but later will be drawn from the loot pool and added to their inventory.
             healthPotions++;
+            system("pause");
             //Checking for the level up after the fight is over and they have they are not dead.
             if (checkForLevelUp(exp, expNeeded))
             {

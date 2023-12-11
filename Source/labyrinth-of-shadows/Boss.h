@@ -8,7 +8,6 @@ private:
 	int dexterity;
 	int expWorth;
 	string name;
-	Sword sword;
 	Dice enemyDice;
 
 public:
@@ -41,7 +40,7 @@ public:
 	}
 	void generateStrength(int round)
 	{
-		strength = 50;
+		strength = 70;
 	}
 	void generateDexterity(int round)
 	{
@@ -51,7 +50,7 @@ public:
 
 	int getDamage() const
 	{
-		return sword.damage + strength;
+		return strength;
 	}
 
 	string getName() const

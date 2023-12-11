@@ -4,6 +4,11 @@
 #pragma once
 // #include "All_Includes.h"
 // JPO: Temp fix for the issue with the compiler not finding the files
+
+#include <iterator>
+#include <string>
+#include <iostream>
+
 #include "Sword.h"
 #include "Bow.h"
 #include "Staff.h"
