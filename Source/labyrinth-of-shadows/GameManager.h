@@ -39,7 +39,7 @@ public:
         playerRanger = playRanger;
         Wizard playWizard(30, 30, 3, 8, 5, 1, 0, 5, 1, 1, 2, 1);
         playerWizard = playWizard;
-        Rogue playRogue(40, 40, 5, 3, 6, 1, 0, 5, 0, 0, 0, 1);
+        Rogue playRogue(40, 40, 5, 3, 6, 1, 0, 5, 0, 1, 1, 1);
         playerRogue = playRogue;
         Inventory playerInventory;
         round = 0;

@@ -4,6 +4,9 @@
 #pragma once
 // #include "All_Includes.h"
 // JPO: Temp fix for the issue with the compiler not finding the files
+#include <iostream>
+#include <string>
+#include <iterator>
 #include "Character.h"
 #include "Enemy.h"
 #include "easyEnemy.h"
@@ -405,10 +408,13 @@ public:
                     << "5. Dodge\n" << endl << endl;
 
 
-                do {
-                    bool incorrectChoice = false;
-                    cout << "Enter your choice: ";
-                    choice = _getch();
+
+                bool incorrectChoice = false;
+                do
+                {
+                    incorrectChoice = false;
+                    cout << "Enter your choice: \n";
+                    choice = _getch() - '0';
 
                     if (choice == 3 && healthPotions < 0) {
                         cout << "You are out of health potions, pick another option.\n";
@@ -426,18 +432,13 @@ public:
                         cout << "Dodge is still on cooldown. You have to wait " << dodgeCooldown << " number of turns.\n";
                         incorrectChoice = true;
                     }
+                   
                     else if (choice < 0 || choice > 5) {
                         cout << "Incorrect value. Please enter a valid value.\n";
                         incorrectChoice = true;
                     }
 
-                    // Check if the choice is invalid
-                    if (incorrectChoice) {
-                        // The do-while loop will continue if the choice was incorrect
-                        continue;
-                    }
-
-                } while (choice > 5 || choice < 0);
+                } while (choice > 5 || choice < 0 || incorrectChoice);
 
                 switch (choice)
                 {
@@ -530,10 +531,12 @@ public:
                     << "5. Dodge\n" << endl << endl;
 
 
-                do {
-                    bool incorrectChoice = false;
-                    cout << "Enter your choice: ";
-                    choice = _getch();
+                bool incorrectChoice = false;
+                do
+                {
+                    incorrectChoice = false;
+                    cout << "Enter your choice: \n";
+                    choice = _getch() - '0';
 
                     if (choice == 3 && healthPotions < 0) {
                         cout << "You are out of health potions, pick another option.\n";
@@ -551,18 +554,13 @@ public:
                         cout << "Dodge is still on cooldown. You have to wait " << dodgeCooldown << " number of turns.\n";
                         incorrectChoice = true;
                     }
+
                     else if (choice < 0 || choice > 5) {
                         cout << "Incorrect value. Please enter a valid value.\n";
                         incorrectChoice = true;
                     }
 
-                    // Check if the choice is invalid
-                    if (incorrectChoice) {
-                        // The do-while loop will continue if the choice was incorrect
-                        continue;
-                    }
-
-                } while (choice > 5 || choice < 0);
+                } while (choice > 5 || choice < 0 || incorrectChoice);
 
 
                 switch (choice)
