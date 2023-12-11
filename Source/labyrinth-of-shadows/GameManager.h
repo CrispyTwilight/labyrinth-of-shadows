@@ -123,7 +123,6 @@ public:
             {
                 // Make the Ranger the currently selected class.
                 characterSelected = "Ranger";
-                cout << playerRanger.getHealth();
                 playerInventory.setMaxWeight(characterSelected);
                 cout << "Health: " << playerRanger.getHealth() << endl;
                 break;
@@ -234,7 +233,7 @@ public:
 
     void fighting(bool isBossFight)
     {
-        cout << playerRanger.getHealth();
+      
         if (characterSelected == "Ranger") {
             if (round < 3) {
                 easyEnemy* easyEnemyPtr = new easyEnemy();
