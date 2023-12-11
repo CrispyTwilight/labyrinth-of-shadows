@@ -120,21 +120,21 @@ public:
             {
                 // Make the Ranger the currently selected class.
                 characterSelected = "Ranger";
-                playerInventory.getItemWeight(characterSelected);
+                playerInventory.setMaxWeight(characterSelected);
                 break;
             }
             case 2:
             {
                 // Make the Wizard the curren1tly selected class.
                 characterSelected = "Wizard";
-                playerInventory.getItemWeight(characterSelected);
+                playerInventory.setMaxWeight(characterSelected);
                 break;
             }
             case 3:
             {
                 //Make the Rogue the currently selected class.
                 characterSelected = "Rogue";
-                playerInventory.getItemWeight(characterSelected);
+                playerInventory.setMaxWeight(characterSelected);
                 break;
             }
             default:

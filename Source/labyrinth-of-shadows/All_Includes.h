@@ -12,6 +12,7 @@
 #include <fstream>
 #include <iostream>
 #include <iomanip>
+#include <map>
 #include <string>
 #include <sstream>
 #include <thread>

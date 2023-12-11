@@ -92,7 +92,7 @@ void mapDriver() {
             cout << "BATTLE"; //Battle function goes here
             //gameMap.toggle();
         }
-       
+
         //This is necessary to control speed of the game.
         this_thread::sleep_for(chrono::milliseconds(100));
     }
