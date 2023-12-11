@@ -449,19 +449,13 @@ public:
                     << "6. Repulsion\n" << endl << endl;
 
 
-<<<<<<< Updated upstream
-                do {
-                    bool incorrectChoice = false;
-                    cout << "Enter your choice: ";
-                    cin >> choice;
-=======
+
                 bool incorrectChoice = false;
                 do
                 {
                     incorrectChoice = false;
                     cout << "Enter your choice: \n";
                     choice = _getch() - '0';
->>>>>>> Stashed changes
 
                     if (choice == 3 && healthPotions < 0) {
                         cout << "You are out of health potions, pick another option.\n";
