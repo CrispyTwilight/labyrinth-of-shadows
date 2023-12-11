@@ -131,14 +131,8 @@ public:
                 if (grid[x + 1][y] != '#' && grid[x + 1][y] != 'E' && grid[x + 1][y] != 'A' && grid[x + 1][y] != 'D' && grid[x + 1][y] != '?')
                 {
                     manage.updateMap(x, y, mapLevel, '.');
-                    if (grid[x + 1][y] != '@') 
-                    {
-                        manage.updateMap(x + 1, y, mapLevel, 'E');
-                    }
-                    else
-                    {
-                        toggle();
-                    }
+                    manage.updateMap(x + 1, y, mapLevel, 'E');
+                    toggle();
                 }
                 else
                 {
