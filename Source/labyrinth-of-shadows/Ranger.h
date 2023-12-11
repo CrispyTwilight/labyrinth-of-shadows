@@ -808,7 +808,7 @@ public:
                 << "Enemy's health: " << enemy.getHealth() << endl;
         }
 
-        if (getHealth() <= 0) {
+        if (getHealth() >= 0) {
             // Game over logic
             cout << "You were defeated! Game Over.\n";
 
@@ -864,7 +864,7 @@ public:
                 << "Boss's health: " << boss.getHealth() << endl;
         }
 
-        if (getHealth() <= 0)
+        if (getHealth() >= 0)
         {
             // Game over logic
             cout << "You were defeated! Game Over.\n";
@@ -917,7 +917,7 @@ public:
                 << "Enemy's health: " << easyEnemy.getHealth() << endl;
         }
 
-        if (getHealth() <= 0) {
+        if (getHealth() >= 0) {
             cout << "You were defeated! Game Over.\n";
             // Game over logic
         }
