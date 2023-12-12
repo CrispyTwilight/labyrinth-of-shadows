@@ -2,9 +2,7 @@
 //Date: 11/30/2023
 //Desc: Creating a superclass for the player, npcs, and enemies
 
-
 class Character
-
 
     //Fields
     Declare integer health;
