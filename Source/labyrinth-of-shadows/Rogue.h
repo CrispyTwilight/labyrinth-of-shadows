@@ -40,7 +40,7 @@ private:
 public:
     Rogue()
     {}
-    
+
     Rogue(int max, int hea, int  str, int intel, int  dex, int lev, int ex, int need, int sa, int dodge, int potion, int turns) : playerInventory(getInventory())
     {
         maxHealth = max;
@@ -431,7 +431,7 @@ public:
                         cout << "Dodge is still on cooldown. You have to wait " << dodgeCooldown << " number of turns.\n";
                         incorrectChoice = true;
                     }
-                   
+
                     else if (choice < 0 || choice > 5) {
                         cout << "Incorrect value. Please enter a valid value.\n";
                         incorrectChoice = true;
@@ -644,8 +644,9 @@ public:
         {
             cout << "You successfully blocked the attack!\n";
             d = d * 0.25;
-            // Assuming playerInventory.getTotalEquippedDefense() is an integer value
-            d = d - playerInventory.getTotalEquippedDefense();
+            // Assuming playerInventory->getTotalEquippedDefense() is an integer value
+            d = d - playerInventory->getTotalEquippedDefense();
+
             if (d < 0) {
                 d = 0;
             }
@@ -654,6 +655,7 @@ public:
             d = static_cast<int>(ceil(d));
 
             cout << "You took " << d << " damage\n";
+
         }
         else if (isDodgingActivated)
         {
@@ -687,8 +689,9 @@ public:
         {
             cout << "You successfully blocked the attack!\n";
             d = d * 0.25;
-            // Assuming playerInventory.getTotalEquippedDefense() is an integer value
-            d = d - playerInventory.getTotalEquippedDefense();
+            // Assuming playerInventory->getTotalEquippedDefense() is an integer value
+            d = d - playerInventory->getTotalEquippedDefense();
+
             if (d < 0) {
                 d = 0;
             }
@@ -697,6 +700,7 @@ public:
             d = static_cast<int>(ceil(d));
 
             cout << "You took " << d << " damage\n";
+
         }
         else if (isDodgingActivated)
         {
@@ -730,8 +734,9 @@ public:
         {
             cout << "You successfully blocked the attack!\n";
             d = d * 0.25;
-            // Assuming playerInventory.getTotalEquippedDefense() is an integer value
-            d = d - playerInventory.getTotalEquippedDefense();
+            // Assuming playerInventory->getTotalEquippedDefense() is an integer value
+            d = d - playerInventory->getTotalEquippedDefense();
+
             if (d < 0) {
                 d = 0;
             }
@@ -740,6 +745,7 @@ public:
             d = static_cast<int>(ceil(d));
 
             cout << "You took " << d << " damage\n";
+
         }
         else if (isDodgingActivated)
         {
@@ -812,7 +818,7 @@ public:
             cout << "Enemy's health: " << enemy.getHealth() << endl
                 << "Dodge Cooldown " << dodgeCooldown << endl
                 << "Sneak Attack Cooldown " << sneakAttackCooldown << endl
-                << "Your Health is at " << getHealth() << endl;
+                << "Your Health is at " << getHealth() << " / " << maxHealth << endl;
             system("pause");
             system("cls");
         }
@@ -870,7 +876,7 @@ public:
             cout << "Enemy's health: " << boss.getHealth() << endl
                 << "Dodge Cooldown " << dodgeCooldown << endl
                 << "Sneak Attack Cooldown " << sneakAttackCooldown << endl
-                << "Your Health is at " << getHealth() << endl;
+                << "Your Health is at " << getHealth() << " / " << maxHealth <<  endl;
             system("pause");
             system("cls");
         }
@@ -925,7 +931,7 @@ public:
             cout << "Enemy's health: " << easyEnemy.getHealth() << endl
                 << "Dodge Cooldown " << dodgeCooldown << endl
                 << "Sneak Attack Cooldown " << sneakAttackCooldown << endl
-                << "Your Health is at " << getHealth() << endl;
+                << "Your Health is at " << getHealth() << " / " << maxHealth << endl;
             system("pause");
             system("cls");
         }

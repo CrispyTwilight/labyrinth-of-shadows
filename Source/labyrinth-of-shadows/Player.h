@@ -17,13 +17,13 @@ public:
     Player(Map& map, int initialX, int initialY) : map(map), x(initialX), y(initialY), px(initialX), py(initialY) {}
 
     //Function gets player input and calls the acording move function
-    void handleInput()
-    {
-        char input;
-        cout << "Enter move (WASD): ";
-        input = _getch();
 
-        switch (input) {
+    void handleInput(char option)
+
+    {
+        cout << "Enter move (WASD): ";
+
+        switch (option) {
         case 'W': case 'w':
             move(0, -1);
             break;

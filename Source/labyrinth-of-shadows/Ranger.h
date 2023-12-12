@@ -42,7 +42,7 @@ private:
 public:
     Ranger()
     {
-       
+
         maxHealth = 25;
         //This is a placeholder because the playername
         setName("Ranger");
@@ -68,7 +68,7 @@ public:
         repulsionUses = repulsionLvl;
         d100.setMin(1);
         d100.setMax(100);
-       
+
 
     }
     Ranger(int max, int hea, int  str, int intel, int  dex, int lev, int ex, int need, int rai, int charg, int re, int potion, int turns) : playerInventory(getInventory())
@@ -226,7 +226,7 @@ public:
     // Leveling up the player
     void levelUp()
     {
-        cout << "Congratulations you leveled up!";
+        cout << "Congratulations you leveled up!\n";
         // Increasing the players max health and healing them to full.
         maxHealth += 5;
         setHealth(maxHealth);
@@ -464,9 +464,6 @@ public:
                     << "4. Rain of Arrows\n"
                     << "5. Charged Shot\n"
                     << "6. Repulsion\n" << endl;
-
-
-
 
                 bool incorrectChoice = false;
                 do
@@ -707,7 +704,7 @@ public:
     void attackMonster(Enemy& enemy, int d)
     {
         enemy.takeDamage(d);
-        cout << enemy.getName() << "took " << d << " damage.\n";
+        cout << enemy.getName() << " took " << d << " damage.\n";
     }
 
     void attackMonsterEasy(easyEnemy& easyEnemy, int d)
@@ -719,7 +716,7 @@ public:
     void attackMonsterBoss(Boss& boss, int d)
     {
         boss.takeDamage(d);
-        cout << boss.getName() << "took " << d << " damage.\n";
+        cout << boss.getName() << " took " << d << " damage.\n";
     }
 
     // Taking damage from the easy enemy.
@@ -730,9 +727,10 @@ public:
         if (isBlocking)
         {
             cout << "You successfully blocked the attack!\n";
+
             d = d * 0.25;
-            // Assuming playerInventory.getTotalEquippedDefense() is an integer value
-            d = d - playerInventory.getTotalEquippedDefense();
+            // Assuming playerInventory->getTotalEquippedDefense() is an integer value
+            d = d - playerInventory->getTotalEquippedDefense();
             if (d < 0) {
                 d = 0;
             }
@@ -773,8 +771,10 @@ public:
         {
             cout << "You successfully blocked the attack!\n";
             d = d * 0.25;
-            // Assuming playerInventory.getTotalEquippedDefense() is an integer value
-            d = d - playerInventory.getTotalEquippedDefense();
+            // Assuming playerInventory->getTotalEquippedDefense() is an integer value
+            d = d - playerInventory->getTotalEquippedDefense();
+
+           
             if (d < 0) {
                 d = 0;
             }
@@ -783,6 +783,7 @@ public:
             d = static_cast<int>(ceil(d));
 
             cout << "You took " << d << " damage\n";
+            
         }
         else if (isRepulsionActivated)
         {
@@ -816,8 +817,8 @@ public:
         {
             cout << "You successfully blocked the attack!\n";
             d = d * 0.25;
-            // Assuming playerInventory.getTotalEquippedDefense() is an integer value
-            d = d - playerInventory.getTotalEquippedDefense();
+            // Assuming playerInventory->getTotalEquippedDefense() is an integer value
+            d = d - playerInventory->getTotalEquippedDefense();
             if (d < 0) {
                 d = 0;
             }
@@ -826,6 +827,7 @@ public:
             d = static_cast<int>(ceil(d));
 
             cout << "You took " << d << " damage\n";
+
         }
         else if (isRepulsionActivated)
         {
@@ -904,7 +906,7 @@ public:
         if (getHealth() <= 0) {
             // Game over logic
             cout << "You were defeated! Game Over.\n";
-            
+
 
         }
         else {
@@ -1023,7 +1025,9 @@ public:
                 << "Charged Shot cooldown " << chargedCooldown << endl
                 << "Repulsion uses remaining " << repulsionUses << endl
                 << "Enemy's health: " << easyEnemy.getHealth() << endl;
-            
+            system("pause");
+            system("cls");
+
         }
 
         if (getHealth() <= 0) {
