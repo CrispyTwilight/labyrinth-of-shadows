@@ -1,0 +1,958 @@
+//Auth: Hunter Kauffman
+//Date: 12/11/23
+//Desc: Pseucode for easyEnemy
+
+Include "Character.pseudo"
+Include "Enemy.pseudo"
+Include "easyEnemy.pseudo"
+Include "Boss.pseudo"
+Include "Dice.pseudo"
+Include "Inventory.pseudo"
+
+Class Rogue extends Character
+    Declare Private Integereger maxHealth
+    Declare Private Integereger strength
+    Declare Private Integereger Integerelligence
+    Declare Private Integereger dexterity
+    Declare Private Integereger healthPotions
+    Declare Private Integereger level
+    Declare Private Integereger exp
+    Declare Private Integereger expNeeded
+    Declare Private Integereger sneakAttackLvl
+    Declare Private Integereger DodgeLvl
+    Declare Private Integereger numberTurns
+    Declare Private Integereger sneakAttackCooldown
+    Declare Private Integereger DodgeCooldown
+    Declare Private Bool isDodgingActivated
+    Declare Private Bool isBlocking
+    Declare Private Bool isStunned
+    Declare Private Bool isEnemyStunned
+    Declare Private Dice d100
+    Declare Private Inventory* playerInventory
+
+    Public Module Rogue()
+    End Module
+
+    Public Module Rogue(Integer max, Integer hea, Integer  str, Integer Integerel, Integer  dex, Integer lev, Integer ex, Integer need, Integer sa, Integer dodge, Integer potion, Integer turns) : playerInventory(getInventory())
+        Set maxHealth = max
+        //This is a placeholder because the playername
+        Call setName("Rogue")
+        Call setHealth(hea)
+        Set  strength = str
+        Set Integerelligence = Integerel
+        Set dexterity = dex
+        Set level = lev
+        Set numberTurns = turns
+        Set healthPotions = potion
+        Set exp = ex
+        Set expNeeded = need
+        Set sneakAttackLvl = sa
+        Set dodgeLvl = dodge
+        // Since this an combat ability it will only be able to activated during combat so it starts off false
+        isDodgingActivated = false
+        isBlocking = false
+        isStunned = false
+        isEnemyStunned = false
+        sneakAttackCooldown = 0
+        dodgeCooldown = 0
+        d100.setMax(100)
+        d100.setMin(1)
+    End Module
+
+    //Setters
+    Public Module setMaxHealth(Integer value)
+        maxHealth = value;
+    End Module
+
+    Public Module setStrength(Integer value)
+        strength = value;
+    End Module
+
+    Public Module setIntegerelligence(Integer value)
+        Integerelligence = value;
+    End Module
+
+    Public Module setDexterity(Integer value)
+        dexterity = value;
+    End Module
+
+    Public Module setLevel(Integer value)
+        level = value;
+    End Module
+
+    Public Module setNumTurns(Integer value)
+        numberTurns = value;
+    End Module
+
+    Public Module setHealthPotions(Integer value)
+        healthPotions = value;
+    End Module
+
+    Public Module setExp(Integer value)
+        exp = value;
+    End Module
+
+    Public Module setExpNeeded(Integer value)
+        expNeeded = value;
+    End Module
+
+    Public Module setSneakAttackLvl(Integer sa)
+        sneakAttackLvl = sa;
+    End Module
+
+    Public Module setDodgeLvl(Integer dodge)
+        dodgeLvl = dodge;
+    End Module
+
+    // Getters
+    Public Integer Function getMaxHealth() const
+        return maxHealth;
+    End Function
+
+    Public Integer Function getStrength() const
+        return strength;
+    End Function
+
+    Public Integer Function getIntegerelligence() const
+        return Integerelligence;
+    End Function
+
+    Public Integer Function getDexterity() const
+        return dexterity;
+    End Function
+
+    Public Integer Function getLevel() const
+        return level;
+    End Function
+
+    Public Integer Function getNumTurns() const
+        return numberTurns;
+    End Function
+
+    Public Integer Function getHealthPotions() const
+        return healthPotions;
+    End Function
+
+    Public Integer Function getExp() const
+        return exp;
+    End Function
+
+    Public Integer Function getExpNeeded() const
+        return expNeeded;
+    End Function
+
+    Integer getSneakAttackLvl() const
+        return sneakAttackLvl;
+    End Function
+
+    Integer getDodgeLvl() const
+        return dodgeLvl;
+    End Function
+
+    Public Integer Function levelUp()
+    {
+        Display "You have leveled up!"
+        //Increasing their max health by 5 per level up.
+        Set maxHealth += 5
+        Call setHealth(maxHealth)
+        //Increasing their intelligence because it is what scales up for the wizard.
+        Set intelligence += 1
+        //Increasing the level variable by one.
+        Set level += 1
+        // Increasing how many turn they have if it is a variable of 5.
+        if (level % 5 == 0) {
+            // Increment the number of turns when the player's level is a multiple of 5
+            Set numberTurns++
+            Display "Congratulations! Your number of turns has increased to: " + numberTurns 
+        }
+        End if
+
+        // Doing the math so this is not just an infinite loop of level ups and making sure that their exp and expended go up properly.
+        Set exp = expNeeded - exp
+        Set expNeeded = level * 5
+
+        Declare Integer choice
+        Set choice = 0
+
+         Display "What Skill would you like to level up"
+             Display "Sneak Attack per level will do an additional 5 damage. Starts with doing 5 damage."
+             Display "Dodge for the first unlock will allow the Rogue to dodge their enemy for a turn."
+             Display "Then every upgrade after that increases the number of turns per dodge. Then the cooldown will increase a turn by one as well."
+             Display "1. Sneak Attack " + sneakAttackLvl
+             Display "2. Dodge " + dodgeLvl 
+
+        do
+        {
+             Display "Enter your choice:  " 
+            Input choice
+            if (choice < 0 || choice > 2) {
+                 Display "Incorrect value. Please enter a valid value. " 
+            }
+        end if
+        } while (choice < 0 || choice > 2) 
+        End Do While
+
+        switch (choice)
+        {
+        case 1:
+        {
+
+            Set sneakAttackLvl += 1 
+             Display "Sneak Attack is now level " + sneakAttackLvl 
+            break 
+        }
+        case 2:
+        {
+            Set dodgeLvl += 1 
+             Display "Dodge is now level " + dodgeLvl 
+            break 
+        }
+        default:
+        {
+             Display "You have encountered an error. " 
+            break 
+        }
+    end switch
+        //Checking if they need to be leveled up again its in the util because it is an easy check that all characters use.
+        System Pause 
+        System Clear 
+        }
+        if (checkForLevelUp(exp, expNeeded))
+        {
+            Call levelUp() 
+        }
+        End if
+    }
+    End Function
+
+    //Player turn for the base enemy type
+    Declare Public void playerTurn(Enemy& enemy)
+    {
+        isBlocking = false
+
+        if (sneakAttackCooldown > 0)
+        {
+            sneakAttackCooldown -= 1
+        }
+        End if
+        if (dodgeCooldown > 0)
+        {
+            dodgeCooldown -= 1 
+        }
+        end if
+
+
+        Declare Integer choice
+        Set choice = 0
+
+
+        // These are set so that the cooldown does not go below zero.
+        if (dodgeCooldown == 1)
+        {
+            Set isEnemyStunned = false
+        }
+        end if
+
+        if (Not isStunned)
+            for (Integer turn = 1  turn <= numberTurns  ++turn)
+            {
+                Display "It's your turn, what would you like to do? " 
+                Display "1. Basic Attack "
+                Display "2. Block"
+                Display "3. Take Health Potion "
+                Display "4. Sneak Attack "
+                Display "5. Dodge " 
+
+
+                do {
+                    Boolean incorrectChoice = false 
+                    Display "Enter your choice:  " 
+                    Input choice
+
+                    if (choice == 3 && healthPotions < 0) {
+                        Display "You are out of health potions, pick another option. " 
+                        Set incorrectChoice = true 
+                    }
+                    else if (choice == 3 && getHealth() == maxHealth) {
+                        Display "You are full on health. I highly recommend you do something else. " 
+                        Set incorrectChoice = true 
+                    }
+                    else if (choice == 4 && sneakAttackCooldown > 0) {
+                        Display "Sneak Attack is still on cooldown. You have to wait " + sneakAttackCooldown + " number of turns. " 
+                        Set incorrectChoice = true 
+                    }
+                    else if (choice == 5 && dodgeCooldown > 0) {
+                        Display "Dodge is still on cooldown. You have to wait " + dodgeCooldown + " number of turns. " 
+                        Set incorrectChoice = true 
+                    }
+                    else if (choice < 0 OR choice > 5)
+
+
+                    // Check if the choice is invalid due to cooldown or lack of resources
+                    if (incorrectChoice) {
+                        // The do-while loop will continue if the choice was incorrect
+                        continue 
+                    }
+
+                } while (choice > 5 || choice < 0 || incorrectChoice) 
+
+                switch (choice)
+                case 1:
+                {
+                    // attack monster
+                    Call attackMonster(enemy, playerInventory->getEquippedWeaponDamage()) 
+                    break 
+                }
+                Case 2:
+                {
+                    //Block attack
+                    Display "You have started to block"
+                    Set isBlocking = true
+                    Break
+                }
+                case 3:
+                {
+                    // Take Health Potion if they have any.
+                    Call takePotion() 
+                    break 
+                }
+                case 4:
+                {
+                    // Sneak Attack
+                    Display "You used Sneak Attack"
+                    Call attackMonster(enemy, sneakAttack())
+                    Set sneakAttackCooldown = 3
+                    break
+                }
+                break 
+                case 5:
+                {
+                    // Dodge
+                    Display " You used Dodge"
+                    Set isDodgingActivated = true
+                    Set dodgeCooldown = dodgeLvl + 1
+                    break
+                }
+                default:
+                {
+                    Display "You put in an incorrect value please try again" 
+                    break 
+                }
+                End Switch
+            }
+            End For Loop
+        End if
+        If (isStunned) Then
+        Display "Your turn has been skipped!"
+        End If
+
+        System pause
+        System clear screen
+    }
+    End Function
+
+    //Player turn for the base enemy type
+    Declare Public void playerTurnEasy(easyEnemy& easyEnemy)
+    {
+        isBlocking = false
+
+        if (sneakAttackCooldown > 0)
+        {
+            sneakAttackCooldown -= 1
+        }
+        End if
+        if (dodgeCooldown > 0)
+        {
+            dodgeCooldown -= 1 
+        }
+        end if
+
+
+        Declare Integer choice
+        Set choice = 0
+
+
+        // These are set so that the cooldown does not go below zero.
+        if (dodgeCooldown == 1)
+        {
+            Set isEnemyStunned = false
+        }
+        end if
+
+        if (Not isStunned)
+            for (Integer turn = 1  turn <= numberTurns  ++turn)
+            {
+                Display "It's your turn, what would you like to do? " 
+                Display "1. Basic Attack "
+                Display "2. Block"
+                Display "3. Take Health Potion "
+                Display "4. Sneak Attack "
+                Display "5. Dodge " 
+
+
+                do {
+                    Boolean incorrectChoice = false 
+                    Display "Enter your choice:  " 
+                    Input choice
+
+                    if (choice == 3 && healthPotions < 0) {
+                        Display "You are out of health potions, pick another option. " 
+                        Set incorrectChoice = true 
+                    }
+                    else if (choice == 3 && getHealth() == maxHealth) {
+                        Display "You are full on health. I highly recommend you do something else. " 
+                        Set incorrectChoice = true 
+                    }
+                    else if (choice == 4 && sneakAttackCooldown > 0) {
+                        Display "Sneak Attack is still on cooldown. You have to wait " + sneakAttackCooldown + " number of turns. " 
+                        Set incorrectChoice = true 
+                    }
+                    else if (choice == 5 && dodgeCooldown > 0) {
+                        Display "Dodge is still on cooldown. You have to wait " + dodgeCooldown + " number of turns. " 
+                        Set incorrectChoice = true 
+                    }
+                    else if (choice < 0 OR choice > 5)
+
+
+                    // Check if the choice is invalid due to cooldown or lack of resources
+                    if (incorrectChoice) {
+                        // The do-while loop will continue if the choice was incorrect
+                        continue 
+                    }
+
+                } while (choice > 5 || choice < 0 || incorrectChoice) 
+
+                switch (choice)
+                case 1:
+                {
+                    // attack monster
+                    Call attackMonsterEasy(easyEnemy, playerInventory->getEquippedWeaponDamage()) 
+                    break 
+                }
+                Case 2:
+                {
+                    //Block attack
+                    Display "You have started to block"
+                    Set isBlocking = true
+                    Break
+                }
+                case 3:
+                {
+                    // Take Health Potion if they have any.
+                    Call takePotion() 
+                    break 
+                }
+                case 4:
+                {
+                    // Sneak Attack
+                    Display "You used Sneak Attack"
+                    Call attackMonsterEasy(easyEnemy, sneakAttack())
+                    Set sneakAttackCooldown = 3
+                    break
+                }
+                break 
+                case 5:
+                {
+                    // Dodge
+                    Display " You used Dodge"
+                    Set isDodgingActivated = true
+                    Set dodgeCooldown = dodgeLvl + 1
+                    break
+                }
+                default:
+                {
+                    Display "You put in an incorrect value please try again" 
+                    break 
+                }
+                End Switch
+            }
+            End For Loop
+        End if
+        If (isStunned) Then
+        Display "Your turn has been skipped!"
+        End If
+
+        System pause
+        System clear screen
+    }
+    End Function
+
+    //Player turn for the base enemy type
+    Declare Public void playerTurnEasy(Boss& boss)
+    {
+        isBlocking = false
+
+        if (sneakAttackCooldown > 0)
+        {
+            sneakAttackCooldown -= 1
+        }
+        End if
+        if (dodgeCooldown > 0)
+        {
+            dodgeCooldown -= 1 
+        }
+        end if
+
+
+        Declare Integer choice
+        Set choice = 0
+
+
+        // These are set so that the cooldown does not go below zero.
+        if (dodgeCooldown == 1)
+        {
+            Set isEnemyStunned = false
+        }
+        end if
+
+        if (Not isStunned)
+            for (Integer turn = 1  turn <= numberTurns  ++turn)
+            {
+                Display "It's your turn, what would you like to do? " 
+                Display "1. Basic Attack "
+                Display "2. Block"
+                Display "3. Take Health Potion "
+                Display "4. Sneak Attack "
+                Display "5. Dodge " 
+
+
+                do {
+                    Boolean incorrectChoice = false 
+                    Display "Enter your choice:  " 
+                    Input choice
+
+                    if (choice == 3 && healthPotions < 0) {
+                        Display "You are out of health potions, pick another option. " 
+                        Set incorrectChoice = true 
+                    }
+                    else if (choice == 3 && getHealth() == maxHealth) {
+                        Display "You are full on health. I highly recommend you do something else. " 
+                        Set incorrectChoice = true 
+                    }
+                    else if (choice == 4 && sneakAttackCooldown > 0) {
+                        Display "Sneak Attack is still on cooldown. You have to wait " + sneakAttackCooldown + " number of turns. " 
+                        Set incorrectChoice = true 
+                    }
+                    else if (choice == 5 && dodgeCooldown > 0) {
+                        Display "Dodge is still on cooldown. You have to wait " + dodgeCooldown + " number of turns. " 
+                        Set incorrectChoice = true 
+                    }
+                    else if (choice < 0 OR choice > 5)
+
+
+                    // Check if the choice is invalid due to cooldown or lack of resources
+                    if (incorrectChoice) {
+                        // The do-while loop will continue if the choice was incorrect
+                        continue 
+                    }
+
+                } while (choice > 5 || choice < 0 || incorrectChoice) 
+
+                switch (choice)
+                case 1:
+                {
+                    // attack monster
+                    Call attackMonsterBoss(boss, playerInventory->getEquippedWeaponDamage()) 
+                    break 
+                }
+                Case 2:
+                {
+                    //Block attack
+                    Display "You have started to block"
+                    Set isBlocking = true
+                    Break
+                }
+                case 3:
+                {
+                    // Take Health Potion if they have any.
+                    Call takePotion() 
+                    break 
+                }
+                case 4:
+                {
+                    // Sneak Attack
+                    Display "You used Sneak Attack"
+                    Call attackMonsterBoss(boss, sneakAttack())
+                    Set sneakAttackCooldown = 3
+                    break
+                }
+                break 
+                case 5:
+                {
+                    // Dodge
+                    Display " You used Dodge"
+                    Set isDodgingActivated = true
+                    Set dodgeCooldown = dodgeLvl + 1
+                    break
+                }
+                default:
+                {
+                    Display "You put in an incorrect value please try again" 
+                    break 
+                }
+                End Switch
+            }
+            End For Loop
+        End if
+        If (isStunned) Then
+        Display "Your turn has been skipped!"
+        End If
+
+        System pause
+        System clear screen
+    }
+    End Function
+
+    Declare Public Module attackMonster(Enemy& enemy, int d)
+        Call enemy.takeDamage(d)
+        Display enemy.getName() + " took " + d + " damage."
+    End Module 
+
+    Declare Public Module attackMonsterEasy(easyEnemy& easyEnemy, int d)
+        Call easyEnemy.takeDamage(d)
+        Display easyEnemy.getName() + " took " + d + " damage."
+    End Module 
+
+    Declare Public Module attackMonsterBoss(Boss& boss, int d)
+        Call boss.takeDamage(d)
+        Display boss.getName() + " took " + d + " damage."
+    End Module 
+
+    Declare Public void takeDamageEasyEnemy(easyEnemy& easyEnemy, int d)
+        Set Integer enemyAttack = d100.rollDice()
+        
+        If (isBlocking)
+            Display "You successfully blocked the attack!"
+            Set d = d * 0.25
+            Set d = d - playerInventory->getTotalEquippedDefense()
+            If (d < 0)
+                Set d = 0
+            Set d = static_cast<int>(ceil(d))
+            Display "You took " + d + " damage"
+        Else If (isDodgingActivated)
+            Display "You dodge the enemy and countered"
+            Call attackMonsterEasy(easyEnemy, d)
+            Set isDodgingActivated = false
+        Else If (enemyAttack <= dexterity)
+            Display "You dodged the attack!"
+        Else
+            Set d = d - playerInventory->getTotalEquippedDefense()
+            If (d < 0)
+                Set d = 0
+            Display "You took " + d + " damage"
+            Call setHealth(getHealth() - d)
+        End If
+    End void takeDamageEasyEnemy
+
+   // Taking damage from a boss enemy.
+   Declare Public void takeDamageBoss(Boss& boss, integer d)
+   {
+       // Getting a random number and seeing if the player's dex is higher and if it is, they will dodge the attack.
+      Declare integer enemyAttack = d100.rollDice()
+   
+       if (isBlocking)
+       {
+           Display "You successfully blocked the attack!"
+           d = d * 0.25 
+           // Assuming playerInventory->getTotalEquippedDefense() is an integer value
+           d = d - playerInventory->getTotalEquippedDefense() 
+           if (d < 0)
+           {
+               d = 0 
+           }
+           End If 
+   
+           // Convert the decimal damage to a whole number (rounding up)
+           d = static_cast<int>(ceil(d)) 
+   
+           Display "You took " + d + " damage"
+       }
+       Else If (isDodgingActivated)
+            Display "You dodge the enemy and countered"
+            Call attackMonsterEasy(easyEnemy, d)
+            Set isDodgingActivated = false
+       else if (enemyAttack <= dexterity)
+       {
+           Display "You dodged the attack!\n"
+       }
+       else
+       {
+           d = d - playerInventory->getTotalEquippedDefense() 
+           if (d < 0)
+           {
+               d = 0 
+           }
+           Display "You took " + d + " damage"
+           Call setHealth(getHealth() - d)
+       }
+       End If
+   }
+   End takeDamageBoss
+
+    // Taking damage from a normal enemy.
+    Declare Public void takeDamage(Enemy& enemy, int d)
+    {
+        // Getting a random number and seeing if the player's dex is higher and if it is, they will dodge the attack.
+        Declare integer enemyAttack = d100.rollDice()
+    
+        if (isBlocking)
+        {
+            Display "You successfully blocked the attack!"
+            d = d * 0.25
+            // Assuming playerInventory->getTotalEquippedDefense() is an integer value
+            d = d - playerInventory->getTotalEquippedDefense()
+            if (d < 0)
+            {
+                d = 0
+            }
+            End If 
+    
+            // Convert the decimal damage to a whole number (rounding up)
+            d = static_cast<int>(ceil(d))
+    
+            Display "You took " + d + " damage"
+        }
+        Else If (isDodgingActivated)
+            Display "You dodge the enemy and countered"
+            Call attackMonsterEasy(easyEnemy, d)
+            Set isDodgingActivated = false
+        else if (enemyAttack <= dexterity)
+        {
+            Display "You dodged the attack!"
+        }
+        else
+        {
+            d = d - playerInventory->getTotalEquippedDefense()
+            if (d < 0)
+            {
+                d = 0 
+            }
+            End If
+            Display "You took " + d + " damage"
+            Call setHealth(getHealth() - d)
+        }
+        End if
+    }
+    End void takeDamage
+
+    Public Integer Function sneakAttack() //Calculates the damage for Sneak Attack
+    {
+        if (sneakAttackLvl == 1)
+        {
+            return 2 * 5;
+        }
+        else
+        {
+            return 2 * (5 + (sneakAttackLvl * 5));
+        }
+    }
+    End Function
+
+//Taking a health potion
+    // We should also find a way for them to be used if their in their inventory.
+    Declare Public void takePotion()
+    {
+        //Removing health potion from their inventory. When the inventory is fully setup we will remove it from the inventory class instead.
+        Set healthPotions -= 1
+        //Setting their current health to a higher one.
+        Call setHealth(getHealth() + level * 5)
+
+        // If their health after taking the health potion is higher than their max set their health to their max instead.
+        if (getHealth() > maxHealth)
+        {
+            setHealth(maxHealth)
+        }
+        End if
+        // Confirming for their players so they know they took a health potion.
+        Display "Your health is now at " + getHealth()
+    }
+    End takePotion
+
+    Declare Public void fightNormalEnemy(Enemy& enemy)
+    {
+        Display  "You encounter " + enemy.getName() + " with "  enemy.getHealth() + " health!\n"
+        //setup before combat that will be kept.
+        Set sneakAttackCooldown = 0
+        Set dodgeCooldown = 0
+        while (getHealth() > 0 AND enemy.getHealth() > 0) {
+            // Player's turn
+            Call playerTurn(enemy)
+
+            if (Not isEnemyStunned)
+            {
+                // Enemy's turn
+                Call takeDamage(enemy, enemy.getDamage())
+            }
+            else
+            {
+                Display "The enemies turn was skipped"
+            }
+            End if
+            Display  "Your health is " + getHealth() + " / " + maxHealth 
+            Display "Sneak Attack cooldown " + sneakAttackCooldown 
+            Display "Dodge cooldown " + dodgeCooldown 
+            Display "Enemy's health: " + enemy.getHealth() 
+            System pause
+            System Clear all
+        }
+
+        if (getHealth() <= 0) {
+            // Game over logic
+            cout << "You were defeated! Game Over.\n" 
+
+
+        }
+        else {
+            // Victory logic
+            Display "You defeated the enemy!"
+            Display "You gained "  enemy.giveEXP() + "Experience"
+            Set isEnemyStunned = false
+            //currently fights just give out health potions but later will be drawn from the loot pool and added to their inventory.
+            Set healthPotions++
+            Set exp += enemy.giveEXP() 
+            System pause
+            if (checkForLevelUp(exp, expNeeded))
+            {
+                Call levelUp() 
+            }
+            End if
+        }
+        End if
+    }
+    End fightNormalEnemy
+
+    // Fighting for the boss enemy.
+    Declare Public void fightBossEnemy(Boss& boss)
+    {
+        Declare integer turnCount
+        Set turnCount = 0
+        Display "You encounter " + boss.getName() + " with " + boss.getHealth() + " health!"
+
+        //setup before combat that will be kept.
+        Set sneakAttackCooldown = 0
+        Set dodgeCooldown = 0
+
+        while (getHealth() > 0 && boss.getHealth() > 0) {
+            // Player's turn
+            Call playerTurnBoss(boss) 
+
+            Set turnCount++
+
+            if (Not isEnemyStunned)
+            {
+                // Enemy's turn
+                if (turnCount % 2 Not = 0)
+                {
+                    Call takeDamageBoss(boss, boss.getDamage()) 
+                }
+                else
+                {
+                    Set isStunned = true 
+                }
+                End if
+            }
+            else
+            {
+                Display "The Bosses turn was skipped"
+            }
+            // Display updated stats after each round
+            Display  "Your health is " + getHealth() + " / " + maxHealth 
+            Display "Sneak Attack cooldown " + sneakAttackCooldown 
+            Display "Dodge cooldown " + dodgeCooldown 
+            Display "Enemy's health: " + boss.getHealth() 
+            System pause
+            System Clear all
+        }
+        End While
+
+        if (getHealth() <= 0)
+        {
+            // Game over logic
+            Display "You were defeated! Game Over."
+        }
+        else
+        {
+            // Victory logic
+            Display "You defeated the Boss!"
+            Display "You gained "  boss.giveEXP() + "Experience"
+            Set isEnemyStunned = false
+            //currently fights just give out health potions but later will be drawn from the loot pool and added to their inventory.
+            Set healthPotions++
+            Set exp += enemy.giveEXP() 
+            System pause
+            if (checkForLevelUp(exp, expNeeded))
+            {
+                Call levelUp() 
+            }
+            End if
+        }
+    end if
+    }
+    End 
+
+    // The function when the player has to fight a weak enemy (The first three enemies).
+    Declare Public void fightWeakEnemy(easyEnemy& easyEnemy)
+    {
+        // Display the enemy's details
+        Display "You encounter " + easyEnemy.getName() + " with " + easyEnemy.getHealth() + " health!"
+
+        //setup before combat that will be kept.
+        Set sneakAttackCooldown = 0
+        Set dodgeCooldown = 0
+
+        while (getHealth() > 0 And easyEnemy.getHealth() > 0) {
+            // Player's turn
+            playerTurnEasy(easyEnemy) 
+
+            if (easyEnemy.getHealth() > 0)
+            {
+                // Enemy's turn
+                if (!isEnemyStunned)
+                {
+                    takeDamageEasyEnemy(easyEnemy, easyEnemy.attack()) 
+                }
+                else
+                {
+                    cout << "The enemies turn was skipped!\n" 
+                }
+            }
+            // Display updated stats after each round
+
+            // Display updated stats after each round
+            Display  "Your health is " + getHealth() + " / " + maxHealth 
+            Display "Sneak Attack cooldown " + sneakAttackCooldown 
+            Display "Dodge cooldown " + dodgeCooldown  
+            Display "Enemy's health: " + easyEnemy.getHealth() 
+            System pause
+            System Clear all
+
+        }
+        End While
+
+        if (getHealth() <= 0) 
+        {
+            Display "You were defeated! Game Over."
+            // Game over logic
+        }
+        else {
+            Display "You defeated the enemy!"
+            Set exp += easyEnemy.giveEXP() 
+            Set isEnemyStunned = false 
+            //currently fights just give out health potions but later will be drawn from the loot pool and added to their inventory.
+            Set healthPotions++ 
+            System pause
+            //Checking for the level up after the fight is over and they have they are not dead.
+            if (checkForLevelUp(exp, expNeeded))
+            {
+                levelUp() 
+            }
+            End if
+        }
+        End if
+    }
+    End Function
+
+
+
+
+End Class
