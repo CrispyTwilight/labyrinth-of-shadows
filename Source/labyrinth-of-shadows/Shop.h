@@ -17,7 +17,6 @@ private:
     vector<Weapon*> weaponsInventory;
     vector<Armor*> armorsInventory;
     vector<Potion*> potionsInventory;
-    Character character;
 	int itemNumCounter;
 	string randShopName;
 	string randShopOwner;
@@ -95,8 +94,7 @@ public:
 					inspectItem();
 					break;
 				case 4:
-					system("cls");
-					character.getInventory().openInventory();
+					Inventory::getInstance()->openInventory();
 					break;
 				default:
 					cout << "Invalid input. Select a valid menu option.\n";
@@ -177,7 +175,7 @@ public:
 
 	void displayGoldAndMenu() {
 		// Display gold balance.
-        cout << left << "\nGold Balance: " << character.getInventory().getGold() << endl;
+        cout << left << "\nGold Balance: " << Inventory::getInstance()->getGold() << endl;
 		// Display the shop's menu options.
 		cout << "\nYou may:\n";
 		for (int i = 0; i < MENU_SIZE; i++) {
@@ -200,7 +198,7 @@ public:
 
 		Item* item = shopInventory[index];
 
-		if (character.getInventory().getGold() < item->value) {
+		if (Inventory::getInstance()->getGold() < item->value) {
 			cout << "\nYou do not have enough gold!\n";
 			system("pause");
 			return;
@@ -217,20 +215,20 @@ public:
 			itemWeight = potion->weight;
 		}
 
-		if (character.getInventory().getCurrentWeight() + itemWeight > character.getInventory().getMaxWeight()) {
+		if (Inventory::getInstance()->getCurrentWeight() + itemWeight > Inventory::getInstance()->getMaxWeight()) {
 			cout << "\nYou do not have enough carrying capacity!\n";
 			system("pause");
 			return;
 		}
 
-		if (character.getInventory().getSize() >= character.getInventory().getMaxItems()) {
+		if (Inventory::getInstance()->getSize() >= Inventory::getInstance()->getMaxItems()) {
 			cout << "\nYou do not have enough inventory space!\n";
 			system("pause");
 			return;
 		}
 
-		character.getInventory().deductGold(item->value);
-		character.getInventory().addItem(item);
+		Inventory::getInstance()->deductGold(item->value);
+		Inventory::getInstance()->addItem(item);
 		removeAndReplaceFromInventories(item);
 		cout << "\nPurchase successful! Item added to inventory.\n";
 		system("pause");
@@ -243,18 +241,18 @@ public:
 			return; // Early return if 'ESC' was pressed
 		}
 
-		if (index < 0 || index >= character.getInventory().getSize()) {
+		if (index < 0 || index >= Inventory::getInstance()->getSize()) {
 			cout << "\nInvalid item index. Please try again.\n";
 			system("pause");
 			return;
 		}
 
-		Item* item = character.getInventory().getItem(index);
+		Item* item = Inventory::getInstance()->getItem(index);
 
-		character.getInventory().addGold(item->value / 2); // Intentional integer division
+		Inventory::getInstance()->addGold(item->value / 2); // Intentional integer division
 		cout << "\nSale successful! You made " << item->value/2 << " gold.\n"; // Intentional integer division
 		shopInventory.push_back(item);
-		character.getInventory().removeItem(index);
+		Inventory::getInstance()->removeItem(index);
 		system("pause");
 	}
 
@@ -345,3 +343,6 @@ public:
 		system("pause");
 	}
 };
+
+// Initialize the static instance to nullptr.
+Shop* Shop::instance = nullptr;

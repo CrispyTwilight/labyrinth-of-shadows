@@ -13,10 +13,10 @@ protected:
     int mapLevel = 0;
     int width, height;
     vector<vector<char>> grid;
-    MapManager manage; // JPO: Moved from gloabal to inside the class. Everything still seems to work. If there is a reason it was global, let me know.
+    MapManager manage;
 
 public:
-    Map(int w, int h) : width(w), height(h) // JPO: We could get rid of the default map I think.
+    Map(int w, int h) : width(w), height(h)
     {
         grid = vector<vector<char>>(h, vector<char>(w, '.')); // '.' for empty space
     }
@@ -232,5 +232,4 @@ public:
     {
         return bossTrigger;
     }
-
 };
