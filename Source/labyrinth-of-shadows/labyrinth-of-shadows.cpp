@@ -1,7 +1,17 @@
 // Date: 11/27/2023
 // Auth: John O'Neal, William Brickner, Christian Botos, Hunter Kauffman, Christian Baack.
-// Desc: Main for final project.
+// Desc: Main client for final project.
 #include "All_Includes.h"
+
+// This function is where the program starts.
+int main()
+{
+    srand(time(0)); // JPO: Moved from Dice.h to so  it is only called once. Was causing issues with randomness in the shop.
+    GameManager game;
+    game.processMainMenu();
+    return 0;
+};
+/*
 
 // Prototypes
 void testDriver();
@@ -9,18 +19,10 @@ void gameDriver();
 void shopDriver();
 void screenDriver();
 
-int main()
-{
-    srand(time(0)); // JPO: Moved from Dice.h to so  it is only called once. Was causing issues with randomness in the shop.
-    testDriver();
-    return 0;
-};
-
 // JPO: This function asks which test to drive.
 void testDriver() {
     char choice;
     do {
-        // Welcome and menu
         cout << "Pick an option to test:\n"
             << "1) Test full game\n"
             << "2) Test Shop\n"
@@ -37,7 +39,6 @@ void testDriver() {
             shopDriver();
             break;
         case '3':
-            system("cls");
             screenDriver();
             break;
         case 27:
@@ -62,11 +63,12 @@ void gameDriver() {
 
 // JPO: This function drives the shop for testing.
 void shopDriver() {
-    cout << endl << endl;
     Shop::getInstance()->runShop();
 };
 
+// JPO: This function drives the screens for testing.
 void screenDriver() {
+    system("cls");
     Screens screens;
     char choice;
     do {
@@ -102,5 +104,6 @@ void screenDriver() {
             system("pause");
             system("cls");
         }
-    } while (choice != 27);
+    } while (true);
 };
+*/

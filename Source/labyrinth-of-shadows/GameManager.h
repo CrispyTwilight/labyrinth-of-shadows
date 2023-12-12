@@ -1,5 +1,5 @@
 // Date: 12/04/2023
-// Auth: John O'Neal
+// Auth: John O'Neal, William Brickner, Christian Botos, Hunter Kauffman, Christian Baack.
 // Desc: This class will manage the game and all of its components. Loading, ending, saving, quitting, etc. will all be handled here.
 #pragma once
 #include <iostream>
@@ -20,7 +20,6 @@
 #include "Player.h"
 
 using namespace std;
-// Will need to #include all of the other classes here.
 
 class GameManager
 {

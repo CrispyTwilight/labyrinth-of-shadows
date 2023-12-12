@@ -42,12 +42,7 @@ using namespace std;
 #include "Loot.h"
 
 //Character and enemy includes
-
-
-
-
 #include "Player.h"
-
 
 // File includes
 #include "RangerLoadFile.h"
