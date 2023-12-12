@@ -136,9 +136,7 @@
     <ClInclude Include="All_Includes.h" />
     <ClInclude Include="Armor.h" />
     <ClInclude Include="Boss.h" />
-    <ClInclude Include="Bow.h" />
     <ClInclude Include="Character.h" />
-    <ClInclude Include="Dagger.h" />
     <ClInclude Include="Dice.h" />
     <ClInclude Include="easyEnemy.h" />
     <ClInclude Include="Enemy.h" />
@@ -160,8 +158,6 @@
     <ClInclude Include="Save.h" />
     <ClInclude Include="Screens.h" />
     <ClInclude Include="Shop.h" />
-    <ClInclude Include="Staff.h" />
-    <ClInclude Include="Sword.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="Weapon.h" />
     <ClInclude Include="Wizard.h" />

@@ -1,6 +1,6 @@
 // Auth: Christian A. Botos, John O'Neal, Willam Brickner
 // Date: 12/07/2023
-// Desc: Inline definition of the Inventory Class for the player's inventory. It is a member of the Character Class. Inventory should be limited by weight, but our menu is limited to 9 items.
+// Desc: Inline definition of the Inventory Class for the player's inventory. Inventory should be limited by weight, but our menu is limited to 9 items.
 #pragma once
 #include "Weapon.h"
 #include "Armor.h"
@@ -18,12 +18,12 @@ private:
 	string selectedCharacter;
 	Armor* equippedArmor;
 	Weapon* equippedWeapon;
-	//Since we need linked pairs of Armor for their armorType so the player can equip more than one type of armor at a time.
-	//This is what I found that would allow us to keep track of it just inside of Inventory instead of having to call whatever character they are playing.
-	//It uses map which does require a header file but it seems to be the best way of storing these so that we could also easily save/load them later which is important.
+	// Since we need linked pairs of Armor for their armorType so the player can equip more than one type of armor at a time.
+	// This is what I found that would allow us to keep track of it just inside of Inventory instead of having to call whatever character they are playing.
+	// It uses map which does require a header file but it seems to be the best way of storing these so that we could also easily save/load them later which is important.
 	map<Armor::ArmorType, Armor*> equippedArmorSlots;
 
-	static Inventory* instance; // Singleton instance
+	static Inventory* instance; // JPO: Singleton instance
 
 	// Private constructor so that only the singleton instance can be created
     Inventory(int maxWeight = 0, int maxItems = 9, int gold = 100, string selectedCharacter = "", Armor* equippedArmor = nullptr, Weapon* equippedWeapon = nullptr)
@@ -129,8 +129,7 @@ public:
 			return equippedWeapon->damage;
 		}
 		else {
-			// Return a default value or handle the case when no weapon is equipped
-			return 2; // For example, returning 0 if no weapon is equipped
+			return 0;
 		}
 	}
 
@@ -166,7 +165,7 @@ public:
 			maxWeight = 200;
 		}
 		else {
-			maxWeight = 500; // JPO: Default value for testing only.
+			maxWeight = 500;
 		}
 	}
 
@@ -313,7 +312,7 @@ public:
 
 			if (choice == 27) { // Escape key
 				system("cls");
-				return; // Return to the shop.
+				return; // Return to the call point.
 			}
 
 			switch (choice) {

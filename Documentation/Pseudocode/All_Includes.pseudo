@@ -1,0 +1,50 @@
+// Auth: John O'Neal
+// Date: 12/11/23
+// Desc: Pseucode for All_Includes.h
+
+// Include all the standard headers used in the project
+Include <array>
+Include <conio.h>
+Include <chrono>
+Include <cstdlib>
+Include <ctime>
+Include <fstream>
+Include <iostream>
+Include <iomanip>
+Include <map>
+Include <string>
+Include <sstream>
+Include <thread>
+Include <vector>
+Include <windows.h>
+
+// Use the standard namespace
+Using namespace std
+
+// Utility includes
+Include "Util.h"
+Include "Dice.h"
+Include "GameManager.h"
+Include "Screens.h"
+
+// Map includes
+Include "MapManager.h"
+Include "Map.h"
+
+// Item includes
+Include "Item.h"
+Include "Inventory.h"
+Include "Weapon.h"
+Include "Armor.h"
+Include "Potion.h"
+Include "Shop.h"
+Include "Loot.h"
+
+//Character and enemy includes
+Include "Player.h"
+
+// File includes
+Include "RangerLoadFile.h"
+Include "WizardLoadFile.h"
+Include "Save.h"
+Include "Load.h"

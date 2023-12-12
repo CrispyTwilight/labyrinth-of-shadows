@@ -3,7 +3,7 @@
 // Desc: A header file to include all the standard C++ headers and the headers for the classes and structures used in the project. Use #include "All_Includes.h" across all files and then add the file name here for cross-file access.
 #pragma once
 
-// Include all the standard C++ headers used in the project.
+// Include all the standard C++ headers used in the project
 #include <array>
 #include <conio.h>
 #include <chrono>
@@ -19,7 +19,7 @@
 #include <vector>
 #include <windows.h>
 
-// Use the standard namespace.
+// Use the standard namespace
 using namespace std;
 
 // Utility includes
@@ -42,12 +42,7 @@ using namespace std;
 #include "Loot.h"
 
 //Character and enemy includes
-
-
-
-
 #include "Player.h"
-
 
 // File includes
 #include "RangerLoadFile.h"
