@@ -14,7 +14,7 @@ int main()
     srand(time(0)); // JPO: Moved from Dice.h to so  it is only called once. Was causing issues with randomness in the shop.
     testDriver();
     return 0;
-}
+};
 
 // JPO: This function asks which test to drive.
 void testDriver() {
@@ -30,41 +30,41 @@ void testDriver() {
         choice = _getch();
 
         switch (choice) {
-            case '1':
-                gameDriver();
-                break;
-            case '2':
-                shopDriver();
-                break;
-            case '3':
-                system("cls");
-                screenDriver();
-			    break;
-            case 27:
-                cout << "Quitting..." << endl;
-                return;
-            default:
-                cout << "Invalid choice. Try again." << endl;
-                break;
-            }
+        case '1':
+            gameDriver();
+            break;
+        case '2':
+            shopDriver();
+            break;
+        case '3':
+            system("cls");
+            screenDriver();
+            break;
+        case 27:
+            cout << "Quitting..." << endl;
+            return;
+        default:
+            cout << "Invalid choice. Try again." << endl;
+            break;
+        }
         if (choice != 27) {
             system("pause");
             system("cls");
         }
     } while (true);
-}
+};
 
 // JPO: This function drives the map.
 void gameDriver() {
     GameManager game;
     game.processMainMenu();
-}
+};
 
 // JPO: This function drives the shop for testing.
 void shopDriver() {
     cout << endl << endl;
     Shop::getInstance()->runShop();
-}
+};
 
 void screenDriver() {
     Screens screens;
@@ -92,15 +92,15 @@ void screenDriver() {
         case '4':
             screens.showHelp();
             break;
-        case 27 :
+        case 27:
             return;
         default:
             cout << "Invalid choice. Try again." << endl;
             break;
         }
         if (choice != 27) {
-			system("pause");
-			system("cls");
-		}
+            system("pause");
+            system("cls");
+        }
     } while (choice != 27);
-}
+};

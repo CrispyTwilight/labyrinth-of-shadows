@@ -94,21 +94,21 @@ public:
 
     void resetOrBoss()
     {
-        int c = 0;
+        char c = '0';
         if (keys == 6)
         {
-            cout << "Would you like to to reset the game(you keep all your character progress), or fight the final boss?\n1. Reset\n2. Fight   ";
-            cin >> c;
+            cout << "Would you like to reset the game(you keep all your character progress), or fight the final boss?\n1. Reset\n2. Fight";
+            c = _getch();
             keys = 0;
             system("cls");
         }
 
-        if (c == 1)
+        if (c == '1')
         {
             map.reset();
             map.setLevel(0);
         }
-        else if (c == 2)
+        else if (c == '2')
         {
             map.toggle2();
         }
