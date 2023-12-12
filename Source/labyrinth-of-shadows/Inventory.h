@@ -312,6 +312,7 @@ public:
 			choice = _getch();
 
 			if (choice == 27) { // Escape key
+				system("cls");
 				return; // Return to the shop.
 			}
 
