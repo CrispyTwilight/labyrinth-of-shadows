@@ -4,12 +4,14 @@
 #pragma once
 // #include "All_Includes.h"
 // JPO: Temp fix for the issue with the compiler not finding the files
+#include <iostream>
+#include <string>
+#include <iterator>
 #include "Character.h"
 #include "Enemy.h"
 #include "easyEnemy.h"
 #include "Boss.h"
 #include "Dice.h"
-
 #include "Inventory.h"
 
 class Rogue : public Character
@@ -32,15 +34,14 @@ private:
     bool isBlocking;
     bool isStunned;
     bool isEnemyStunned;
-    
     Dice d100;
+    Inventory* playerInventory;
 
 public:
     Rogue()
-    {
+    {}
 
-    }
-    Rogue(int max, int hea, int  str, int intel, int  dex, int lev, int ex, int need, int sa, int dodge, int potion, int turns)
+    Rogue(int max, int hea, int  str, int intel, int  dex, int lev, int ex, int need, int sa, int dodge, int potion, int turns) : playerInventory(getInventory())
     {
         maxHealth = max;
         //This is a placeholder because the playername
@@ -184,7 +185,7 @@ public:
     // Leveling up the player
     void levelUp()
     {
-        std::cout << "Congratulations you leveled up!";
+        cout << "Congratulations you leveled up!\n";
         // Increasing the players max health and healing them to full.
         maxHealth += 5;
         setHealth(maxHealth);
@@ -193,7 +194,7 @@ public:
         if (level % 5 == 0) {
             // Increment the number of turns when the player's level is a multiple of 5
             numberTurns++;
-            std::cout << "Congratulations! Your number of turns has increased to: " << numberTurns << endl;
+            cout << "Congratulations! Your number of turns has increased to: " << numberTurns << endl;
         }
 
         expNeeded = level * 5;
@@ -234,11 +235,13 @@ public:
         }
         default:
         {
-            cout << "Incorrect value. Please eneter a valid value.\n";
+            cout << "Incorrect value. Please enter a valid value.\n";
             break;
         }
 
         }
+        system("pause");
+        system("cls");
         if (checkForLevelUp(exp, expNeeded))
         {
             levelUp();
@@ -246,7 +249,7 @@ public:
     }
 
     //Player turn for the base enemy type
-    void playerTurn(Enemy& enemy, Inventory& playerInventory)
+    void playerTurn(Enemy& enemy)
     {
         //Setting blocking back to off at the start of their next turn.
         isBlocking = false;
@@ -279,9 +282,9 @@ public:
                     << "4. Sneak Attack\n"
                     << "5. Dodge\n" << endl << endl;
 
-
+                bool incorrectChoice = false;
                 do {
-                    bool incorrectChoice = false;
+                    incorrectChoice = false;
                     cout << "Enter your choice: ";
                     choice = _getch() - '0';
 
@@ -312,7 +315,7 @@ public:
                         continue;
                     }
 
-                } while (choice > 5 || choice < 0);
+                } while (choice > 5 || choice < 0 || incorrectChoice);
 
 
                 switch (choice)
@@ -321,7 +324,7 @@ public:
                     {
                         cout << "You did a basic attack\n";
                         // attack monster
-                        attackMonster(enemy, playerInventory.getEquippedWeaponDamage());
+                        attackMonster(enemy, playerInventory->getEquippedWeaponDamage());
                         break;
                     }
                     case 2:
@@ -341,7 +344,7 @@ public:
                     case 4:
                     {
                         std::cout << "You used Sneak Attack\n";
-                        // Rain of arrows
+                        // Sneak Attack
                         attackMonster(enemy, sneakAttack());
                         sneakAttackCooldown = 3;
                         break;
@@ -349,7 +352,7 @@ public:
                     case 5:
                     {
                         std::cout << " You used Dodge\n";
-                        // Charged Shot
+                        // Dodge
                         isDodgingActivated = true;
                         dodgeCooldown = dodgeLvl + 1;
                         break;
@@ -365,10 +368,12 @@ public:
         {
             std::cout << "You turn has been skipped!\n";
         }
+        system("pause");
+        system("cls");
     }
 
     // Player for the easy enemy
-    void playerTurnEasy(easyEnemy& easyEnemy, Inventory& playerInventory)
+    void playerTurnEasy(easyEnemy& easyEnemy)
     {
         //Setting blocking back to off at the start of their next turn.
         isBlocking = false;
@@ -402,10 +407,13 @@ public:
                     << "5. Dodge\n" << endl << endl;
 
 
-                do {
-                    bool incorrectChoice = false;
-                    cout << "Enter your choice: ";
-                    choice = _getch();
+
+                bool incorrectChoice = false;
+                do
+                {
+                    incorrectChoice = false;
+                    cout << "Enter your choice: \n";
+                    choice = _getch() - '0';
 
                     if (choice == 3 && healthPotions < 0) {
                         cout << "You are out of health potions, pick another option.\n";
@@ -423,18 +431,13 @@ public:
                         cout << "Dodge is still on cooldown. You have to wait " << dodgeCooldown << " number of turns.\n";
                         incorrectChoice = true;
                     }
+
                     else if (choice < 0 || choice > 5) {
                         cout << "Incorrect value. Please enter a valid value.\n";
                         incorrectChoice = true;
                     }
 
-                    // Check if the choice is invalid
-                    if (incorrectChoice) {
-                        // The do-while loop will continue if the choice was incorrect
-                        continue;
-                    }
-
-                } while (choice > 5 || choice < 0);
+                } while (choice > 5 || choice < 0 || incorrectChoice);
 
                 switch (choice)
                 {
@@ -443,7 +446,7 @@ public:
 
                         // attack monster
                         cout << "You did a basic attack\n";
-                        attackMonsterEasy(easyEnemy, playerInventory.getEquippedWeaponDamage());
+                        attackMonsterEasy(easyEnemy, playerInventory->getEquippedWeaponDamage());
                         break;
                     }
                     case 2:
@@ -487,11 +490,13 @@ public:
             {
                 cout << "You turn has been skipped!\n";
             }
+            system("pause");
+            system("cls");
         }
     }
 
     // Player turn for the boss class
-    void playerTurnBoss(Boss& boss, Inventory& playerInventory)
+    void playerTurnBoss(Boss& boss)
     {
         //Setting blocking back to off at the start of their next turn.
         isBlocking = false;
@@ -525,10 +530,12 @@ public:
                     << "5. Dodge\n" << endl << endl;
 
 
-                do {
-                    bool incorrectChoice = false;
-                    cout << "Enter your choice: ";
-                    choice = _getch();
+                bool incorrectChoice = false;
+                do
+                {
+                    incorrectChoice = false;
+                    cout << "Enter your choice: \n";
+                    choice = _getch() - '0';
 
                     if (choice == 3 && healthPotions < 0) {
                         cout << "You are out of health potions, pick another option.\n";
@@ -546,18 +553,13 @@ public:
                         cout << "Dodge is still on cooldown. You have to wait " << dodgeCooldown << " number of turns.\n";
                         incorrectChoice = true;
                     }
+
                     else if (choice < 0 || choice > 5) {
                         cout << "Incorrect value. Please enter a valid value.\n";
                         incorrectChoice = true;
                     }
 
-                    // Check if the choice is invalid
-                    if (incorrectChoice) {
-                        // The do-while loop will continue if the choice was incorrect
-                        continue;
-                    }
-
-                } while (choice > 5 || choice < 0);
+                } while (choice > 5 || choice < 0 || incorrectChoice);
 
 
                 switch (choice)
@@ -567,7 +569,7 @@ public:
 
                     // attack monster
                     cout << "You did a basic attack\n";
-                    attackMonsterBoss(boss, playerInventory.getEquippedWeaponDamage());
+                    attackMonsterBoss(boss, playerInventory->getEquippedWeaponDamage());
                     break;
                 }
                 case 2:
@@ -609,6 +611,8 @@ public:
                 cout << "You turn has been skipped!\n";
                 isStunned = false;
             }
+            system("pause");
+            system("cls");
         }
     }
 
@@ -632,13 +636,26 @@ public:
     }
 
     // Taking damage from the easy enemy.
-    void takeDamageEasyEnemy(easyEnemy& easyEnemy, int d, Inventory& playerInventory)
+    void takeDamageEasyEnemy(easyEnemy& easyEnemy, int d)
     {
         int enemyAttack = d100.rollDice();
 
         if (isBlocking)
         {
             cout << "You successfully blocked the attack!\n";
+            d = d * 0.25;
+            // Assuming playerInventory->getTotalEquippedDefense() is an integer value
+            d = d - playerInventory->getTotalEquippedDefense();
+
+            if (d < 0) {
+                d = 0;
+            }
+
+            // Convert the decimal damage to a whole number (rounding up)
+            d = static_cast<int>(ceil(d));
+
+            cout << "You took " << d << " damage\n";
+
         }
         else if (isDodgingActivated)
         {
@@ -652,7 +669,7 @@ public:
         }
         else
         {
-            d = d - playerInventory.getTotalEquippedDefense();
+            d = d - playerInventory->getTotalEquippedDefense();
             if (d < 0)
             {
                 d = 0;
@@ -663,7 +680,7 @@ public:
     }
 
     // Taking damage from a normal enemy.
-    void takeDamageBoss(Boss& boss, int d, Inventory& playerInventory)
+    void takeDamageBoss(Boss& boss, int d)
     {
         // Getting a random number and seeing if the players dex is higher and if it is they will dodge the attack.
         int enemyAttack = d100.rollDice();
@@ -671,6 +688,19 @@ public:
         if (isBlocking)
         {
             cout << "You successfully blocked the attack!\n";
+            d = d * 0.25;
+            // Assuming playerInventory->getTotalEquippedDefense() is an integer value
+            d = d - playerInventory->getTotalEquippedDefense();
+
+            if (d < 0) {
+                d = 0;
+            }
+
+            // Convert the decimal damage to a whole number (rounding up)
+            d = static_cast<int>(ceil(d));
+
+            cout << "You took " << d << " damage\n";
+
         }
         else if (isDodgingActivated)
         {
@@ -684,7 +714,7 @@ public:
         }
         else
         {
-            d = d - playerInventory.getTotalEquippedDefense();
+            d = d - playerInventory->getTotalEquippedDefense();
             if (d < 0)
             {
                 d = 0;
@@ -695,14 +725,27 @@ public:
     }
 
     // Taking damage from a normal enemy.
-    void takeDamage(Enemy& enemy, int d, Inventory& playerInventory)
+    void takeDamage(Enemy& enemy, int d)
     {
         // Getting a random number and seeing if the players dex is higher and if it is they will dodge the attack.
         int enemyAttack = d100.rollDice();
 
         if (isBlocking)
         {
-            std::cout << "You successfully blocked the attack!\n";
+            cout << "You successfully blocked the attack!\n";
+            d = d * 0.25;
+            // Assuming playerInventory->getTotalEquippedDefense() is an integer value
+            d = d - playerInventory->getTotalEquippedDefense();
+
+            if (d < 0) {
+                d = 0;
+            }
+
+            // Convert the decimal damage to a whole number (rounding up)
+            d = static_cast<int>(ceil(d));
+
+            cout << "You took " << d << " damage\n";
+
         }
         else if (isDodgingActivated)
         {
@@ -716,7 +759,7 @@ public:
         }
         else
         {
-            d = d - playerInventory.getTotalEquippedDefense();
+            d = d - playerInventory->getTotalEquippedDefense();
             if (d < 0)
             {
                 d = 0;
@@ -748,30 +791,36 @@ public:
         {
             setHealth(maxHealth);
         }
-        std::cout << "Your health is now at " << getHealth() << std::endl;
+        cout << "Your health is now at " << getHealth() << std::endl;
     }
 
-    void fightNormalEnemy(Enemy& enemy, Inventory& playerInventory)
+    void fightNormalEnemy(Enemy& enemy)
     {
+        sneakAttackCooldown = 0;
+        dodgeCooldown = 0;
 
 
-        std::cout << "You encounter " << enemy.getName() << " with " << enemy.getHealth() << " health!\n";
+        cout << "You encounter " << enemy.getName() << " with " << enemy.getHealth() << " health!\n";
 
         while (getHealth() > 0 && enemy.getHealth() > 0) {
             // Player's turn
-            playerTurn(enemy, playerInventory);
+            playerTurn(enemy);
 
             if (!isEnemyStunned)
             {
                 // Enemy's turn
-                takeDamage(enemy, enemy.getDamage(), playerInventory);
+                takeDamage(enemy, enemy.getDamage());
             }
             else
             {
                 std::cout << "The enemies turn was skipped\n";
             }
-            std::cout << "Your health is " << getHealth() << " / " << maxHealth
-                << "Enemy's health: " << enemy.getHealth() << std::endl;
+            cout << "Enemy's health: " << enemy.getHealth() << endl
+                << "Dodge Cooldown " << dodgeCooldown << endl
+                << "Sneak Attack Cooldown " << sneakAttackCooldown << endl
+                << "Your Health is at " << getHealth() << " / " << maxHealth << endl;
+            system("pause");
+            system("cls");
         }
 
         if (getHealth() <= 0) {
@@ -793,14 +842,16 @@ public:
     }
 
     // Fighting for the boss enemy.
-    void fightBossEnemy(Boss& boss, Inventory& playerInventory)
+    void fightBossEnemy(Boss& boss)
     {
+        sneakAttackCooldown = 0;
+        dodgeCooldown = 0;
         int turnCount = 0;
         cout << "You encounter " << boss.getName() << " with " << boss.getHealth() << " health!\n";
 
         while (getHealth() > 0 && boss.getHealth() > 0) {
             // Player's turn
-            playerTurnBoss(boss, playerInventory);
+            playerTurnBoss(boss);
 
             turnCount++;
 
@@ -809,7 +860,7 @@ public:
                 // Enemy's turn
                 if (turnCount % 2 != 0)
                 {
-                    takeDamageBoss(boss, boss.getDamage(), playerInventory);
+                    takeDamageBoss(boss, boss.getDamage());
                 }
                 else
                 {
@@ -822,7 +873,12 @@ public:
             }
             // Display updated stats after each round
 
-            cout << "Enemy's health: " << boss.getHealth() << endl;
+            cout << "Enemy's health: " << boss.getHealth() << endl
+                << "Dodge Cooldown " << dodgeCooldown << endl
+                << "Sneak Attack Cooldown " << sneakAttackCooldown << endl
+                << "Your Health is at " << getHealth() << " / " << maxHealth <<  endl;
+            system("pause");
+            system("cls");
         }
 
         if (getHealth() <= 0)
@@ -846,21 +902,23 @@ public:
     }
 
     // The function when the player has to fight a weak enemy (The first three enemies).
-    void fightWeakEnemy(easyEnemy& easyEnemy, Inventory & playerInventory)
+    void fightWeakEnemy(easyEnemy& easyEnemy)
     {
+        sneakAttackCooldown = 0;
+        dodgeCooldown = 0;
         // Display the enemy's details
         cout << "You encounter " << easyEnemy.getName() << " with " << easyEnemy.getHealth() << " health!\n";
 
         while (getHealth() > 0 && easyEnemy.getHealth() > 0) {
             // Player's turn
-            playerTurnEasy(easyEnemy, playerInventory);
+            playerTurnEasy(easyEnemy);
 
             if (easyEnemy.getHealth() > 0)
             {
                 // Enemy's turn
                 if (!isEnemyStunned)
                 {
-                    takeDamageEasyEnemy(easyEnemy, easyEnemy.attack(), playerInventory);
+                    takeDamageEasyEnemy(easyEnemy, easyEnemy.attack());
 
                 }
                 else
@@ -870,8 +928,12 @@ public:
             }
             // Display updated stats after each round
 
-            cout << "Enemy's health: " << easyEnemy.getHealth() << endl;
-            cout << "Your Health is at " << getHealth() << endl;
+            cout << "Enemy's health: " << easyEnemy.getHealth() << endl
+                << "Dodge Cooldown " << dodgeCooldown << endl
+                << "Sneak Attack Cooldown " << sneakAttackCooldown << endl
+                << "Your Health is at " << getHealth() << " / " << maxHealth << endl;
+            system("pause");
+            system("cls");
         }
 
         if (getHealth() <= 0) {

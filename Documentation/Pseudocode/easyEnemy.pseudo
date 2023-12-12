@@ -1,0 +1,34 @@
+//Auth: Hunter Kauffman
+//Date: 12/7/23
+//Desc: Pseucode for easyEnemy
+
+Class easyEnemy extends Character
+    Declare Private Integer strength
+    Declare Private Integer dexterity
+    Declare Private Integer expWorth
+    Declare Private String name
+
+    Public Module easyEnemy()
+        Call setHealth(5)
+        Set strength = 2
+        Set dexterity = 2
+        Set expWorth = 5
+        Set name = "Slurgle the Reviving Slime"
+    End Module
+
+    Public Integer Function attack()
+        Return strength
+    End Function
+
+    Public Module takeDamage(Integer d)
+        Call setHealth(Call getHealth() - d)
+    End Module
+
+    Public Integer Function giveEXP()
+        Return expWorth
+    End Function
+
+    Public String Function()
+        Return name
+    End Function
+End Class

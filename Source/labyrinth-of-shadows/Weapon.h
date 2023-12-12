@@ -2,7 +2,6 @@
 // Date: 12/07/2023
 // Desc: Header file for the Armor struct.
 #pragma once
-// #include "All_Includes.h
 #include "Item.h"
 #include "Dice.h"
 
@@ -57,6 +56,7 @@ struct Weapon : public Item {
 		}
 	}
 
+	// Second constructor that takes a string for the weapon type.
 	Weapon(string& type, int damage, int weight,int value, const string& name, const string& material) {
 		this->type = stringToWeaponType(type);
 		this->damage = damage;

@@ -1,2 +1,2 @@
-HealthPotion,0
-Gold,20
+Gold
+100

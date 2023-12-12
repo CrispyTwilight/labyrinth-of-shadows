@@ -2,6 +2,9 @@
 //Date: 11/30/23
 //Desc: Creating the subclass Wizard for the player.
 #pragma once
+#include <iostream>
+#include <string>
+#include <iterator>
 #include "Character.h"
 #include "Enemy.h"
 #include "easyEnemy.h"
@@ -29,12 +32,13 @@ private:
     bool isStunned;
     bool isEnemyStunned;
     Dice d100;
+    Inventory* playerInventory;
+
 public:
     Wizard()
-    {
+    {}
 
-    }
-    Wizard(int max, int hea, int  str, int intel, int  dex, int lev, int ex, int need, int ice, int fire, int potion, int turns)
+    Wizard(int max, int hea, int  str, int intel, int  dex, int lev, int ex, int need, int ice, int fire, int potion, int turns) : playerInventory(getInventory())
     {
         maxHealth = max;
         setHealth(hea);
@@ -187,7 +191,7 @@ public:
             cout << "Congratulations! Your number of turns has increased to: " << numberTurns << endl;
         }
 
-        //Doing the math so this is not just an infinite loop of level ups and making sure that their exp and expneeded go up properly.
+        // Doing the math so this is not just an infinite loop of level ups and making sure that their exp and expended go up properly.
         exp = expNeeded - exp;
         expNeeded = level * 5;
 
@@ -196,7 +200,7 @@ public:
         cout << "What Spell would you like to level up\n"
              << "Leveling up Fireball will increase its damage\n"
              << "Leveling up Ice wall will increase its effect duration but also increase cooldown duration.\n"
-             << "Your cooldown will be two more than the level of the Ice wall spell."
+             << "Your cooldown will be two more than the level of the Ice wall spell.\n"
              << "1. FireBall " << fireballLvl << endl
              << "2. Ice Wall " << iceWallLvl << endl;
 
@@ -204,10 +208,10 @@ public:
         {
             cout << "Enter your choice: \n";
             choice = _getch() - '0';
-            if (choice < 0 || choice > 3) {
+            if (choice < 0 || choice > 2) {
                 cout << "Incorrect value. Please enter a valid value.\n";
             }
-        } while (choice < 0 || choice > 3);
+        } while (choice < 0 || choice > 2);
 
         switch (choice)
         {
@@ -226,10 +230,12 @@ public:
         }
         default:
         {
-            cout << "You have encountered an error.";
+            cout << "You have encountered an error.\n";
             break;
         }
         //Checking if they need to be leveled up again its in the util because it is an easy check that all characters use.
+        system("pause");
+        system("cls");
         }
         if (checkForLevelUp(exp, expNeeded))
         {
@@ -238,7 +244,7 @@ public:
     }
 
     // This the base player turn.
-    void playerTurn(Enemy& enemy , Inventory& playerInventory)
+    void playerTurn(Enemy& enemy)
     {
         if (iceWallEffect > 0)
         {
@@ -271,6 +277,7 @@ public:
                 << "2. Take Health Potion\n"
                 << "3. Ice Wall\n"
                 << "4. Fireball\n";
+
 
             do {
                 bool incorrectChoice = false;
@@ -308,7 +315,7 @@ public:
             case 1:
             {
                 // attack monster
-                attackMonster(enemy, playerInventory.getEquippedWeaponDamage());
+                attackMonster(enemy, playerInventory->getEquippedWeaponDamage());
                 break;
             }
             case 2:
@@ -336,14 +343,16 @@ public:
             }
             default:
             {
-                cout << "You have encountered an error.";
+                cout << "You have encountered an error.\n";
                 break;
             }
             }
+            system("pause");
+            system("cls");
         }
     }
 
-    void playerTurnBoss(Boss& enemy, Inventory& playerInventory)
+    void playerTurnBoss(Boss& enemy)
     {
         if (iceWallEffect > 0)
         {
@@ -383,7 +392,7 @@ public:
                 do {
                     bool incorrectChoice = false;
                     cout << "Enter your choice: ";
-                    cin >> choice;
+                    choice = _getch() - '0';
 
                     if (choice == 2 && healthPotions < 0) {
                         cout << "You are out of health potions, pick another option.\n";
@@ -417,7 +426,7 @@ public:
                 case 1:
                 {
                     // attack monster
-                    attackMonsterBoss(enemy, playerInventory.getEquippedWeaponDamage());
+                    attackMonsterBoss(enemy, playerInventory->getEquippedWeaponDamage());
                     break;
                 }
                 case 2:
@@ -441,7 +450,7 @@ public:
                 }
                 default:
                 {
-                    cout << "You have encountered an error.";
+                    cout << "You have encountered an error.\n";
                     break;
                 }
                 }
@@ -452,12 +461,14 @@ public:
             cout << "You stunned your turn is skipped!\n";
             isStunned = false;
         }
+        system("pause");
+        system("cls");
 
     }
 
 
     //Player turn for easy enemies.
-    void playerTurnEasy(easyEnemy& easyEnemy, Inventory& playerInventory)
+    void playerTurnEasy(easyEnemy& easyEnemy)
     {
         if (iceWallEffect > 0)
         {
@@ -483,18 +494,18 @@ public:
         for (int turn = 1; turn <= numberTurns; ++turn)
         {
 
-            cout << "It's your turn, what would you like to do?\n";
-            cout << "1. Basic Attack\n"
-
+            cout << "It's your turn, what would you like to do?\n"
+                << "1. Basic Attack\n"
                 << "2. Take Health Potion\n"
                 << "3. Ice Wall\n"
                 << "4. Fireball\n";
 
+            bool incorrectChoice = false;
             do
             {
-                bool incorrectChoice = false;
+                incorrectChoice = false;
                 cout << "Enter your choice: \n";
-                cin >> choice;
+                choice = _getch() - '0';
 
                 if (choice == 2 && healthPotions < 0) {
                     cout << "You are out of health potions, pick another option.\n";
@@ -513,20 +524,16 @@ public:
                     incorrectChoice = true;
                 }
 
-                // Check if the choice is invalid due to cooldown or lack of resources
-                if (incorrectChoice) {
-                    // The do-while loop will continue if the choice was incorrect
-                    continue;
-                }
 
-            } while (choice > 5 || choice < 0);
+
+            } while (choice > 4 || choice < 0 || incorrectChoice);
 
             switch (choice)
             {
             case 1:
             {
                 // attack monster
-                attackMonsterEasy(easyEnemy, playerInventory.getEquippedWeaponDamage());
+                attackMonsterEasy(easyEnemy, playerInventory->getEquippedWeaponDamage());
                 break;
             }
             case 2:
@@ -557,29 +564,59 @@ public:
                 cout << "You have entered an incorrect value.";
             }
             }
+            system("pause");
+            system("cls");
         }
 
     }
 
 
     // Taking damage from a normal enemy.
-    void takeDamage(Enemy& enemy, int d , Inventory& playerInventory)
+    void takeDamage(Enemy& enemy, int d)
     {
         // Getting a random number and seeing if the players dex is higher and if it is they will dodge the attack.
         int enemyAttack = d100.rollDice();
+        if (iceWallEffect > 0)
+        {
+            d = d * 0.25;
+            // Assuming playerInventory->getTotalEquippedDefense() is an integer value
+            d = d - playerInventory->getTotalEquippedDefense();
+            if (d < 0)
+            {
+                d = 0;
+            }
 
-        if (isBlocking)
+            // Convert the decimal damage to a whole number (rounding up)
+            d = static_cast<int>(ceil(d));
+
+            cout << "You took " << d << " damage\n";
+            
+            cout << "You fully blocked the attack using Ice Wall\n";
+
+        }
+        else if (isBlocking)
         {
             cout << "You successfully blocked the attack!\n";
-        }
+            d = d * 0.25;
+            // Assuming playerInventory->getTotalEquippedDefense() is an integer value
+            d = d - playerInventory->getTotalEquippedDefense();
+            if (d < 0) 
+            {
+                d = 0;
+            }
 
+            // Convert the decimal damage to a whole number (rounding up)
+            d = static_cast<int>(ceil(d));
+
+            cout << "You took " << d << " damage\n";
+        }
         else if (enemyAttack <= dexterity)
         {
             cout << "You dodged the attack!\n";
         }
         else
         {
-            d = d - playerInventory.getTotalEquippedDefense();
+            d = d - playerInventory->getTotalEquippedDefense();
             if (d < 0)
             {
                 d = 0;
@@ -590,13 +627,29 @@ public:
     }
 
     // Taking damage from the easy enemy.
-    void takeDamageEasyEnemy(easyEnemy& easyEnemy, int d, Inventory& playerInventory)
+    void takeDamageEasyEnemy(easyEnemy& easyEnemy, int d)
     {
         int enemyAttack = d100.rollDice();
-
-        if (isBlocking)
+        if (iceWallEffect > 0)
+        {
+            cout << "You fully blocked the attack using Ice Wall\n";
+        }
+        else if (isBlocking)
         {
             cout << "You successfully blocked the attack!\n";
+            d = d * 0.25;
+            // Assuming playerInventory->getTotalEquippedDefense() is an integer value
+            d = d - playerInventory->getTotalEquippedDefense();
+
+            if (d < 0) {
+                d = 0;
+            }
+
+            // Convert the decimal damage to a whole number (rounding up)
+            d = static_cast<int>(ceil(d));
+
+            cout << "You took " << d << " damage\n";
+
         }
         else if (enemyAttack <= dexterity)
         {
@@ -604,7 +657,7 @@ public:
         }
         else
         {
-            d = d - playerInventory.getTotalEquippedDefense();
+            d = d - playerInventory->getTotalEquippedDefense();
             if (d < 0)
             {
                 d = 0;
@@ -615,14 +668,28 @@ public:
     }
 
     // Taking damage from a normal enemy.
-    void takeDamageBoss(Boss& boss, int d, Inventory& playerInventory)
+    void takeDamageBoss(Boss& boss, int d)
     {
         // Getting a random number and seeing if the players dex is higher and if it is they will dodge the attack.
         int enemyAttack = d100.rollDice();
-
-        if (isBlocking)
+        if (iceWallEffect > 0)
+        {
+            cout << "You fully blocked the attack using Ice Wall\n";
+        }
+        else if (isBlocking)
         {
             cout << "You successfully blocked the attack!\n";
+            d = d * 0.25;
+            // Assuming playerInventory->getTotalEquippedDefense() is an integer value
+            d = d - playerInventory->getTotalEquippedDefense();
+            if (d < 0) {
+                d = 0;
+            }
+
+            // Convert the decimal damage to a whole number (rounding up)
+            d = static_cast<int>(ceil(d));
+
+            cout << "You took " << d << " damage\n";
         }
         else if (enemyAttack <= dexterity)
         {
@@ -630,7 +697,7 @@ public:
         }
         else
         {
-            d = d - playerInventory.getTotalEquippedDefense();
+            d = d - playerInventory->getTotalEquippedDefense();
             if (d < 0)
             {
                 d = 0;
@@ -645,7 +712,7 @@ public:
     void attackMonster(Enemy & enemy, int d)
     {
        enemy.takeDamage(d);
-       cout << enemy.getName() << "took " << d << " damage.\n";
+       cout << enemy.getName() << " took " << d << " damage.\n";
     }
 
     //For the easy enemy
@@ -659,7 +726,7 @@ public:
     void attackMonsterBoss(Boss& boss, int d)
     {
         boss.takeDamage(d);
-        cout << boss.getName() << "took " << d << " damage.\n";
+        cout << boss.getName() << " took " << d << " damage.\n";
     }
 
     // Calculate the damage for the fireball.
@@ -688,19 +755,21 @@ public:
 
 
     // The function for fighting every enemy after that.
-    void fightNormalEnemy(Enemy& enemy, Inventory& playerInventory)
+    void fightNormalEnemy(Enemy& enemy)
     {
+        iceWallCooldown = 0;
+        fireballCooldown = 0;
         //Telling them what they have encountered.
         cout << "You encounter " << enemy.getName() << " with " << enemy.getHealth() << " health!\n";
 
         // This is the while loop that will be repeated every turn for user until the fight is over.
         while (getHealth() > 0 && enemy.getHealth() > 0) {
             // Player's turn
-            playerTurn(enemy, playerInventory);
+            playerTurn(enemy);
 
             // May want to add some better ai here.
             // Enemy's turn
-            takeDamage(enemy, enemy.getDamage(), playerInventory);
+            takeDamage(enemy, enemy.getDamage());
 
             // Display updated stats after each round
             cout << "Enemy's health: " << enemy.getHealth() << endl
@@ -708,6 +777,9 @@ public:
                 << "Ice Wall Effect " << iceWallEffect << endl
                 << "Fireball Cooldown " << fireballCooldown << endl
                 << "Your Health is at " << getHealth() << endl;
+
+            system("pause");
+            system("cls");
         }
 
         if (getHealth() <= 0)
@@ -728,22 +800,24 @@ public:
     }
 
      // The function when the player has to fight a weak enemy (The first three enemies).
-    void fightWeakEnemy(easyEnemy & easyEnemy, Inventory& playerInventory)
+    void fightWeakEnemy(easyEnemy & easyEnemy)
     {
+        iceWallCooldown = 0;
+        fireballCooldown = 0;
      // Display the enemy's details
         cout << "You encounter " << easyEnemy.getName() << " with " << easyEnemy.getHealth() << " health!\n";
 
         while (getHealth() > 0 && easyEnemy.getHealth() > 0)
         {
             // Player's turn
-            playerTurnEasy(easyEnemy, playerInventory);
+            playerTurnEasy(easyEnemy);
 
             if (easyEnemy.getHealth() > 0)
             {
                 // Enemy's turn
                 if (!isEnemyStunned)
                 {
-                    takeDamageEasyEnemy(easyEnemy, easyEnemy.attack(), playerInventory);
+                    takeDamageEasyEnemy(easyEnemy, easyEnemy.attack());
                 }
                 else
                 {
@@ -756,6 +830,9 @@ public:
                 << "Ice Wall Effect " << iceWallEffect << endl
                 << "Fireball Cooldown " << fireballCooldown << endl
                 << "Your Health is at " << getHealth() << endl;
+
+            system("pause");
+            system("cls");
         }
 
         if (getHealth() <= 0)
@@ -775,20 +852,22 @@ public:
     }
 
     //Fighting the final boss.
-    void fightBossEnemy(Boss& boss , Inventory& playerInventory)
+    void fightBossEnemy(Boss& boss)
     {
+        iceWallCooldown = 0;
+        fireballCooldown = 0;
         int turnCount = 0;
         cout << "You encounter " << boss.getName() << " with " << boss.getHealth() << " health!\n";
 
         while (getHealth() > 0 && boss.getHealth() > 0) {
             // Player's turn
-            playerTurnBoss(boss, playerInventory);
+            playerTurnBoss(boss);
 
             turnCount++;
             // Enemy's turn
             if (turnCount % 2 != 0)
             {
-                takeDamageBoss(boss, boss.getDamage(), playerInventory);
+                takeDamageBoss(boss, boss.getDamage());
             }
             else
             {
@@ -804,6 +883,9 @@ public:
                 << "Ice Wall Effect " << iceWallEffect << endl
                 << "Fireball Cooldown " << fireballCooldown << endl
                 << "Your Health is at " << getHealth() << endl;
+
+            system("pause");
+            system("cls");
         }
 
         if (getHealth() <= 0) {

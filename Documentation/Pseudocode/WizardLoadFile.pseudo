@@ -1,0 +1,20 @@
+//Auth: Hunter Kauffman
+//Date: 12/7/23
+//Desc: Pseucode for Wizard load file
+
+Structure WizardLoadFile
+    Declare Integer max
+    Declare Integer health
+    Declare Integer strength
+    Declare Integer intelligence
+    Declare Integer dexterity
+    Declare Integer level
+    Declare Integer numTurns
+    Declare Integer healthPotions
+    Declare Integer exp
+    Declare Integer expNeed
+    Declare Integer fireLvl
+    Declare Integer iceWallLvl
+    Declare Integer round
+    Declare Integer score
+ENd Structure

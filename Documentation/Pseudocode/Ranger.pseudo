@@ -1,0 +1,953 @@
+//Auth: William Brickner
+//Date: 11/30/23
+//Desc: Creating the subclass ranger for the player.
+
+#include "Character.h"
+#include "Enemy.h"
+#include "easyEnemy.h"
+#include "Boss.h"
+#include "Inventory.h"
+
+
+Class Ranger extends Character
+
+   Declare Private Integer maxHealth
+   Declare Private Integer strength
+   Declare Private Integer intelligence
+   Declare Private Integer dexterity
+   Declare Private Integer healthPotions
+   Declare Private Integer level
+   Declare Private Integer exp
+   Declare Private Integer expNeeded
+   Declare Private Integer rainLvl
+   Declare Private Integer chargedLvl
+   Declare Private Integer repulsionLvl
+   Declare Private Integer numberTurns
+   Declare Private Integer rainCooldown
+   Declare Private Integer chargedCooldown
+   Declare Private Integer repulsionUses
+   Declare Private Boolean isRepulsionActivated
+   Declare Private Boolean isBlocking
+   Declare Private Boolean isStunned
+   Declare Private Boolean isEnemyStunned
+   Declare Private Dice d100
+   Declare Private Inventory* playerInventory
+
+Declare Public Constructor Ranger()
+    {
+
+        Set maxHealth = 25 
+        //This is a placeholder because the playername
+        Call setName("Ranger") 
+        Call setHealth(25) 
+        Set strength = 7 
+        Set intelligence = 3 
+        Set dexterity = 4 
+        Set level = 1 
+        Set numberTurns = 1 
+        Set healthPotions = 1 
+        Set exp = 0 
+        Set expNeeded = 5 
+        Set rainLvl = 1 
+        Set chargedLvl = 1 
+        Set repulsionLvl = 1 
+        // Since this an combat ability it will only be able to activated during combat so it starts off false
+        Set isRepulsionActivated = false 
+        Set isBlocking = false 
+        Set isStunned = false 
+        Set isEnemyStunned = false 
+        Set rainCooldown = 0 
+        Set chargedCooldown = 0 
+        Set repulsionUses = repulsionLvl 
+        Set d100.setMin(1) 
+        Set d100.setMax(100) 
+
+
+    }
+    Ranger(Integer max, Integer hea, Integer  str, Integer intel, Integer  dex, Integer lev, Integer ex, Integer need, Integer rai, Integer charg, Integer re, Integer potion, Integer turns) : playerInventory(getInventory())
+    {
+        Set maxHealth = max 
+        //This is a placeholder because the playername
+        Call setName("Ranger") 
+        Call setHealth(hea) 
+        Set strength = str 
+        Set intelligence = intel 
+        Set dexterity = dex 
+        Set level = lev 
+        Set numberTurns = turns 
+        Set healthPotions = potion 
+        Set exp = ex 
+        Set expNeeded = need 
+        Set rainLvl = rai 
+        Set chargedLvl = charg 
+        Set repulsionLvl = re 
+        // Since this an combat ability it will only be able to activated during combat so it starts off false
+        Set isRepulsionActivated = false 
+        Set isBlocking = false 
+        Set isStunned = false 
+        Set isEnemyStunned = false 
+        Set rainCooldown = 0 
+        Set chargedCooldown = 0 
+        Set repulsionUses = repulsionLvl 
+        Set d100.setMin(1) 
+        Set d100.setMax(100) 
+    }
+
+    //Setters
+    Declare Public void setMaxHealth(int value)
+    {
+        Set maxHealth = value 
+    }
+
+    Declare Public void setStrength(int value)
+    {
+        Set strength = value 
+    }
+
+    Declare Public void setIntelligence(int value)
+    {
+        Set intelligence = value 
+    }
+
+    Declare Public void setDexterity(int value)
+    {
+        Set dexterity = value 
+    }
+
+    Declare Public void setLevel(int value)
+    {
+        Set level = value 
+    }
+
+    Declare Public void setNumTurns(int value)
+    {
+        Set numberTurns = value 
+    }
+
+    Declare Public void setHealthPotions(int value)
+    {
+        Set healthPotions = value 
+    }
+
+    Declare Public void setExp(int value)
+    {
+        Set exp = value 
+    }
+
+    Declare Public void setExpNeeded(int value)
+    {
+        Set expNeeded = value 
+    }
+
+    Declare Public void setRainLvl(int value)
+    {
+        rainLvl = value 
+    }
+
+    Declare Public void setChargedLvl(int value)
+    {
+        Set chargedLvl = value 
+    }
+
+    Declare Public void setRepulsionLvl(int value)
+    {
+        Set repulsionLvl = value 
+    }
+
+
+    // Getters
+    Declare Constant Public integer getMaxHealth() 
+    {
+        return maxHealth
+    }
+
+    Declare Constant Public integer getStrength() 
+    {
+        return strength
+    }
+
+    Declare Constant Public integer  getIntelligence() 
+    {
+        return intelligence
+    }
+
+    Declare Constant Public integer  getDexterity() 
+    {
+        return dexterity
+    }
+
+    Declare Constant Public integer getLevel() 
+    {
+        return level
+    }
+
+    Declare Constant Public integer getNumTurns() 
+    {
+        return numberTurns
+    }
+
+    Declare Constant Public integer  getHealthPotions() 
+    {
+        return healthPotions
+    }
+
+    Declare Constant Public integer  getExp() 
+    {
+        return exp
+    }
+
+    Declare Constant Public integer getExpNeeded() 
+    {
+        return expNeeded
+    }
+
+    Declare Constant Public integer  getRainLvl() 
+    {
+        return rainLvl
+    }
+
+    Declare Constant Public integer  getChargedLvl() 
+    {
+        return chargedLvl
+    }
+
+    Declare Constant Public integer  getRepulsionLvl() 
+    {
+        return repulsionLvl
+    }
+
+    // Leveling up the player
+    Declare Public void levelUp()
+    {
+        Display "Congratulations you leveled up!" 
+        // Increasing the players max health and healing them to full.
+        Set maxHealth += 5
+        Call setHealth(maxHealth)
+        Set dexterity += 1
+        Set level += 1
+        if (level % 5 == 0) Then
+        {
+            // Increment the number of turns when the player's level is a multiple of 5
+            numberTurns++
+            Display "Congratulations! Your number of turns has increased to: " 
+            Display numberTurns 
+        }
+
+        Set expNeeded = level * 5
+        Set exp = expNeeded - exp
+
+        Declare integer choice
+
+        // Displaying the level up message
+            Display  "What Spell would you like to level up"
+            Display "Rain of Arrows per level will do an additional 5 damage. Starts with doing 10 damage."
+            Display "Charged Shot for the first unlock will allow the Ranger to stun their enemy for a turn."
+            Display "Then every upgrade after that increases the number of turns per stun. Then the cooldown will increase a turn by one as well."
+            Display "Repulsion will reflect the next damage that is taken back at the opponent base can only be used once per a fight."
+            Display "But every level after number one you can use it an additional time per combat"
+            Display "1. Rain of Arrows " 
+            Display rainLvl 
+            Display "2. Charged Shot " 
+            Display chargedLvl 
+            Display "3. Repulsion "
+            Display  repulsionLvl 
+
+            Do
+            Display "Enter your choice:"
+            Input choice
+            If (choice < 0 OR choice > 3) Then
+                Display "Incorrect value. Please enter a valid value."
+            End If
+        While (choice < 0 OR choice > 3)
+        
+        Switch (choice)
+            Case 1:
+                Increment rainLvl by 1
+                Display "Rain of Arrows is now level " + rainLvl
+                Break
+            Case 2:
+                Increment chargedLvl by 1
+                Display "Charged Shot is now level " + chargedLvl
+                Break
+            Case 3:
+                Increment repulsionLvl by 1
+                Display "Repulsion is now level " + repulsionLvl
+                Set repulsionUses = repulsionLvl
+                Break
+            Default:
+                Display "Incorrect value. Please enter a valid value."
+                Break
+        End Switch
+        
+        System pause
+        System clear screen
+        
+        If (checkForLevelUp(exp, expNeeded)) Then
+           Call levelUp()
+        End If
+
+    //Player turn for the base enemy type
+    Declare Public void playerTurn(Enemy& enemy)
+    Set isBlocking = false
+    If rainCooldown > 0 Then
+        Set rainCooldown = rainCooldown - 1
+    End If
+    If chargedCooldown > 0 Then
+        Set  chargedCooldown = chargedCooldown - 1
+    End If
+    Set Integer choice = 0
+    If chargedCooldown = 1 Then
+        Set isEnemyStunned = false
+    End If
+    If (Not isStunned) Then
+        For turn = 1 to numberTurns
+            Display "It's your turn, what would you like to do?"
+            Display "1. Basic Attack"
+            Display "2. Block"
+            Display "3. Take Health Potion"
+            Display "4. Rain of Arrows"
+            Display "5. Charged Shot"
+            Display "6. Repulsion"
+
+            Declare Boolean incorrectChoice 
+            Set incorrectChoice = false
+            Do
+                Set incorrectChoice to false
+                Display "Enter your choice:"
+                Input choice
+
+                Declare void playerTurn(Enemy& enemy)
+                Set isBlocking to false
+                If (rainCooldown > 0) Then
+                    Decrement rainCooldown by 1
+                End If
+                If (chargedCooldown > 0) Then
+                    Decrement chargedCooldown by 1
+                End If
+                Set Integer choice to 0
+                If (chargedCooldown == 1) Then
+                    Set isEnemyStunned = false
+                End If
+                If (Not isStunned) Then
+                    For turn from 1 to numberTurns
+                        Display "It's your turn, what would you like to do?"
+                        Display "1. Basic Attack"
+                        Display "2. Block"
+                        Display "3. Take Health Potion"
+                        Display "4. Rain of Arrows"
+                        Display "5. Charged Shot"
+                        Display "6. Repulsion"
+            
+                        Declare Boolean incorrectChoice = false
+                        Do
+                            Set incorrectChoice = false
+                            Display "Enter your choice:"
+                            Input choice
+            
+                            If (choice == 3 AND healthPotions < 0) Then
+                                Display "You are out of health potions, pick another option."
+                                Set incorrectChoice to true
+                            Else if (choice == 3 AND getHealth() == maxHealth) Then
+                                Display "You are full on health. I highly recommend you do something else."
+                                Set incorrectChoice to true
+                            Else if (choice == 4 AND rainCooldown > 0) Then
+                                Display "Rain of Arrows is still on cooldown. You have to wait " + rainCooldown + " number of turns."
+                                Set incorrectChoice to true
+                            Else if (choice == 5 AND chargedCooldown > 0) Then
+                                Display "Charged shot is still on cooldown. You have to wait " + chargedCooldown + " number of turns."
+                                Set incorrectChoice to true
+                            Else if (choice == 6 AND repulsionUses < 0) Then
+                                Display "You are out of Repulsion uses please try something else."
+                                Set incorrectChoice to true
+                            Else if (choice < 0 OR choice > 6) Then
+                                Display "Incorrect value. Please enter a valid value."
+                                Set incorrectChoice to true
+                            End If
+            
+                        While (choice > 6 OR choice < 0 OR incorrectChoice)
+
+            Switch choice
+                Case 1:
+                    Display "You did a basic attack"
+                    Call attackMonster(enemy, playerInventory->getEquippedWeaponDamage())
+                    Break
+                Case 2:
+                    Display "You have started to block"
+                    Set isBlocking = true
+                    Break
+                Case 3:
+                    Display "You took a health potion"
+                    Call takePotion()
+                    Break
+                Case 4:
+                    Display "You used Rain of Arrows"
+                    Call attackMonster(enemy, rainAttack())
+                    Set rainCooldown = 3
+                    Break
+                Case 5:
+                    Display "You used Charged Shot"
+                    Set isEnemyStunned = true
+                    Set chargedCooldown = chargedLvl + 1
+                    Break
+                Case 6:
+                    Display "You activated Repulsion"
+                    Set isRepulsionActivated = true
+                    Break
+                Default:
+                    Display "You put in an incorrect value please try again"
+                    Break
+            End Switch
+        End For
+    End If
+    If (isStunned) Then
+        Display "Your turn has been skipped!"
+    End If
+
+    System pause
+    System clear screen
+
+End void playerTurn
+
+Declare Public void playerTurnEasy(easyEnemy& easyEnemy)
+    Set isBlocking = false
+    If (rainCooldown > 0) Then
+        Set rainCooldown = rainCooldown - 1
+    End If
+    If (chargedCooldown > 0) Then
+        Set  chargedCooldown = chargedCooldown - 1
+    End If
+    Set Integer choice = 0
+    If (chargedCooldown == 1) Then
+        Set isEnemyStunned = false
+    End If
+    If (not isStunned) Then
+        For (turn = 1 to numberTurns)
+            Display "It's your turn, what would you like to do?"
+            Display "1. Basic Attack"
+            Display "2. Block"
+            Display "3. Take Health Potion"
+            Display "4. Rain of Arrows"
+            Display "5. Charged Shot"
+            Display "6. Repulsion"
+
+            Declare Boolean incorrectChoice 
+            Set incorrectChoice = false
+
+            Do
+                Set incorrectChoice to false
+                Display "Enter your choice:"
+
+                Input choice
+
+                If (choice == 3 AND healthPotions < 0) Then
+                    Display "You are out of health potions, pick another option."
+                    Set incorrectChoice to true
+                Else if (choice == 3 AND getHealth() == maxHealth) Then
+                    Display "You are full on health. I highly recommend you do something else."
+                    Set incorrectChoice to true
+                Else if (choice == 4 AND rainCooldown > 0) Then
+                    Display "Rain of Arrows is still on cooldown. You have to wait " + rainCooldown + " number of turns."
+                    Set incorrectChoice to true
+                Else if (choice == 5 AND chargedCooldown > 0) Then
+                    Display "Charged shot is still on cooldown. You have to wait " + chargedCooldown + " number of turns."
+                    Set incorrectChoice to true
+                Else if (choice == 6 AND repulsionUses < 0) Then
+                    Display "You are out of Repulsion uses please try something else."
+                    Set incorrectChoice to true
+                Else if (choice < 0 OR choice > 6) Then
+                    Display "Incorrect value. Please enter a valid value."
+                    Set incorrectChoice to true
+                End If
+
+            While (choice > 6 OR choice < 0 OR incorrectChoice)
+
+            Switch choice
+                Case 1:
+                    Display "You did a basic attack"
+                    Call attackMonsterEasy(easyEnemy, playerInventory->getEquippedWeaponDamage())
+                    Break
+                Case 2:
+                    Display "You have started to block"
+                    Set isBlocking = true
+                    Break
+                Case 3:
+                    Display "You took a health potion"
+                    Call takePotion()
+                    Break
+                Case 4:
+                    Display "You used Rain of Arrows"
+                    Call attackMonsterEasy(easyEnemy, rainAttack())
+                    Set rainCooldown = 3
+                    Break
+                Case 5:
+                    Display "You used Charged Shot"
+                    Set isEnemyStunned to true
+                    Set chargedCooldown = chargedLvl + 1
+                    Break
+                Case 6:
+                    Display "You activated Repulsion"
+                    Set isRepulsionActivated = true
+                    Break
+                Default:
+                    Display "You have encountered an error"
+                    Break
+            End Switch
+
+            If (isStunned) Then
+                Display "Your turn has been skipped!"
+            End If
+            System pause
+            System clear screen
+        End For
+    End If
+End void playerTurnEasy
+
+
+
+Declare Public void playerTurnBoss(Boss& boss)
+Set isBlocking = false
+If (rainCooldown > 0) Then
+    Set rainCooldown = rainCooldown - 1
+End If
+If (chargedCooldown > 0) Then
+    Set chargedCooldown = chargedCooldown - 1
+End If
+Set Integer choice = 0
+If (chargedCooldown == 1) Then
+    Set isEnemyStunned = false
+End If
+If (not isStunned) Then
+    For (turn = 1 to numberTurns)
+        Display "It's your turn, what would you like to do?"
+        Display "1. Basic Attack"
+        Display "2. Block"
+        Display "3. Take Health Potion"
+        Display "4. Rain of Arrows"
+        Display "5. Charged Shot"
+        Display "6. Repulsion"
+        
+        Declare Boolean incorrectChoice 
+        Set incorrectChoice = false
+        
+        Do
+            Set incorrectChoice = false
+            Display "Enter your choice: "
+            Input choice
+
+            If (choice == 3 AND healthPotions < 0) Then
+                Display "You are out of health potions, pick another option."
+                Set incorrectChoice = true
+            Else if (choice == 3 AND getHealth() == maxHealth) Then
+                Display "You are full on health. I highly recommend you do something else."
+                Set incorrectChoice = true
+            Else if (choice == 4 AND rainCooldown > 0) Then
+                Display "Rain of Arrows is still on cooldown. You have to wait " + rainCooldown + " number of turns."
+                Set incorrectChoice = true
+            Else if (choice == 5 AND chargedCooldown > 0) Then
+                Display "Charged shot is still on cooldown. You have to wait " + chargedCooldown + " number of turns."
+                Set incorrectChoice = true
+            Else if (choice == 6 AND repulsionUses < 0) Then
+                Display "You are out of Repulsion uses please try something else."
+                Set incorrectChoice = true
+            Else if (choice < 0 OR choice > 6) Then
+                Display "Incorrect value. Please enter a valid value."
+                Set incorrectChoice = true
+            End If
+
+        While (choice > 6 OR choice < 0 OR incorrectChoice)
+
+        Switch choice
+            Case 1:
+                Display "You did a basic attack"
+                Call attackMonsterBoss(boss, playerInventory->getEquippedWeaponDamage())
+                Break
+            Case 2:
+                Display "You have started to block"
+                Set isBlocking = true
+                Break
+            Case 3:
+                Display "You took a health potion"
+                Call takePotion()
+                Break
+            Case 4:
+                Display "You used Rain of Arrows"
+                Call attackMonsterBoss(boss, rainAttack())
+                Set rainCooldown = 3
+                Break
+            Case 5:
+                Display "You used Charged Shot"
+                Set isEnemyStunned = true
+                Set chargedCooldown = chargedLvl + 1
+                Break
+            Case 6:
+                Display "You activated Repulsion"
+                Set isRepulsionActivated = true
+                Break
+            Default:
+                Display "You have encountered an error"
+                Break
+        End Switch
+
+        If (isStunned) Then
+            Display "Your turn has been skipped!"
+            Set isStunned = false
+        End If
+        System pause
+        System clear screen
+    End For
+End If
+End void playerTurnBoss
+
+
+Declare Public void attackMonster(Enemy& enemy, int d)
+    Call enemy.takeDamage(d)
+    Display enemy.getName() + " took " + d + " damage."
+End void attackMonster
+
+Declare Public void attackMonsterEasy(easyEnemy& easyEnemy, int d)
+    Call easyEnemy.takeDamage(d)
+    Display easyEnemy.getName() + " took " + d + " damage."
+End void attackMonsterEasy
+
+Declare Public void attackMonsterBoss(Boss& boss, int d)
+    Call boss.takeDamage(d)
+    Display boss.getName() + " took " + d + " damage."
+End void attackMonsterBoss
+
+
+Declare Public void takeDamageEasyEnemy(easyEnemy& easyEnemy, int d)
+Set Integer enemyAttack = d100.rollDice()
+
+If (isBlocking)
+    Display "You successfully blocked the attack!"
+    Set d = d * 0.25
+    Set d = d - playerInventory->getTotalEquippedDefense()
+    If (d < 0)
+        Set d = 0
+    Set d = static_cast<int>(ceil(d))
+    Display "You took " + d + " damage"
+Else If (isRepulsionActivated)
+    Display "You used Repulsion"
+    Call attackMonsterEasy(easyEnemy, d)
+Else If (enemyAttack <= dexterity)
+    Display "You dodged the attack!"
+Else
+    Set d = d - playerInventory->getTotalEquippedDefense()
+    If (d < 0)
+        Set d = 0
+    Display "You took " + d + " damage"
+    Call setHealth(getHealth() - d)
+End If
+End void takeDamageEasyEnemy
+
+   // Taking damage from a boss enemy.
+Declare Public void takeDamageBoss(Boss& boss, integer d)
+{
+    // Getting a random number and seeing if the player's dex is higher and if it is, they will dodge the attack.
+   Declare integer enemyAttack = d100.rollDice()
+
+    if (isBlocking)
+    {
+        Display "You successfully blocked the attack!"
+        d = d * 0.25 
+        // Assuming playerInventory->getTotalEquippedDefense() is an integer value
+        d = d - playerInventory->getTotalEquippedDefense() 
+        if (d < 0)
+        {
+            d = 0 
+        }
+        End If 
+
+        // Convert the decimal damage to a whole number (rounding up)
+        d = static_cast<int>(ceil(d)) 
+
+        Display "You took " + d + " damage"
+    }
+    else if (isRepulsionActivated)
+    {
+        Display "You used Repulsion"
+        Call attackMonsterBoss(boss, d)
+        Set isRepulsionActivated = false
+    }
+    else if (enemyAttack <= dexterity)
+    {
+        Display "You dodged the attack!\n"
+    }
+    else
+    {
+        d = d - playerInventory->getTotalEquippedDefense() 
+        if (d < 0)
+        {
+            d = 0 
+        }
+        Display "You took " + d + " damage"
+        Call setHealth(getHealth() - d)
+    }
+    End If
+}
+End takeDamageBoss
+
+    // Taking damage from a normal enemy.
+Declare Public void takeDamage(Enemy& enemy, int d)
+{
+    // Getting a random number and seeing if the player's dex is higher and if it is, they will dodge the attack.
+    Declare integer enemyAttack = d100.rollDice()
+
+    if (isBlocking)
+    {
+        Display "You successfully blocked the attack!"
+        d = d * 0.25
+        // Assuming playerInventory->getTotalEquippedDefense() is an integer value
+        d = d - playerInventory->getTotalEquippedDefense()
+        if (d < 0)
+        {
+            d = 0
+        }
+        End If 
+
+        // Convert the decimal damage to a whole number (rounding up)
+        d = static_cast<int>(ceil(d))
+
+        Display "You took " + d + " damage"
+    }
+    else if (isRepulsionActivated)
+    {
+        Display "You used Repulsion"
+        Call attackMonster(enemy, d)
+    }
+    else if (enemyAttack <= dexterity)
+    {
+        Display "You dodged the attack!"
+    }
+    else
+    {
+        d = d - playerInventory->getTotalEquippedDefense()
+        if (d < 0)
+        {
+            d = 0 
+        }
+        End If
+        Display "You took " + d + " damage"
+        Call setHealth(getHealth() - d)
+    }
+    End if
+}
+End void takeDamage
+
+    //calculating the damage from a rain of arrows attack.
+    Declare Public integer rainAttack()
+    {
+        return  10 + (rainLvl * 5) 
+    }
+    End rainAttack
+
+    //Taking a health potion
+    // We should also find a way for them to be used if their in their inventory.
+    Declare Public void takePotion()
+    {
+        //Removing health potion from their inventory. When the inventory is fully setup we will remove it from the inventory class instead.
+        Set healthPotions -= 1
+        //Setting their current health to a higher one.
+        Call setHealth(getHealth() + level * 5)
+
+        // If their health after taking the health potion is higher than their max set their health to their max instead.
+        if (getHealth() > maxHealth)
+        {
+            setHealth(maxHealth)
+        }
+        End if
+        // Confirming for their players so they know they took a health potion.
+        Display "Your health is now at " + getHealth()
+    }
+    End takePotion
+
+    Declare Public void fightNormalEnemy(Enemy& enemy)
+    {
+        Display  "You encounter " + enemy.getName() + " with "  enemy.getHealth() + " health!\n"
+        //setup before combat that will be kept.
+        Set repulsionUses = repulsionLvl
+        Set rainCooldown = 0
+        Set chargedCooldown = 0
+        while (getHealth() > 0 AND enemy.getHealth() > 0) {
+            // Player's turn
+            Call playerTurn(enemy)
+
+            if (Not isEnemyStunned)
+            {
+                // Enemy's turn
+                Call takeDamage(enemy, enemy.getDamage())
+            }
+            else
+            {
+                Display "The enemies turn was skipped"
+            }
+            End if
+            Display  "Your health is " + getHealth() + " / " + maxHealth 
+            Display "Rain of Arrows cooldown " + rainCooldown 
+            Display "Charged Shot cooldown " + chargedCooldown 
+            Display "Repulsion uses remaining " + repulsionUses 
+            Display "Enemy's health: " + enemy.getHealth() 
+            System pause
+            System Clear all
+        }
+
+        if (getHealth() <= 0) {
+            // Game over logic
+            cout << "You were defeated! Game Over.\n" 
+
+
+        }
+        else {
+            // Victory logic
+            Display "You defeated the enemy!"
+            Display "You gained "  enemy.giveEXP() + "Experience"
+            Set isEnemyStunned = false
+            //currently fights just give out health potions but later will be drawn from the loot pool and added to their inventory.
+            Set healthPotions++
+            Set exp += enemy.giveEXP() 
+            System pause
+            if (checkForLevelUp(exp, expNeeded))
+            {
+                Call levelUp() 
+            }
+            End if
+        }
+        End if
+    }
+    End fightNormalEnemy
+
+    // Fighting for the boss enemy.
+    Declare Public void fightBossEnemy(Boss& boss)
+    {
+        Declare integer turnCount
+        Set turnCount = 0
+        Display "You encounter " + boss.getName() + " with " + boss.getHealth() + " health!"
+
+        //setup before combat that will be kept.
+        Set repulsionUses = repulsionLvl
+        Set rainCooldown = 0
+        Set chargedCooldown = 0
+
+        while (getHealth() > 0 && boss.getHealth() > 0) {
+            // Player's turn
+            Call playerTurnBoss(boss) 
+
+            Set turnCount++
+
+            if (Not isEnemyStunned)
+            {
+                // Enemy's turn
+                if (turnCount % 2 Not = 0)
+                {
+                    Call takeDamageBoss(boss, boss.getDamage()) 
+                }
+                else
+                {
+                    Set isStunned = true 
+                }
+                End if
+            }
+            else
+            {
+                Display "The Bosses turn was skipped"
+            }
+            // Display updated stats after each round
+            Display  "Your health is " + getHealth() + " / " + maxHealth 
+            Display "Rain of Arrows cooldown " + rainCooldown 
+            Display "Charged Shot cooldown " + chargedCooldown 
+            Display "Repulsion uses remaining " + repulsionUses 
+            Display "Enemy's health: " + boss.getHealth() 
+            System pause
+            System Clear all
+        }
+        End While
+
+        if (getHealth() <= 0)
+        {
+            // Game over logic
+            Display "You were defeated! Game Over."
+        }
+        else
+        {
+            // Victory logic
+            Display "You defeated the Boss!"
+            Display "You gained "  boss.giveEXP() + "Experience"
+            Set isEnemyStunned = false
+            //currently fights just give out health potions but later will be drawn from the loot pool and added to their inventory.
+            Set healthPotions++
+            Set exp += enemy.giveEXP() 
+            System pause
+            if (checkForLevelUp(exp, expNeeded))
+            {
+                Call levelUp() 
+            }
+            End if
+        }
+    end if
+    }
+    End 
+
+    // The function when the player has to fight a weak enemy (The first three enemies).
+    Declare Public void fightWeakEnemy(easyEnemy& easyEnemy)
+    {
+        // Display the enemy's details
+        Display "You encounter " + easyEnemy.getName() + " with " + easyEnemy.getHealth() + " health!"
+
+        //setup before combat that will be kept.
+        Set repulsionUses = repulsionLvl
+        Set rainCooldown = 0
+        Set chargedCooldown = 0
+
+        while (getHealth() > 0 And easyEnemy.getHealth() > 0) {
+            // Player's turn
+            playerTurnEasy(easyEnemy) 
+
+            if (easyEnemy.getHealth() > 0)
+            {
+                // Enemy's turn
+                if (!isEnemyStunned)
+                {
+                    takeDamageEasyEnemy(easyEnemy, easyEnemy.attack()) 
+                }
+                else
+                {
+                    cout << "The enemies turn was skipped!\n" 
+                }
+            }
+            // Display updated stats after each round
+
+            // Display updated stats after each round
+            Display  "Your health is " + getHealth() + " / " + maxHealth 
+            Display "Rain of Arrows cooldown " + rainCooldown 
+            Display "Charged Shot cooldown " + chargedCooldown 
+            Display "Repulsion uses remaining " + repulsionUses 
+            Display "Enemy's health: " + easyEnemy.getHealth() 
+            System pause
+            System Clear all
+
+        }
+        End While
+
+        if (getHealth() <= 0) 
+        {
+            Display "You were defeated! Game Over."
+            // Game over logic
+        }
+        else {
+            Display "You defeated the enemy!"
+            Set exp += easyEnemy.giveEXP() 
+            Set isEnemyStunned = false 
+            //currently fights just give out health potions but later will be drawn from the loot pool and added to their inventory.
+            Set healthPotions++ 
+            System pause
+            //Checking for the level up after the fight is over and they have they are not dead.
+            if (checkForLevelUp(exp, expNeeded))
+            {
+                levelUp() 
+            }
+            End if
+        }
+        End if
+    }
+    End Function
+End Class

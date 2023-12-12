@@ -5,10 +5,14 @@
 // #include "All_Includes.h"
 // JPO: Temp fix for the issue with the compiler not finding the files
 #include "Character.h"
+#include <iostream>
+#include <string>
+#include <iterator>
 #include "Enemy.h"
 #include "easyEnemy.h"
 #include "Boss.h"
 #include "Inventory.h"
+
 
 class Ranger : public Character
 {
@@ -33,11 +37,12 @@ private:
     bool isStunned;
     bool isEnemyStunned;
     Dice d100;
+    Inventory* playerInventory;
 
 public:
     Ranger()
     {
-       
+
         maxHealth = 25;
         //This is a placeholder because the playername
         setName("Ranger");
@@ -64,8 +69,9 @@ public:
         d100.setMin(1);
         d100.setMax(100);
 
+
     }
-    Ranger(int max, int hea, int  str, int intel, int  dex, int lev, int ex, int need, int rai, int charg, int re, int potion, int turns)
+    Ranger(int max, int hea, int  str, int intel, int  dex, int lev, int ex, int need, int rai, int charg, int re, int potion, int turns) : playerInventory(getInventory())
     {
         maxHealth = max;
         //This is a placeholder because the playername
@@ -220,7 +226,7 @@ public:
     // Leveling up the player
     void levelUp()
     {
-        cout << "Congratulations you leveled up!";
+        cout << "Congratulations you leveled up!\n";
         // Increasing the players max health and healing them to full.
         maxHealth += 5;
         setHealth(maxHealth);
@@ -275,6 +281,7 @@ public:
             {
                 repulsionLvl += 1;
                 cout << "Repulsion is now level " << repulsionLvl << endl;
+                repulsionUses = repulsionLvl;
                 break;
             }
             default:
@@ -283,6 +290,9 @@ public:
                 break;
             }
         }
+
+        system("pause");
+        system("cls");
         //Checking for a level up.
         if (checkForLevelUp(exp, expNeeded))
         {
@@ -291,7 +301,7 @@ public:
     }
 
     //Player turn for the base enemy type
-    void playerTurn(Enemy& enemy, Inventory& playerInventory)
+    void playerTurn(Enemy& enemy)
     {
         //Setting blocking back to off at the start of their next turn.
         isBlocking = false;
@@ -326,9 +336,10 @@ public:
                     << "6. Repulsion\n" << endl;
 
 
+                   bool incorrectChoice = false;
                 do
                 {
-                    bool incorrectChoice = false;
+                    incorrectChoice = false;
                     cout << "Enter your choice: \n";
                     choice = _getch() - '0';
 
@@ -348,18 +359,17 @@ public:
                         cout << "Charged shot is still on cooldown. You have to wait " << chargedCooldown << " number of turns.\n";
                         incorrectChoice = true;
                     }
-                    else if (choice < 0 || choice > 5) {
+                    else if (choice == 6 && repulsionUses < 0)
+                    {
+                        cout << "You are out of Repulsion uses please try something else.\n";
+                        incorrectChoice = true;
+                    }
+                    else if (choice < 0 || choice > 6) {
                         cout << "Incorrect value. Please enter a valid value.\n";
                         incorrectChoice = true;
                     }
 
-                    // Check if the choice is invalid
-                    if (incorrectChoice) {
-                        // The do-while loop will continue if the choice was incorrect
-                        continue;
-                    }
-
-                } while (choice > 6 || choice < 0);
+                } while (choice > 6 || choice < 0 || incorrectChoice);
 
 
                 switch (choice)
@@ -368,7 +378,7 @@ public:
                 {
                     cout << "You did a basic attack\n";
                     // attack monster
-                    attackMonster(enemy, playerInventory.getEquippedWeaponDamage());
+                    attackMonster(enemy, playerInventory->getEquippedWeaponDamage());
                     break;
                 }
                 case 2:
@@ -419,14 +429,23 @@ public:
         {
             cout << "You turn has been skipped!\n";
         }
+        system("pause");
+        system("cls");
     }
 
     // Player for the easy enemy
-    void playerTurnEasy(easyEnemy& easyEnemy, Inventory& playerInventory)
+    void playerTurnEasy(easyEnemy& easyEnemy)
     {
         isBlocking = false;
-        rainCooldown -= 1;
-        chargedCooldown -= 1;
+        // Only lowering the cooldowns when they are above zero.
+        if (rainCooldown > 0)
+        {
+            rainCooldown -= 1;
+        }
+        if (chargedCooldown > 0)
+        {
+            chargedCooldown -= 1;
+        }
         int choice = 0;
         // Dex + Bow damage
         if (chargedCooldown == 1)
@@ -444,13 +463,15 @@ public:
                     << "3. Take Health Potion\n"
                     << "4. Rain of Arrows\n"
                     << "5. Charged Shot\n"
-                    << "6. Repulsion\n" << endl << endl;
+                    << "6. Repulsion\n" << endl;
 
+                bool incorrectChoice = false;
+                do
+                {
+                    incorrectChoice = false;
+                    cout << "Enter your choice: \n";
 
-                do {
-                    bool incorrectChoice = false;
-                    cout << "Enter your choice: ";
-                    cin >> choice;
+                    choice = _getch() - '0';
 
                     if (choice == 3 && healthPotions < 0) {
                         cout << "You are out of health potions, pick another option.\n";
@@ -468,18 +489,17 @@ public:
                         cout << "Charged shot is still on cooldown. You have to wait " << chargedCooldown << " number of turns.\n";
                         incorrectChoice = true;
                     }
-                    else if (choice < 0 || choice > 5) {
+                    else if (choice == 6 && repulsionUses < 0)
+                    {
+                        cout << "You are out of Repulsion uses please try something else.\n";
+                        incorrectChoice = true;
+                    }
+                    else if (choice < 0 || choice > 6) {
                         cout << "Incorrect value. Please enter a valid value.\n";
                         incorrectChoice = true;
                     }
 
-                    // Check if the choice is invalid due to cooldown or lack of resources
-                    if (incorrectChoice) {
-                        // The do-while loop will continue if the choice was incorrect
-                        continue;
-                    }
-
-                } while (choice > 6 || choice < 0);
+                } while (choice > 6 || choice < 0 || incorrectChoice);
 
 
                 switch (choice)
@@ -489,7 +509,7 @@ public:
 
                     // attack monster
                     cout << "You did a basic attack\n";
-                    attackMonsterEasy(easyEnemy, playerInventory.getEquippedWeaponDamage());
+                    attackMonsterEasy(easyEnemy, playerInventory->getEquippedWeaponDamage());
                     break;
                 }
                 case 2:
@@ -541,11 +561,13 @@ public:
             {
                 cout << "You turn has been skipped!\n";
             }
+            system("pause");
+            system("cls");
         }
     }
 
     // Player turn for the boss class
-    void playerTurnBoss(Boss& boss, Inventory& playerInventory)
+    void playerTurnBoss(Boss& boss)
     {
         isBlocking = false;
         // Only lowering the cooldowns when they are above zero.
@@ -577,10 +599,13 @@ public:
                     << "6. Repulsion\n " << endl << endl;
 
 
-                do {
-                    bool incorrectChoice = false;
-                    cout << "Enter your choice: ";
-                    cin >> choice;
+
+                bool incorrectChoice = false;
+                do
+                {
+                    incorrectChoice = false;
+                    cout << "Enter your choice: \n";
+                    choice = _getch() - '0';
 
                     if (choice == 3 && healthPotions < 0) {
                         cout << "You are out of health potions, pick another option.\n";
@@ -598,18 +623,17 @@ public:
                         cout << "Charged shot is still on cooldown. You have to wait " << chargedCooldown << " number of turns.\n";
                         incorrectChoice = true;
                     }
-                    else if (choice < 0 || choice > 5) {
+                    else if (choice == 6 && repulsionUses < 0)
+                    {
+                        cout << "You are out of Repulsion uses please try something else.\n";
+                        incorrectChoice = true;
+                    }
+                    else if (choice < 0 || choice > 6) {
                         cout << "Incorrect value. Please enter a valid value.\n";
                         incorrectChoice = true;
                     }
 
-                    // Check if the choice is invalid
-                    if (incorrectChoice) {
-                        // The do-while loop will continue if the choice was incorrect
-                        continue;
-                    }
-
-                } while (choice > 6 || choice < 0);
+                } while (choice > 6 || choice < 0 || incorrectChoice);
 
 
                 switch (choice)
@@ -619,7 +643,7 @@ public:
 
                     // attack monster
                     cout << "You did a basic attack\n";
-                    attackMonsterBoss(boss, playerInventory.getEquippedWeaponDamage());
+                    attackMonsterBoss(boss, playerInventory->getEquippedWeaponDamage());
                     break;
                 }
                 case 2:
@@ -672,13 +696,15 @@ public:
                 cout << "You turn has been skipped!\n";
                 isStunned = false;
             }
+            system("pause");
+            system("cls");
         }
     }
 
     void attackMonster(Enemy& enemy, int d)
     {
         enemy.takeDamage(d);
-        cout << enemy.getName() << "took " << d << " damage.\n";
+        cout << enemy.getName() << " took " << d << " damage.\n";
     }
 
     void attackMonsterEasy(easyEnemy& easyEnemy, int d)
@@ -690,17 +716,29 @@ public:
     void attackMonsterBoss(Boss& boss, int d)
     {
         boss.takeDamage(d);
-        cout << boss.getName() << "took " << d << " damage.\n";
+        cout << boss.getName() << " took " << d << " damage.\n";
     }
 
     // Taking damage from the easy enemy.
-    void takeDamageEasyEnemy(easyEnemy& easyEnemy, int d, Inventory& playerInventory)
+    void takeDamageEasyEnemy(easyEnemy& easyEnemy, int d)
     {
         int enemyAttack = d100.rollDice();
 
         if (isBlocking)
         {
             cout << "You successfully blocked the attack!\n";
+
+            d = d * 0.25;
+            // Assuming playerInventory->getTotalEquippedDefense() is an integer value
+            d = d - playerInventory->getTotalEquippedDefense();
+            if (d < 0) {
+                d = 0;
+            }
+
+            // Convert the decimal damage to a whole number (rounding up)
+             d = static_cast<int>(ceil(d));
+
+            cout << "You took " << d << " damage\n";
         }
         else if (isRepulsionActivated)
         {
@@ -713,7 +751,7 @@ public:
         }
         else
         {
-            d = d - playerInventory.getTotalEquippedDefense();
+            d = d - playerInventory->getTotalEquippedDefense();
             if (d < 0)
             {
                 d = 0;
@@ -724,7 +762,7 @@ public:
     }
 
     // Taking damage from a normal enemy.
-    void takeDamageBoss(Boss& boss, int d, Inventory& playerInventory)
+    void takeDamageBoss(Boss& boss, int d)
     {
         // Getting a random number and seeing if the players dex is higher and if it is they will dodge the attack.
         int enemyAttack = d100.rollDice();
@@ -732,6 +770,20 @@ public:
         if (isBlocking)
         {
             cout << "You successfully blocked the attack!\n";
+            d = d * 0.25;
+            // Assuming playerInventory->getTotalEquippedDefense() is an integer value
+            d = d - playerInventory->getTotalEquippedDefense();
+
+           
+            if (d < 0) {
+                d = 0;
+            }
+
+            // Convert the decimal damage to a whole number (rounding up)
+            d = static_cast<int>(ceil(d));
+
+            cout << "You took " << d << " damage\n";
+            
         }
         else if (isRepulsionActivated)
         {
@@ -745,7 +797,7 @@ public:
         }
         else
         {
-            d = d - playerInventory.getTotalEquippedDefense();
+            d = d - playerInventory->getTotalEquippedDefense();
             if (d < 0)
             {
                 d = 0;
@@ -756,14 +808,26 @@ public:
     }
 
     // Taking damage from a normal enemy.
-    void takeDamage(Enemy& enemy, int d, Inventory& playerInventory)
+    void takeDamage(Enemy& enemy, int d)
     {
         // Getting a random number and seeing if the players dex is higher and if it is they will dodge the attack.
         int enemyAttack = d100.rollDice();
 
         if (isBlocking)
         {
-           cout << "You successfully blocked the attack!\n";
+            cout << "You successfully blocked the attack!\n";
+            d = d * 0.25;
+            // Assuming playerInventory->getTotalEquippedDefense() is an integer value
+            d = d - playerInventory->getTotalEquippedDefense();
+            if (d < 0) {
+                d = 0;
+            }
+
+            // Convert the decimal damage to a whole number (rounding up)
+            d = static_cast<int>(ceil(d));
+
+            cout << "You took " << d << " damage\n";
+
         }
         else if (isRepulsionActivated)
         {
@@ -776,7 +840,7 @@ public:
         }
         else
         {
-            d = d - playerInventory.getTotalEquippedDefense();
+            d = d - playerInventory->getTotalEquippedDefense();
             if (d < 0)
             {
                 d = 0;
@@ -810,33 +874,39 @@ public:
         cout << "Your health is now at " << getHealth() << endl;
     }
 
-    void fightNormalEnemy(Enemy& enemy, Inventory& playerInventory)
+    void fightNormalEnemy(Enemy& enemy)
     {
         cout << "You encounter " << enemy.getName() << " with " << enemy.getHealth() << " health!\n";
-
+        //setup before combat that will be kept.
+        repulsionUses = repulsionLvl;
+        rainCooldown = 0;
+        chargedCooldown = 0;
         while (getHealth() > 0 && enemy.getHealth() > 0) {
             // Player's turn
-            playerTurn(enemy, playerInventory);
+            playerTurn(enemy);
 
             if (!isEnemyStunned)
             {
                 // Enemy's turn
-                takeDamage(enemy, enemy.getDamage(),playerInventory);
+                takeDamage(enemy, enemy.getDamage());
             }
             else
             {
                 cout << "The enemies turn was skipped\n";
             }
-            cout << "Your health is " << getHealth() << " / " << maxHealth
+            cout << "Your health is " << getHealth() << " / " << maxHealth << endl
                 << "Rain of Arrows cooldown " << rainCooldown << endl
                 << "Charged Shot cooldown " << chargedCooldown << endl
                 << "Repulsion uses remaining " << repulsionUses << endl
                 << "Enemy's health: " << enemy.getHealth() << endl;
+            system("pause");
+            system("cls");
         }
 
         if (getHealth() <= 0) {
             // Game over logic
             cout << "You were defeated! Game Over.\n";
+
 
         }
         else {
@@ -847,6 +917,7 @@ public:
             //currently fights just give out health potions but later will be drawn from the loot pool and added to their inventory.
             healthPotions++;
             exp += enemy.giveEXP();
+            system("pause");
             if (checkForLevelUp(exp, expNeeded))
             {
                 levelUp();
@@ -855,14 +926,19 @@ public:
     }
 
     // Fighting for the boss enemy.
-    void fightBossEnemy(Boss& boss, Inventory& playerInventory)
+    void fightBossEnemy(Boss& boss)
     {
         int turnCount = 0;
         cout << "You encounter " << boss.getName() << " with " << boss.getHealth() << " health!\n";
 
+        //setup before combat that will be kept.
+        repulsionUses = repulsionLvl;
+        rainCooldown = 0;
+        chargedCooldown = 0;
+
         while (getHealth() > 0 && boss.getHealth() > 0) {
             // Player's turn
-            playerTurnBoss(boss, playerInventory);
+            playerTurnBoss(boss);
 
             turnCount++;
 
@@ -871,7 +947,7 @@ public:
                 // Enemy's turn
                 if (turnCount % 2 != 0)
                 {
-                    takeDamageBoss(boss, boss.getDamage(), playerInventory);
+                    takeDamageBoss(boss, boss.getDamage());
                 }
                 else
                 {
@@ -883,11 +959,13 @@ public:
                 cout << "The Bosses turn was skipped\n";
             }
             // Display updated stats after each round
-            cout << "Your health is " << getHealth() << " / " << maxHealth
+            cout << "Your health is " << getHealth() << " / " << maxHealth << endl
                 << "Rain of Arrows cooldown " << rainCooldown << endl
                 << "Charged Shot cooldown " << chargedCooldown << endl
                 << "Repulsion uses remaining " << repulsionUses << endl
                 << "Boss's health: " << boss.getHealth() << endl;
+            system("pause");
+            system("cls");
         }
 
         if (getHealth() <= 0)
@@ -904,6 +982,7 @@ public:
             //currently fights just give out health potions but later will be drawn from the loot pool and added to their inventory.
             healthPotions++;
             exp += boss.giveEXP();
+            system("pause");
             //Checking if they can level up.
             if (checkForLevelUp(exp, expNeeded))
             {
@@ -913,21 +992,26 @@ public:
     }
 
     // The function when the player has to fight a weak enemy (The first three enemies).
-    void fightWeakEnemy(easyEnemy& easyEnemy, Inventory& playerInventory)
+    void fightWeakEnemy(easyEnemy& easyEnemy)
     {
         // Display the enemy's details
         cout << "You encounter " << easyEnemy.getName() << " with " << easyEnemy.getHealth() << " health!\n";
 
+        //setup before combat that will be kept.
+        repulsionUses = repulsionLvl;
+        rainCooldown = 0;
+        chargedCooldown = 0;
+
         while (getHealth() > 0 && easyEnemy.getHealth() > 0) {
             // Player's turn
-            playerTurnEasy(easyEnemy,playerInventory);
+            playerTurnEasy(easyEnemy);
 
             if (easyEnemy.getHealth() > 0)
             {
                 // Enemy's turn
                 if (!isEnemyStunned)
                 {
-                    takeDamageEasyEnemy(easyEnemy, easyEnemy.attack(), playerInventory);
+                    takeDamageEasyEnemy(easyEnemy, easyEnemy.attack());
                 }
                 else
                 {
@@ -936,11 +1020,14 @@ public:
             }
             // Display updated stats after each round
 
-            cout << "Your health is " << getHealth() << " / " << maxHealth
+            cout << "Your health is " << getHealth() << " / " << maxHealth << endl
                 << "Rain of Arrows cooldown " << rainCooldown << endl
                 << "Charged Shot cooldown " << chargedCooldown << endl
                 << "Repulsion uses remaining " << repulsionUses << endl
                 << "Enemy's health: " << easyEnemy.getHealth() << endl;
+            system("pause");
+            system("cls");
+
         }
 
         if (getHealth() <= 0) {
@@ -953,6 +1040,7 @@ public:
             isEnemyStunned = false;
             //currently fights just give out health potions but later will be drawn from the loot pool and added to their inventory.
             healthPotions++;
+            system("pause");
             //Checking for the level up after the fight is over and they have they are not dead.
             if (checkForLevelUp(exp, expNeeded))
             {

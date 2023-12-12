@@ -10,7 +10,6 @@
 #include "RangerLoadFile.h"
 #include "WizardLoadFile.h"
 #include "RogueLoadFile.h"
-#include "InventoryLoadFile.h"
 #include "Inventory.h"
 #include "Armor.h"
 #include "Weapon.h"
@@ -32,7 +31,7 @@ public:
     }
 
     //Passing by reference in order to properly load the game for the rest of the program.
-    void loadTheGameRanger(int &score, int &round, Ranger &playerRanger, Inventory& playerInventory)
+    void loadTheGameRanger(int &score, int &round, Ranger &playerRanger)
     {
         ifstream inFile("ranger.txt");
         if (inFile.is_open());
@@ -59,12 +58,12 @@ public:
         round = loadFile.round;
 
         inFile.close();
-        cout << "Character Loaded Sucessfully\n";
+        cout << "Character Loaded Successfully\n";
 
-        loadInventory(playerInventory, "ranger_inventory.txt");
+        loadInventory("ranger_inventory.txt");
     }
 
-    void loadTheGameWizard(int &score, int &round, Wizard &playerWizard, Inventory& playerInventory)
+    void loadTheGameWizard(int &score, int &round, Wizard &playerWizard)
     {
         ifstream inFile("wizard.txt");
         if (inFile.is_open());
@@ -90,12 +89,12 @@ public:
         round = loadFile.round;
 
         inFile.close();
-        cout << "Character Loaded Sucessfully\n";
+        cout << "Character Loaded Successfully\n";
 
-        loadInventory(playerInventory, "wizard_inventory.txt");
+        loadInventory("wizard_inventory.txt");
 	}
 
-    void loadTheGameRogue(int& score, int& round, Rogue& playerRogue, Inventory& playerInventory)
+    void loadTheGameRogue(int& score, int& round, Rogue& playerRogue)
     {
         ifstream inFile("rogue.txt");
         if (inFile.is_open());
@@ -121,61 +120,67 @@ public:
         round = loadFile.round;
 
         inFile.close();
-        cout << "Character Loaded Sucessfully\n";
+        cout << "Character Loaded Successfully\n";
 
-        loadInventory(playerInventory, "rogue_inventory.txt");
+        loadInventory("rogue_inventory.txt");
 
     }
 
-    void loadInventory(Inventory& playerInventory, const string& filename) {
+    void loadInventory(const string& filename) {
+        Inventory& playerInventory = *Inventory::getInstance();
         ifstream inFile(filename);
         if (inFile.is_open()) {
-            InventoryLoadFile loadFile;
-            string itemType, itemName;
+            string line;
 
-            while (inFile >> itemType >> itemName) {
-                if (itemType == "HealthPotion") {
-                    inFile >> loadFile.healthPotion;
-                    playerInventory.setHealthPotion(loadFile.healthPotion);
-                }
-                else if (itemType == "EquippedArmor") {
-                    inFile >> loadFile.type >> loadFile.defense >> loadFile.weight >> loadFile.value >> loadFile.material;
-                    Armor* equippedArmor = new Armor(loadFile.type, loadFile.defense, loadFile.weight, loadFile.value, itemName, loadFile.material);
+            while (getline(inFile, line)) {
+                istringstream iss(line);
+                string itemType;
+                iss >> itemType;
+
+                if (itemType == "EquippedArmor") {
+                    string type, material, name;
+                    int defense, weight, value;
+                    getline(inFile, type);
+                    inFile >> defense >> weight >> value >> name >> material;
+
+                    Armor* equippedArmor = new Armor(type, defense, weight, value, name, material);
                     playerInventory.setEquippedArmorByType(equippedArmor->getArmorType(), equippedArmor);
-
                     playerInventory.addItem(equippedArmor);
-                    delete equippedArmor;
                 }
-
                 else if (itemType == "EquippedWeapon") {
-                    inFile >> loadFile.wType >> loadFile.damage >> loadFile.weightW >> loadFile.valueW >> loadFile.materialW;
-                    Weapon* equippedWeapon = new Weapon(loadFile.wType, loadFile.damage, loadFile.weightW, loadFile.valueW, itemName, loadFile.materialW);
+                    string type, material, name;
+                    int damage, weight, value;
+                    getline(inFile, type);
+                    inFile >> damage >> weight >> value >> name >> material;
 
+                    Weapon* equippedWeapon = new Weapon(type, damage, weight, value, name, material);
                     playerInventory.setEquippedWeapon(equippedWeapon);
                     playerInventory.addItem(equippedWeapon);
-
-                    playerInventory.setEquippedWeapon(equippedWeapon);\
-
-                    delete equippedWeapon;
                 }
                 else if (itemType == "Gold") {
-                    inFile >> loadFile.gold;
-                    playerInventory.setGold(loadFile.gold);
+                    int gold;
+                    inFile >> gold;
+                    playerInventory.setGold(gold);
                 }
                 else if (itemType == "Armor") {
-                    inFile >> loadFile.type >> loadFile.defense >> loadFile.weight >> loadFile.value >> loadFile.material;
-                    Armor* newArmor = new Armor(loadFile.type, loadFile.defense, loadFile.weight, loadFile.value, itemName, loadFile.material);
+                    string type, material, name;
+                    int defense, weight, value;
+                    getline(inFile, type);
+                    inFile >> defense >> weight >> value >> name >> material;
+
+                    Armor* newArmor = new Armor(type, defense, weight, value, name, material);
                     playerInventory.addItem(newArmor);
-                    delete newArmor;
                 }
                 else if (itemType == "Weapon") {
-                    inFile >> loadFile.wType >> loadFile.damage >> loadFile.weightW >> loadFile.valueW >> loadFile.materialW;
-                    Weapon* newWeapon = new Weapon(loadFile.wType, loadFile.damage, loadFile.weightW, loadFile.valueW, itemName, loadFile.materialW);
-                    playerInventory.addItem(newWeapon);
-                    delete newWeapon;
-                }
+                    string type, material, name;
+                    int damage, weight, value;
+                    getline(inFile, type);
+                    inFile >> damage >> weight >> value >> name >> material;
 
-                // Add more conditions based on your saved inventory structure
+                    Weapon* newWeapon = new Weapon(type, damage, weight, value, name, material);
+                    playerInventory.addItem(newWeapon);
+                }
+                // Handle other item types similarly
             }
 
             cout << "Inventory details loaded from " << filename << endl;

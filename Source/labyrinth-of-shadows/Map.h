@@ -1,8 +1,9 @@
-// Date: ??
+// Date: 12/11/23
 // Auth: Christian Baack
 // Desc: Class to define the map of the game.
 #pragma once
-#include "All_Includes.h"
+#include "MapManager.h"
+#include <vector>
 
 //Map class
 class Map {
@@ -12,10 +13,10 @@ protected:
     int mapLevel = 0;
     int width, height;
     vector<vector<char>> grid;
-    MapManager manage; // JPO: Moved from gloabal to inside the class. Everything still seems to work. If there is a reason it was global, let me know.
+    MapManager manage;
 
 public:
-    Map(int w, int h) : width(w), height(h) // JPO: We could get rid of the default map I think.
+    Map(int w, int h) : width(w), height(h)
     {
         grid = vector<vector<char>>(h, vector<char>(w, '.')); // '.' for empty space
     }
@@ -40,6 +41,7 @@ public:
 
     }
 
+    //Displays the Map.
     void display() const
     {
         for (const auto& row : grid)
@@ -52,10 +54,12 @@ public:
         }
     }
 
+    //Checks which map should be displayed
     void mapSwitcher()
     {
-        for (auto& row : grid) {
-            fill(row.begin(), row.end(), '.'); // Replace every cell with '.' to clear enemies and other characters
+        for (auto& row : grid) 
+        {
+            fill(row.begin(), row.end(), '.'); //Replace every cell with '.' to clear enemies and other characters
         }
         switch (mapLevel)
         {
@@ -92,6 +96,7 @@ public:
         return mapLevel;
     }
 
+    //updates the space given coordinates
     void updateSpace(int x, int y, char u)
     {
         manage.updateMap(y, x, mapLevel, u);
@@ -102,6 +107,7 @@ public:
         manage.reset();
     }
 
+    //All the Logic to handle moving 'E' arround the map. 
     void moveE() // JPO: could this be refactored into two shorter functions?
     {
         static int currentDirection = -1;
@@ -132,7 +138,6 @@ public:
                 {
                     manage.updateMap(x, y, mapLevel, '.');
                     manage.updateMap(x + 1, y, mapLevel, 'E');
-                    toggle();
                 }
                 else
                 {
@@ -178,6 +183,7 @@ public:
         }
     }
 
+    //All the Logic to handle moving 'L' arround the map. 
     void moveL(int px, int py)
     {
         vector<pair<int, int>> results = manage.findL(grid);
@@ -231,5 +237,4 @@ public:
     {
         return bossTrigger;
     }
-
 };

@@ -1,0 +1,100 @@
+//Auth: Hunter Kauffman
+//Date: 12/11/23
+//Desc: Pseucode for easyEnemy
+
+Include "Dice.pseudo"
+
+Class Enemy extends Character
+    Declare Private Constant Integer baseDamageBow = 8
+    Declare Private Constant Integer baseDamageSword = 10
+    Declare Private Constant Integer baseDamageStaff = 6
+    Declare Private Constant Integer baseDamageDagger = 5
+    Declare Private Integer strength
+    Declare Private Integer dexterity
+    Declare Private Integer expWorth
+    Declare Private Integer battleStyle
+    Declare Private String description
+    Declare Private Bow bow
+    Declare Private Sword sword
+    Declare Private Staff staff
+    Declare Private Dice enemyDice
+
+    Public Module Enmey(Integer round)
+        Call generateHealth(round)
+        Call generateStrength(round)
+        Call generateDexterity(round)
+        Call generateBattleStyle()
+        expWorth = round * 2
+        Call generateName()
+    End Module
+
+    Public Integer Function attack()
+        Return strength
+    End Function
+
+    Public Module takeDamage(Integer d)
+        Call setHealth(Call getHealth() - d)
+    End Module
+
+    Public Integer Function giveEXP()
+        Return expWorth
+    End Function
+
+    Public Module generateStrength(Integer round)
+        Call setHealth(round * 3)
+    End Module
+
+    Public Module generateStrength(int round)
+		Declare Integer minStrength
+        Set minStrength = round
+		Declare Integer maxStrength
+        Set maxStrength = round * 2
+		Call enemyDice.setMin(1)
+		Call enemyDice.setMax((maxStrength - minStrength + 1) + minStrength)
+	End Module
+
+    Public Module generateDexterity(int round)
+		Declare Integer minDexterity
+        Set minDexterity = round
+		Declare Integer maxDexterity
+        Set maxDexterity = round * 2
+		Call enemyDice.setMin(1)
+		Call enemyDice.setMax((maxDexterity - minDexterity + 1) + minDexterity)
+	End Module
+
+    Public Module generateBattleStyle()
+        Call enemyDice.setMin(0)
+        Call enemyDice.setMax(3)
+        Set battleStyle = Call enemyDice.rollDice()
+    End Module
+
+    Public Module generateName()
+        Declare String Array names[5] = "Garkle", "Snarflark", "Zog", "Blarg", "Gruk"
+        Declare String Array creatureTypes[4] = "Bandit", "Goblin", "Gremlin", "Skeleton"
+
+        Call enemyDice.setMax(Names.size() - 1)
+        Declare Integer nameIndex
+        Set nameIndex = Call enemyDice.rollDice()
+
+        Call enemyDice.setMax(creatureTypes.size() - 1)
+        Declare Integer typeIndex
+        Set typeIndex = Call enemyDice.rollDice()
+
+        Call setName(names[nameIndex], " the ", creatureTypes[typeIndex])
+    End Module
+
+    Public Integer Function getDamage()
+        Switch (battleStyle)
+            Case 0:
+                Return Call baseDamageBow + dexterity
+            Case 1:
+                Return Call baseDamageSword + strength
+            Case 2:
+                Return Call baseDamageStaff + strength
+            Case 3:
+                Return Call baseDamageDagger + dexterity
+            Default
+                Return 0
+        End Switch
+    End Function
+End Class

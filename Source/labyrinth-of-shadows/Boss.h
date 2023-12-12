@@ -1,3 +1,6 @@
+// Auth: William Brickner
+// Date: 11/30/23
+// Desc: Creating a the Boss class.
 #pragma once
 #include "All_Includes.h"
 
@@ -8,7 +11,6 @@ private:
 	int dexterity;
 	int expWorth;
 	string name;
-	Sword sword;
 	Dice enemyDice;
 
 public:
@@ -35,28 +37,29 @@ public:
 	{
 		return expWorth;
 	}
+
 	void generateHealth(int round)
 	{
 		setHealth(350);
 	}
+
 	void generateStrength(int round)
 	{
-		strength = 50;
+		strength = 70;
 	}
+
 	void generateDexterity(int round)
 	{
-		// These are static and need to be tested.
-		dexterity = 50;
+		dexterity = 50; // These are static and need to be tested.
 	}
 
 	int getDamage() const
 	{
-		return sword.damage + strength;
+		return strength;
 	}
 
 	string getName() const
 	{
 		return name;
 	}
-
 };

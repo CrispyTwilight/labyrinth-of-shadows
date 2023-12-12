@@ -1,0 +1,15 @@
+// Auth: John O'Neal
+// Date: 12/11/23
+// Desc: Pseucode for labrynth-of-shadows.cpp, the main  client for final project.
+Include "All_Includes.h"
+
+// This function is where the program starts.
+Function Integer main()
+    // Seed the random number generator.
+    Declare Integer random 
+    // Create a new instance of the game.
+    Declare Game game
+    Set game = new Game()
+    Call game.processMainMenu()
+    Return 0
+End Fucntion

@@ -1,103 +1,54 @@
-// Auth: Christian A. Botos
+// Auth: Christian A. Botos, John O'Neal, Willam Brickner
 // Date: 12/07/2023
-// Desc: header file for the Inventory class for the player's inventory
+// Desc: Inline definition of the Inventory Class for the player's inventory. Inventory should be limited by weight, but our menu is limited to 9 items.
 #pragma once
-//#include "Ranger.h"
-//#include "Rogue.h"
-//#include "Wizard.h"
 #include "Weapon.h"
-#include <vector>
+#include "Armor.h"
+#include "Potion.h"
 #include "Item.h"
-#include <conio.h>
-#include <map> // Added by Will
-#include "Armor.h" // Added by John
-#include "Dice.h"
 
 class Inventory
 {
 private:
 	// fields
 	vector<Item*> items;
-	//Since we need linked pairs of Armor for their armorType so the player can equip more than one type of armor at a time.
-	//This is what I found that would allow us to keep track of it just inside of Inventory instead of having to call whatever character they are playing.
-	//It uses map which does require a header file but it seems to be the best way of storing these so that we could also easily save/load them later which is important.
-	map<Armor::ArmorType, Armor*> equippedArmorSlots;
-	int healthPotion;
 	int maxWeight;
+	int maxItems; // JPO: Added to limit the number of items in the inventory to 9.
+	int gold;
+	string selectedCharacter;
 	Armor* equippedArmor;
 	Weapon* equippedWeapon;
-	string selectedCharacter;
-	int currentWeight;
-	int gold;
-	bool hasPotion;
+	// Since we need linked pairs of Armor for their armorType so the player can equip more than one type of armor at a time.
+	// This is what I found that would allow us to keep track of it just inside of Inventory instead of having to call whatever character they are playing.
+	// It uses map which does require a header file but it seems to be the best way of storing these so that we could also easily save/load them later which is important.
+	map<Armor::ArmorType, Armor*> equippedArmorSlots;
+
+	static Inventory* instance; // JPO: Singleton instance
+
+	// Private constructor so that only the singleton instance can be created
+    Inventory(int maxWeight = 0, int maxItems = 9, int gold = 100, string selectedCharacter = "", Armor* equippedArmor = nullptr, Weapon* equippedWeapon = nullptr)
+    : maxWeight(maxWeight), maxItems(maxItems), gold(gold), selectedCharacter(selectedCharacter), equippedArmor(equippedArmor), equippedWeapon(equippedWeapon) {
+        setMaxWeight(selectedCharacter);
+    }
 
 public:
-	// Constructor
-	Inventory()
-	{
-		selectedCharacter = "";
-		getItemWeight(selectedCharacter);
-		gold = 20;
-		hasPotion = false;
+	static Inventory* getInstance() {
+        if (instance == nullptr) {
+            instance = new Inventory();
+        }
+        return instance;
+    }
+
+	// Destructor
+	~Inventory() {
+		for (Item* item : items) {
+			delete item;
+		}
 	}
 
 	// getters
-	void getItemWeight(string& selectedCharacter) // JPO: Changed from in to void.
-	{
-		if (selectedCharacter == "Ranger")
-		{
-			maxWeight = 225;
-		}
-		else if (selectedCharacter == "Rogue")
-		{
-			maxWeight = 300;
-		}
-		else if (selectedCharacter == "Wizard")
-		{
-			maxWeight = 200;
-		}
-		else
-		{
-			maxWeight = 500;
-		}
-	}
-
-	int getHealthPotion() const
-	{
-		return healthPotion;
-	}
-
-	int	getCurrentWeight() const {
-
-		for (const Item* item : items)
-		{
-			//currentWeight += item->weight; not done
-		}
-
-		return currentWeight;
-	}
-
-	// getters
-	int getGold() const {
-		return gold;
-	}
-
 	const vector<Item*>& getItems() const {
 		return items;
-	}
-
-	Armor* getEquippedArmorByType(Armor::ArmorType type)
-	{
-		return equippedArmorSlots[type];
-	}
-
-	const map<Armor::ArmorType, Armor*>& getEquippedArmorSlots() const
-	{
-		return equippedArmorSlots;
-	}
-
-	int getSize() const {
-		return items.size();
 	}
 
 	Item* getItem(int index) const {
@@ -107,8 +58,69 @@ public:
 		return nullptr;
 	}
 
-	Weapon* getEquippedWeapon() const
-	{
+	int getSize() const {
+		return items.size();
+	}
+
+	int getItemWeight(int index) const {
+		if (index < 0 || index >= items.size()) {
+			cout << "\nInvalid index. Cannot find item weight.\n";
+			return -1; // Return -1 if the index is out of bounds
+		}
+
+		const Item* item = items[index];
+		int itemWeight = 0;
+
+		if (const auto* weapon = dynamic_cast<const Weapon*>(item)) {
+			itemWeight = weapon->weight;
+		}
+		else if (const auto* armor = dynamic_cast<const Armor*>(item)) {
+			itemWeight = armor->weight;
+		}
+		else if (const auto* potion = dynamic_cast<const Potion*>(item)) {
+			itemWeight = potion->weight;
+		}
+
+		return itemWeight;
+	}
+
+	int getCurrentWeight() const {
+		int totalWeight = 0;
+
+		for (int i = 0; i < items.size(); i++) {
+			int itemWeight = getItemWeight(i);
+			if (itemWeight != -1) {
+				totalWeight += itemWeight;
+			}
+		}
+		return totalWeight;
+	}
+
+	int getMaxWeight() const {
+		return maxWeight;
+	}
+
+	int getMaxItems() const {
+		return maxItems;
+	}
+
+	int getGold() const {
+		return gold;
+	}
+
+	string getSelectedCharacter() const {
+		return selectedCharacter;
+	}
+
+	Armor* getEquippedArmorByType(Armor::ArmorType type) {
+		return equippedArmorSlots[type];
+	}
+
+	const map<Armor::ArmorType, Armor*>& getEquippedArmorSlots() const {
+		return equippedArmorSlots;
+	}
+
+	Weapon* getEquippedWeapon() const {
 		return equippedWeapon;
 	}
 
@@ -117,66 +129,8 @@ public:
 			return equippedWeapon->damage;
 		}
 		else {
-			// Return a default value or handle the case when no weapon is equipped
-			return 2; // For example, returning 0 if no weapon is equipped
+			return 0;
 		}
-	}
-
-	void displayItemsInfo() const {
-		for (size_t i = 0; i < items.size(); ++i) {
-			cout << "Index: " << i + 1 << ", ";
-			const Item* currentItem = items[i];
-
-			if (const auto* weapon = dynamic_cast<const Weapon*>(currentItem)) {
-				cout << "Name: " << weapon->name << ", Value: " << weapon->value << ", Damage: " << weapon->damage << endl;
-			}
-			else if (const auto* armor = dynamic_cast<const Armor*>(currentItem)) {
-				cout << "Name: " << armor->name << ", Value: " << armor->value << ", Defense: " << armor->defense << endl;
-			}
-			else {
-				cout << "Name: " << currentItem->name << ", Value: " << currentItem->value << endl;
-			}
-		}
-	}
-
-	// setters
-	void addItem(Item* item) {
-		items.push_back(item);
-	}
-
-	void setEquippedArmorByType(Armor::ArmorType type, Armor* armor)
-	{
-		equippedArmorSlots[type] = armor;
-	}
-
-	void setEquippedWeapon(Weapon* weapon)
-	{
-		equippedWeapon = weapon;
-	}
-
-	void setGold(int value)
-	{
-		gold = value;
-	}
-
-	void removeItem(int index) {
-		items.erase(items.begin() + index);
-	}
-
-	void addGold(int g)
-	{
-		gold += g;
-	}
-
-	void deductGold(int g)
-	{
-		gold -= g;
-	}
-
-	//These are for loading the game.
-	void setHealthPotion(int& health)
-	{
-		healthPotion = health;
 	}
 
 	int getTotalEquippedDefense() const {
@@ -188,124 +142,198 @@ public:
 				totalDefense += armor->defense;
 			}
 		}
-
 		return totalDefense;
 	}
 
-	void equip(Item* item)
-	{
+	// setters
+	void addItem(Item* item) {
+		items.push_back(item);
+	}
+
+	void removeItem(int index) {
+		items.erase(items.begin() + index);
+	}
+
+	void setMaxWeight(string& selectedCharacter) {
+		if (selectedCharacter == "Ranger") {
+			maxWeight = 225;
+		}
+		else if (selectedCharacter == "Rogue") {
+			maxWeight = 300;
+		}
+		else if (selectedCharacter == "Wizard") {
+			maxWeight = 200;
+		}
+		else {
+			maxWeight = 500;
+		}
+	}
+
+	void setMaxItems(int value) {
+		maxItems = value;
+	}
+
+	void setGold(int value) {
+		gold = value;
+	}
+
+	void addGold(int g) {
+		gold += g;
+	}
+
+	void deductGold(int g) {
+		gold -= g;
+	}
+
+	void setEquippedArmorByType(Armor::ArmorType type, Armor* armor) {
+		equippedArmorSlots[type] = armor;
+	}
+
+	void setEquippedWeapon(Weapon* weapon) {
+		equippedWeapon = weapon;
+	}
+
+	// Other functions
+	void displayCurrentInventory() const {
+		cout << "Current Inventory:\n"
+			<< "-------------------------------\n"
+			<< "Gold: " << setw(10) << getGold() << "Weight: " << getCurrentWeight() << "/" << maxWeight << endl
+			<< "-------------------------------\n";
+
+		if (items.empty()) {
+			cout << "Inventory is empty!\n\n";
+			return; // JPO: Added to early exit the function.
+		}
+
+		for (size_t i = 0; i < items.size(); ++i) {
+			cout << i + 1 << ") ";
+			const Item* currentItem = items[i];
+
+			if (const auto* weapon = dynamic_cast<const Weapon*>(currentItem)) {
+				cout << weapon->name << " - " << weapon->material << " " << weaponTypeToString(weapon->type) << endl
+					<< "      " << "Value: " << setw(2) << weapon->value << " Weight: " << setw(2) << weapon->weight << " Damage:  " << setw(2) << weapon->damage << endl << endl;
+			}
+			else if (const auto* armor = dynamic_cast<const Armor*>(currentItem)) {
+				cout << armor->name << " - " << armor->material << " " << armorTypeToString(armor->type) << endl
+					<< "      " << "Value: " << setw(2) << armor->value << " Weight: " << setw(2) << armor->weight << " Defense: " << setw(2) << armor->defense << endl << endl;
+			}
+			else if (const auto* potion = dynamic_cast<const Potion*>(currentItem)) {
+				cout << potion->name << " " << potionTypeToString(potion->type) << " potion of " << potion->material << endl
+					<< "      " << "Value: " << setw(2) << potion->value << " Weight: " << setw(2) << potion->weight << " Healing: " << setw(2) << potion->heal << endl << endl;
+			}
+		}
+	}
+
+	void equipItem() {
+		 cout << "Equip what?";
+		int index = getZeroBasedIntOrQuit();
+		if (index == -1 || index < 0 || index >= items.size()) {
+			cout << "\nInvalid index. Please try again\n";
+			return;
+		}
+		Item* item = items[index];
+
 		auto* armor = dynamic_cast<Armor*>(item);
 		auto* weapon = dynamic_cast<Weapon*>(item);
 
-		if (armor != nullptr)
-		{
-			if (equippedArmorSlots.find(armor->type) == equippedArmorSlots.end())
-			{
-				// Armor slot for this type doesn't exist, so create one and equip the armor
-				equippedArmorSlots[armor->type] = armor;
-				cout << "Equipped armor: " << armor->name << endl;
-			}
-			else
-			{
-				// An armor of this type is already equipped, unequip it first
+		if (armor != nullptr) {
+			if (equippedArmorSlots.find(armor->type) != equippedArmorSlots.end()) {
+				// An armor of this type is already equipped, so unequip it first.
 				auto* previousArmor = equippedArmorSlots[armor->type];
-				cout << "Unequipped previous " << armorTypeToString(armor->type) << " armor: " << previousArmor->name << endl;
-				equippedArmorSlots[armor->type] = armor;
-				cout << "Equipped new " << armorTypeToString(armor->type) << " armor: " << armor->name << endl;
+				cout << "\nUnequipped previous " << armorTypeToString(armor->type) << " armor: " << previousArmor->name;
+			}
+			// Armor slot for this type doesn't exist, so create one and equip the armor.
+			equippedArmorSlots[armor->type] = armor;
+			cout << "\nEquipped armor: " << armor->name << endl;
+			return;
+		}
+
+		if (weapon != nullptr) {
+			equippedWeapon = weapon;
+			cout << "\nEquipped weapon: " << weapon->name << endl;
+			return;
+		}
+		// Not a valid item to equip
+		cout << "\nCannot equip a potion." << endl;
+	}
+
+	void discardItem() {
+		if (items.empty()) {
+			cout << "\nNothing to discard! Inventory is empty!\n\n";
+			return;
+		}
+		cout << "Discard what?";
+		int index = getZeroBasedIntOrQuit();
+		if (index == -1 || index < 0 || index >= items.size()) {
+			cout << "\nInvalid index. Please try again\n";
+			return;
+		}
+		delete items[index]; // Free memory
+		items.erase(items.begin() + index);
+		cout << "\nItem discarded.\n";
+	}
+
+	void takePotion() {
+		bool hasPotion = false;
+		for (Item* item : items) {
+			if (dynamic_cast<Potion*>(item) != nullptr) {
+				hasPotion = true;
+				break;
 			}
 		}
-		else if (weapon != nullptr) {
-			equippedWeapon = weapon;
-			cout << "Equipped weapon: " << weapon->name << endl;
+		if (!hasPotion) {
+			cout << "You don't have any health potions.\n";
+			return;
 		}
-		else {
-			// Not a valid item to equip
-			cout << "Cannot equip this item." << endl;
+		cout << "Take which potion?";
+		int index = getZeroBasedIntOrQuit();
+		if (index == -1 || index < 0 || index >= items.size()) {
+			cout << "\nInvalid index. Please try again\n";
+			return;
+		}
+		if (dynamic_cast<Potion*>(items[index]) != nullptr) {
+			// Code to consume health potion goes here
+		} else {
+			cout << "\nThat item is not a health potion.\n";
 		}
 	}
 
-	//Other Functions
-
-	void openInventory()
-	{
-		if (healthPotion > 0)
-		{
-			hasPotion = true;
-		}
-		int choice = -1;
+	void openInventory() {
+		system("cls");
+		char choice;
 		do {
-			cout << "Inventory Menu:\n"
-				<< "1. Equip Item\n"
-				<< "2. Discard Item\n"
-				<< "3. Take Health Potion\n"
-				<< "4. Exit Inventory\n"
-				<< "Enter your choice: ";
+			displayCurrentInventory();
+			cout << "You may:\n"
+				<< "1) Equip item.\n"
+				<< "2) Discard item.\n"
+				<< "3) Take health potion.\n"
+				<< "ESC) Exit inventory.\n";
+			choice = _getch();
 
-			choice = _getch() - '0'; // Convert char input to integer
-
-			int index; // JPO: Moved declaration out of case 2
-			switch (choice)
-			{
-				case 1:
-				{
-					displayItemsInfo();
-					cout << "Enter index of item to equip: ";
-					int indexToEquip;
-					cin >> indexToEquip;
-					indexToEquip -= 1; // Adjust index to start from 0
-
-					if (indexToEquip >= 0 && indexToEquip < items.size()) {
-						Item* itemToEquip = items[indexToEquip];
-						equip(itemToEquip); // Equip the selected item
-					}
-					else {
-						cout << "Invalid index.\n";
-					}
-					break;
-				}
-				case 2:
-				{
-					displayItemsInfo();
-					cout << "Enter index of item to discard: ";
-					cin >> index; // In case they have more than 9 items they won't be locked out discarding other items.
-					index -= 1; // Adjust index to start from 0
-
-					if (index >= 0 && index < items.size()) {
-						// Remove item from the inventory
-						delete items[index]; // Free memory
-						items.erase(items.begin() + index);
-						cout << "Item discarded.\n";
-					}
-					else {
-						cout << "Invalid index.\n";
-					}
-					break;
-				}
-				case 3:
-				{
-					/*
-					if (!hasPotion) // JPO: reduced nesting by using early error test
-						cout << "You don't have any health potions.\n";
-					else if (selectedCharacter == "Ranger")
-						playerRanger.takePotion();
-					else if (selectedCharacter == "Wizard")
-						playerWizard.takePotion();
-					else if (selectedCharacter == "Rogue")
-						playerRogue.takePotion();
-					break;
-					*/
-				}
-				case 4:
-				{
-					cout << "Exiting Inventory.\n";
-					break;
-				}
-				default:
-				{
-					cout << "Invalid choice.\n";
-					break;
-				}
+			if (choice == 27) { // Escape key
+				system("cls");
+				return; // Return to the call point.
 			}
-		} while (choice != 4);
+
+			switch (choice) {
+				case '1':
+					equipItem();
+					break;
+				case '2':
+					discardItem();
+					break;
+				case '3':
+					takePotion();
+					break;
+				default:
+					cout << "Invalid choice. Please try again.\n";
+					break;
+			}
+			system("pause");
+			system("cls");
+		} while (true);
 	}
 };
+
+// Initialize the singleton instance to nullptr
+Inventory* Inventory::instance = nullptr;

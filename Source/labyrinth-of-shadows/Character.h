@@ -2,10 +2,7 @@
 //Date: 11/30/2023
 //Desc: Creating a superclass for the player, npcs, and enemies
 #pragma once
-#include "All_Includes.h"
-#include "Inventory.h" //Jpo Temp
-
-
+#include "Inventory.h"
 
 class Character
 {
@@ -13,12 +10,11 @@ private:
     //Fields
     int health;
     string name;
-    Inventory inventory;
 
 public:
     Character()
     {
-        
+
     }
 
     Character(int hea, string n, int gold)
@@ -38,11 +34,6 @@ public:
         name = n;
     }
 
-    void setInventory(Inventory inv)
-	{
-		inventory = inv;
-	}
-
     //Getters
     int getHealth() const
     {
@@ -54,8 +45,8 @@ public:
         return name;
     }
 
-    Inventory& getInventory()
+    Inventory* getInventory()
     {
-        return inventory;
+         return Inventory::getInstance();
     }
 };

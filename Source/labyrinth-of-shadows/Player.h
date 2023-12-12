@@ -1,8 +1,9 @@
-// Date: ??
+// Date: 12/11/23
 // Auth: Christian Baack
 // Desc: Class to represent the player in the game for movement and position.
 #pragma once
 #include "All_Includes.h"
+#include "Shop.h" // JPO: Added to allow access to the shop.
 
 class Player
 {
@@ -15,13 +16,14 @@ private:
 public:
     Player(Map& map, int initialX, int initialY) : map(map), x(initialX), y(initialY), px(initialX), py(initialY) {}
 
-    void handleInput()
-    {
-        char input;
-        cout << "Enter move (WASD): ";
-        input = _getch();
+    //Function gets player input and calls the acording move function
 
-        switch (input) {
+    void handleInput(char option)
+
+    {
+        cout << "Enter move (WASD): ";
+
+        switch (option) {
         case 'W': case 'w':
             move(0, -1);
             break;
@@ -34,8 +36,6 @@ public:
         case 'D': case 'd':
             move(1, 0);
             break;
-            //Add more controls as needed
-        //JPO: Add a default case to handle invalid input.
         }
     }
 
@@ -45,6 +45,7 @@ public:
         px += dx;
         py += dy;
 
+        //All the diffferent checks for Colissions.
         if (map.getGrid()[py][px] == 'A')
         {
             map.setLevel(map.getLevel() - 1);
@@ -63,13 +64,16 @@ public:
         if (map.getGrid()[py][px] == 'E' || map.getGrid()[py][px] == 'L')
         {
             map.toggle();
-            cout << map.getTrigger();
         }
         if (map.getGrid()[py][px] == 'D')
         {
             map.setLevel(map.getLevel() + 1);
             px = x = 25;
             py = y = 15;
+        }
+        if (map.getGrid()[py][px] == 'S')
+        {
+            Shop::getInstance()->runShop(); // Call to handle the shop logic.
         }
         else if (map.getGrid()[py][px] != '#')
         {
@@ -89,23 +93,24 @@ public:
         outY = y;
     }
 
+    //Resests the map or goes onto the boss fight.
     void resetOrBoss()
     {
-        int c = 0;
+        char c = '0';
         if (keys == 6)
         {
-            cout << "Would you like to to reset the game(you keep all your character progress), or fight the final boss?\n1. Reset\n2. Fight   ";
-            cin >> c;
+            cout << "Would you like to reset the game(you keep all your character progress), or fight the final boss?\n1. Reset\n2. Fight";
+            c = _getch();
             keys = 0;
             system("cls");
         }
 
-        if (c == 1)
+        if (c == '1')
         {
             map.reset();
             map.setLevel(0);
         }
-        else if (c == 2)
+        else if (c == '2')
         {
             map.toggle2();
         }

@@ -1,0 +1,85 @@
+Class MapManager
+
+    Private vector<vector<char>> map0
+    Private vector<vector<char>> map1
+    Private vector<vector<char>> map2
+    Private vector<vector<char>> map3
+
+    Private vector<vector<char>> backUpMap0 = map0
+	Private vector<vector<char>> backUpMap1 = map1
+	Private vector<vector<char>> backUpMap2 = map2
+	Private vector<vector<char>> backUpMap3 = map3
+
+    Public vector<vector<char>> getMap0() const
+		Return map0
+	End Function
+
+	Public vector<vector<char>> getMap1() const
+		return map0
+	End Function
+
+	Public vector<vector<char>> getMap2() const
+		Return map2
+	End Function
+
+	Public vector<vector<char>> getMap3() const
+		Return map3
+	End Function
+
+    Public Module updateMap(Int x, Int y, Int level, Char update)
+		Switch (level)
+		Case 1:
+			map1[x][y] = update
+			Break
+		Case 2:
+			map2[x][y] = update
+			Break
+		Case 3:
+			map3[x][y] = update
+			Break
+		default:
+			Break
+		End Switch
+    End Module
+
+    Public Module reset()
+		map0 = backUpMap0 
+		map1 = backUpMap1 
+		map2 = backUpMap2 
+		map3 = backUpMap3 
+	End Module
+
+    Public vector<pair<int, int>> findE(const vector<vector<char>>& m)
+	
+		vector<pair<int, int>> indices
+		For (int i = 0 To m.size() ++i)
+		
+			For (int j = 0 To m[i].size() ++j)
+			
+				If (m[i][j] == 'E') Then
+				
+					indices.emplace_back(i, j)
+                End If
+            End For
+        End For
+				
+		Return indices
+    End Function
+
+    Public vector<pair<int, int>> findL(const vector<vector<char>>& m)
+	
+		vector<pair<int, int>> indices
+		For (int i = 0 To m.size() ++i)
+		
+			For (int j = 0 To m[i].size() ++j)
+			
+				If (m[i][j] == 'L') Then
+				
+					indices.emplace_back(i, j)
+                End If
+            End For
+        End For
+				
+		Return indices
+    End Function
+End Class

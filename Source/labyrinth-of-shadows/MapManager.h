@@ -1,4 +1,4 @@
-// Date: ??
+// Date: 12/11/23
 // Auth: Christian Baack
 // Desc:
 #pragma once
@@ -151,6 +151,7 @@ private: //JPO: added private
 		{'#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#','#'}
 	};
 
+	//Backup maps
 	vector<vector<char>> backUpMap0 = map0;
 	vector<vector<char>> backUpMap1 = map1;
 	vector<vector<char>> backUpMap2 = map2;
@@ -178,6 +179,7 @@ public:
 		return map3;
 	}
 
+	//Function to update the map
 	void updateMap(int x, int y, int level, char update)
 	{
 		switch (level)
@@ -196,6 +198,7 @@ public:
 		}
 	}
 
+	//Reseting the map
 	void reset()
 	{
 		map0 = backUpMap0;
@@ -204,6 +207,7 @@ public:
 		map3 = backUpMap3;
 	}
 
+	//Function to return all coordinates
 	vector<pair<int, int>> findE(const vector<vector<char>>& m)
 	{
 		vector<pair<int, int>> indices;
