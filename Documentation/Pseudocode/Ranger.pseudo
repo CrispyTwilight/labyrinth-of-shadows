@@ -26,132 +26,132 @@ Class Ranger extends Character
    Declare Private Integer rainCooldown
    Declare Private Integer chargedCooldown
    Declare Private Integer repulsionUses
-   Declare Private Bool isRepulsionActivated
-   Declare Private Bool isBlocking
-   Declare Private Bool isStunned
-   Declare Private Bool isEnemyStunned
+   Declare Private Boolean isRepulsionActivated
+   Declare Private Boolean isBlocking
+   Declare Private Boolean isStunned
+   Declare Private Boolean isEnemyStunned
    Declare Private Dice d100
    Declare Private Inventory* playerInventory
 
 Declare Public Constructor Ranger()
     {
 
-        Set maxHealth = 25;
+        Set maxHealth = 25 
         //This is a placeholder because the playername
-        Call setName("Ranger");
-        Call setHealth(25);
-        Set strength = 7;
-        Set intelligence = 3;
-        Set dexterity = 4;
-        Set level = 1;
-        Set numberTurns = 1;
-        Set healthPotions = 1;
-        Set exp = 0;
-        Set expNeeded = 5;
-        Set rainLvl = 1;
-        Set chargedLvl = 1;
-        Set repulsionLvl = 1;
+        Call setName("Ranger") 
+        Call setHealth(25) 
+        Set strength = 7 
+        Set intelligence = 3 
+        Set dexterity = 4 
+        Set level = 1 
+        Set numberTurns = 1 
+        Set healthPotions = 1 
+        Set exp = 0 
+        Set expNeeded = 5 
+        Set rainLvl = 1 
+        Set chargedLvl = 1 
+        Set repulsionLvl = 1 
         // Since this an combat ability it will only be able to activated during combat so it starts off false
-        Set isRepulsionActivated = false;
-        Set isBlocking = false;
-        Set isStunned = false;
-        Set isEnemyStunned = false;
-        Set rainCooldown = 0;
-        Set chargedCooldown = 0;
-        Set repulsionUses = repulsionLvl;
-        Set d100.setMin(1);
-        Set d100.setMax(100);
+        Set isRepulsionActivated = false 
+        Set isBlocking = false 
+        Set isStunned = false 
+        Set isEnemyStunned = false 
+        Set rainCooldown = 0 
+        Set chargedCooldown = 0 
+        Set repulsionUses = repulsionLvl 
+        Set d100.setMin(1) 
+        Set d100.setMax(100) 
 
 
     }
     Ranger(Integer max, Integer hea, Integer  str, Integer intel, Integer  dex, Integer lev, Integer ex, Integer need, Integer rai, Integer charg, Integer re, Integer potion, Integer turns) : playerInventory(getInventory())
     {
-        Set maxHealth = max;
+        Set maxHealth = max 
         //This is a placeholder because the playername
-        Call setName("Ranger");
-        Call setHealth(hea);
-        Set strength = str;
-        Set intelligence = intel;
-        Set dexterity = dex;
-        Set level = lev;
-        Set numberTurns = turns;
-        Set healthPotions = potion;
-        Set exp = ex;
-        Set expNeeded = need;
-        Set rainLvl = rai;
-        Set chargedLvl = charg;
-        Set repulsionLvl = re;
+        Call setName("Ranger") 
+        Call setHealth(hea) 
+        Set strength = str 
+        Set intelligence = intel 
+        Set dexterity = dex 
+        Set level = lev 
+        Set numberTurns = turns 
+        Set healthPotions = potion 
+        Set exp = ex 
+        Set expNeeded = need 
+        Set rainLvl = rai 
+        Set chargedLvl = charg 
+        Set repulsionLvl = re 
         // Since this an combat ability it will only be able to activated during combat so it starts off false
-        Set isRepulsionActivated = false;
-        Set isBlocking = false;
-        Set isStunned = false;
-        Set isEnemyStunned = false;
-        Set rainCooldown = 0;
-        Set chargedCooldown = 0;
-        Set repulsionUses = repulsionLvl;
-        Set d100.setMin(1);
-        Set d100.setMax(100);
+        Set isRepulsionActivated = false 
+        Set isBlocking = false 
+        Set isStunned = false 
+        Set isEnemyStunned = false 
+        Set rainCooldown = 0 
+        Set chargedCooldown = 0 
+        Set repulsionUses = repulsionLvl 
+        Set d100.setMin(1) 
+        Set d100.setMax(100) 
     }
 
     //Setters
     Declare Public void setMaxHealth(int value)
     {
-        Set maxHealth = value;
+        Set maxHealth = value 
     }
 
     Declare Public void setStrength(int value)
     {
-        Set strength = value;
+        Set strength = value 
     }
 
     Declare Public void setIntelligence(int value)
     {
-        Set intelligence = value;
+        Set intelligence = value 
     }
 
     Declare Public void setDexterity(int value)
     {
-        Set dexterity = value;
+        Set dexterity = value 
     }
 
     Declare Public void setLevel(int value)
     {
-        level = value;
+        Set level = value 
     }
 
     Declare Public void setNumTurns(int value)
     {
-        numberTurns = value;
+        Set numberTurns = value 
     }
 
     Declare Public void setHealthPotions(int value)
     {
-        healthPotions = value;
+        Set healthPotions = value 
     }
 
     Declare Public void setExp(int value)
     {
-        exp = value;
+        Set exp = value 
     }
 
     Declare Public void setExpNeeded(int value)
     {
-        expNeeded = value;
+        Set expNeeded = value 
     }
 
     Declare Public void setRainLvl(int value)
     {
-        rainLvl = value;
+        rainLvl = value 
     }
 
     Declare Public void setChargedLvl(int value)
     {
-        chargedLvl = value;
+        Set chargedLvl = value 
     }
 
     Declare Public void setRepulsionLvl(int value)
     {
-        repulsionLvl = value;
+        Set repulsionLvl = value 
     }
 
 
@@ -219,7 +219,7 @@ Declare Public Constructor Ranger()
     // Leveling up the player
     Declare Public void levelUp()
     {
-        Display "Congratulations you leveled up!";
+        Display "Congratulations you leveled up!" 
         // Increasing the players max health and healing them to full.
         Set maxHealth += 5
         Call setHealth(maxHealth)
@@ -649,17 +649,17 @@ Declare Public void takeDamageBoss(Boss& boss, integer d)
     if (isBlocking)
     {
         Display "You successfully blocked the attack!"
-        d = d * 0.25;
+        d = d * 0.25 
         // Assuming playerInventory->getTotalEquippedDefense() is an integer value
-        d = d - playerInventory->getTotalEquippedDefense();
+        d = d - playerInventory->getTotalEquippedDefense() 
         if (d < 0)
         {
-            d = 0;
+            d = 0 
         }
         End If 
 
         // Convert the decimal damage to a whole number (rounding up)
-        d = static_cast<int>(ceil(d));
+        d = static_cast<int>(ceil(d)) 
 
         Display "You took " + d + " damage"
     }
@@ -675,10 +675,10 @@ Declare Public void takeDamageBoss(Boss& boss, integer d)
     }
     else
     {
-        d = d - playerInventory->getTotalEquippedDefense();
+        d = d - playerInventory->getTotalEquippedDefense() 
         if (d < 0)
         {
-            d = 0;
+            d = 0 
         }
         Display "You took " + d + " damage"
         Call setHealth(getHealth() - d)
@@ -724,7 +724,7 @@ Declare Public void takeDamage(Enemy& enemy, int d)
         d = d - playerInventory->getTotalEquippedDefense()
         if (d < 0)
         {
-            d = 0;
+            d = 0 
         }
         End If
         Display "You took " + d + " damage"
@@ -737,7 +737,7 @@ End void takeDamage
     //calculating the damage from a rain of arrows attack.
     Declare Public integer rainAttack()
     {
-        return  10 + (rainLvl * 5);
+        return  10 + (rainLvl * 5) 
     }
     End rainAttack
 
@@ -793,7 +793,7 @@ End void takeDamage
 
         if (getHealth() <= 0) {
             // Game over logic
-            cout << "You were defeated! Game Over.\n";
+            cout << "You were defeated! Game Over.\n" 
 
 
         }
@@ -804,11 +804,11 @@ End void takeDamage
             Set isEnemyStunned = false
             //currently fights just give out health potions but later will be drawn from the loot pool and added to their inventory.
             Set healthPotions++
-            Set exp += enemy.giveEXP();
+            Set exp += enemy.giveEXP() 
             System pause
             if (checkForLevelUp(exp, expNeeded))
             {
-                Call levelUp();
+                Call levelUp() 
             }
             End if
         }
@@ -830,7 +830,7 @@ End void takeDamage
 
         while (getHealth() > 0 && boss.getHealth() > 0) {
             // Player's turn
-            Call playerTurnBoss(boss);
+            Call playerTurnBoss(boss) 
 
             Set turnCount++
 
@@ -839,11 +839,11 @@ End void takeDamage
                 // Enemy's turn
                 if (turnCount % 2 Not = 0)
                 {
-                    Call takeDamageBoss(boss, boss.getDamage());
+                    Call takeDamageBoss(boss, boss.getDamage()) 
                 }
                 else
                 {
-                    Set isStunned = true;
+                    Set isStunned = true 
                 }
                 End if
             }
@@ -875,11 +875,11 @@ End void takeDamage
             Set isEnemyStunned = false
             //currently fights just give out health potions but later will be drawn from the loot pool and added to their inventory.
             Set healthPotions++
-            Set exp += enemy.giveEXP();
+            Set exp += enemy.giveEXP() 
             System pause
             if (checkForLevelUp(exp, expNeeded))
             {
-                Call levelUp();
+                Call levelUp() 
             }
             End if
         }
@@ -900,18 +900,18 @@ End void takeDamage
 
         while (getHealth() > 0 And easyEnemy.getHealth() > 0) {
             // Player's turn
-            playerTurnEasy(easyEnemy);
+            playerTurnEasy(easyEnemy) 
 
             if (easyEnemy.getHealth() > 0)
             {
                 // Enemy's turn
                 if (!isEnemyStunned)
                 {
-                    takeDamageEasyEnemy(easyEnemy, easyEnemy.attack());
+                    takeDamageEasyEnemy(easyEnemy, easyEnemy.attack()) 
                 }
                 else
                 {
-                    cout << "The enemies turn was skipped!\n";
+                    cout << "The enemies turn was skipped!\n" 
                 }
             }
             // Display updated stats after each round
@@ -935,15 +935,15 @@ End void takeDamage
         }
         else {
             Display "You defeated the enemy!"
-            Set exp += easyEnemy.giveEXP();
-            Set isEnemyStunned = false;
+            Set exp += easyEnemy.giveEXP() 
+            Set isEnemyStunned = false 
             //currently fights just give out health potions but later will be drawn from the loot pool and added to their inventory.
-            Set healthPotions++;
+            Set healthPotions++ 
             System pause
             //Checking for the level up after the fight is over and they have they are not dead.
             if (checkForLevelUp(exp, expNeeded))
             {
-                levelUp();
+                levelUp() 
             }
             End if
         }

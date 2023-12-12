@@ -1,0 +1,959 @@
+//Auth: William Brickner
+//Date: 11/30/23
+//Desc: Creating the subclass Wizard for the player.
+
+#include "Character.h"
+#include "Enemy.h"
+#include "easyEnemy.h"
+#include "Boss.h"
+#include "Inventory.h"
+
+Declare class Wizard extends Character
+{
+
+    Declare Private Integer maxHealth 
+    Declare Private Integerstrength 
+    Declare Private Integer intelligence 
+    Declare Private Integer dexterity 
+    Declare Private Integer healthPotions 
+    Declare Private Integer level 
+    Declare Private Integer exp 
+    Declare Private Integer expNeeded 
+    Declare Private Integer fireballLvl 
+    Declare Private Integer iceWallLvl 
+    Declare Private Integer numberTurns 
+    Declare Private Integer fireballCooldown 
+    Declare Private Integer iceWallCooldown 
+    Declare Private Integer iceWallEffect 
+    Declare Private Boolean isBlocking 
+    Declare Private Boolean isStunned 
+    Declare Private Boolean isEnemyStunned 
+    Dice d100 
+    Inventory* playerInventory 
+
+    Declare Public Constructor Wizard()
+    {}
+
+    Declare Public Constructor Wizard(Integer max, Integer hea, Integer  str, Integer intel, Integer  dex, Integer lev, Integer ex, Integer need, Integer ice, Integer fire, Integer potion, Integer turns) : playerInventory(getInventory())
+    {
+        Set maxHealth = max
+        Call setHealth(hea)
+        Call setName("Wizard")
+        Set strength = str
+        Set intelligence = intel
+        Set dexterity = dex
+        Set level = lev
+        Set numberTurns = turns
+        Set healthPotions = potion
+        Set exp = ex
+        Set expNeeded = need
+        Set fireballLvl = fire
+        Set iceWallLvl = ice
+        // Since this an combat ability it will only be able to activated during combat so it starts off false
+        Set isBlocking = false
+        Set isStunned = false
+        Set fireballCooldown = 0
+        Set iceWallCooldown = 0
+        Set d100.setMin(1)
+        Set d100.setMax(100)
+    }
+
+    //Setters
+    Declare Public void setMaxHealth(Integer value)
+    {
+        Set maxHealth = value
+    }
+
+    Declare Public void setStrength(Integer value)
+    {
+        Set strength = value
+    }
+
+    Declare Public void setIntelligence(Integer value)
+    {
+        Set intelligence = value
+    }
+
+    Declare Public void setDexterity(Integer value)
+    {
+        Set dexterity = value
+    }
+
+    Declare Public void setLevel(Integer value)
+    {
+        Set level = value
+    }
+
+    Declare Public void setNumTurns(Integer value)
+    {
+       Set numberTurns = value
+    }
+
+    Declare Public void setHealthPotions(Integer value)
+    {
+        Set healthPotions = value
+    }
+
+    Declare Public void setExp(Integer value)
+    {
+       Set exp = value
+    }
+
+    Declare Public void setExpNeeded(Integer value)
+    {
+       Set expNeeded = value
+    }
+
+    Declare Public void setFirballLvl(Integer value)
+    {
+        Set fireballLvl = value
+    }
+    Declare Public void setIceWallLvl(Integer value)
+    {
+        Set iceWallLvl = value
+    }
+
+    //Getters
+    Declare Constant Public Integer getMaxHealth() 
+    {
+        return maxHealth
+    }
+
+    Declare Constant Public Integer getStrength() 
+    {
+        return strength
+    }
+
+    Declare Constant Public Integer  getIntelligence() 
+    {
+        return intelligence
+    }
+
+    Declare Constant Public Integer  getDexterity() 
+    {
+        return dexterity
+    }
+
+    Declare Constant Public Integer getLevel() 
+    {
+        return level
+    }
+
+    Declare Constant Public Integer getNumTurns() 
+    {
+        return numberTurns
+    }
+
+    Declare Constant Public Integer  getHealthPotions() 
+    {
+        return healthPotions
+    }
+
+    Declare Constant Public Integer  getExp() 
+    {
+        return exp
+    }
+
+    Declare Constant Public Integer getExpNeeded() 
+    {
+        return expNeeded
+    }
+
+    Declare Constant Public Integer getFireball() 
+    {
+        return fireballLvl
+    }
+
+    Declare Constant Public Integer getIceWall() 
+    {
+        return iceWallLvl
+    }
+
+    // Level up function
+    Declare Public void levelUp()
+    {
+        Display "You have leveled up!"
+        //Increasing their max health by 5 per level up.
+        Set maxHealth += 5
+        Call setHealth(maxHealth)
+        //Increasing their intelligence because it is what scales up for the wizard.
+        Set intelligence += 1
+        //Increasing the level variable by one.
+        Set level += 1
+        // Increasing how many turn they have if it is a variable of 5.
+        if (level % 5 == 0) {
+            // Increment the number of turns when the player's level is a multiple of 5
+            Set numberTurns++
+            Display "Congratulations! Your number of turns has increased to: " + numberTurns 
+        }
+        End if
+
+        // Doing the math so this is not just an infinite loop of level ups and making sure that their exp and expended go up properly.
+        Set exp = expNeeded - exp
+        Set expNeeded = level * 5
+
+        Declare Integer choice
+        Set choice = 0
+
+         Display "What Spell would you like to level up"
+             Display "Leveling up Fireball will increase its damage"
+             Display "Leveling up Ice wall will increase its effect duration but also increase cooldown duration."
+             Display "Your cooldown will be two more than the level of the Ice wall spell."
+             Display "1. FireBall " + fireballLvl
+             Display "2. Ice Wall " + iceWallLvl 
+
+        do
+        {
+             Display "Enter your choice:  " 
+            Input choice
+            if (choice < 0 || choice > 2) {
+                 Display "Incorrect value. Please enter a valid value. " 
+            }
+        end if
+        } while (choice < 0 || choice > 2) 
+        End Do While
+
+        switch (choice)
+        {
+        case 1:
+        {
+
+            Set fireballLvl += 1 
+             Display "FireBall is now level " + fireballLvl 
+            break 
+        }
+        case 2:
+        {
+            Set iceWallLvl += 1 
+             Display "Ice Wall is now level " + iceWallLvl 
+            break 
+        }
+        default:
+        {
+             Display "You have encountered an error. " 
+            break 
+        }
+    end switch
+        //Checking if they need to be leveled up again its in the util because it is an easy check that all characters use.
+        System Pause 
+        System Clear 
+        }
+        if (checkForLevelUp(exp, expNeeded))
+        {
+            Call levelUp() 
+        }
+        End if
+    }
+    End Function
+
+    // This the base player turn.
+    Declare Public void playerTurn(Enemy& enemy)
+    {
+        if (iceWallEffect > 0)
+        {
+            isBlocking = true 
+            iceWallEffect -= 1 
+        }
+        else
+        {
+            isBlocking = false 
+        }
+    end if
+
+
+        Declare Integer choice
+        Set choice = 0
+
+
+        // These are set so that the cooldown does not go below zero.
+        if (iceWallCooldown > 0)
+        {
+            Set iceWallCooldown -= 1 
+        }
+    end if
+
+        if (fireballCooldown > 0)
+        {
+            fireballCooldown -= 1 
+        }
+    end if 
+
+        for (Integer turn = 1  turn <= numberTurns  ++turn)
+        {
+             Display "It's your turn, what would you like to do? " 
+             Display "1. Basic Attack "
+            Display "2. Take Health Potion "
+            Display "3. Ice Wall "
+            Display "4. Fireball " 
+
+
+            do {
+                Boolean incorrectChoice = false 
+                 Display "Enter your choice:  " 
+                Input choice
+
+                if (choice == 2 && healthPotions < 0) {
+                     Display "You are out of health potions, pick another option. " 
+                    Set incorrectChoice = true 
+                }
+                else if (choice == 2 && getHealth() == maxHealth) {
+                     Display "You are full on health. I highly recommend you do something else. " 
+                    Set incorrectChoice = true 
+                }
+                else if (choice == 3 && iceWallCooldown > 0) {
+                     Display "Ice Wall is still on cooldown. You have to wait " + iceWallCooldown + " number of turns. " 
+                    Set incorrectChoice = true 
+                }
+                else if (choice == 4 && fireballCooldown > 0) {
+                     Display "Fireball is still on cooldown. You have to wait " + fireballCooldown + " number of turns. " 
+                    Set incorrectChoice = true 
+                }
+
+
+                // Check if the choice is invalid due to cooldown or lack of resources
+                if (incorrectChoice) {
+                    // The do-while loop will continue if the choice was incorrect
+                    continue 
+                }
+
+            } while (choice > 5 || choice < 0) 
+
+            switch (choice)
+            {
+            case 1:
+            {
+                // attack monster
+                Call attackMonster(enemy, playerInventory->getEquippedWeaponDamage()) 
+                break 
+            }
+            case 2:
+            {
+                // Take Health Potion if they have any.
+                Call takePotion() 
+                break 
+            }
+            case 3:
+            {
+                //Ice wall will block for more than one turn.
+                Set isBlocking = true 
+                Set iceWallCooldown = iceWallLvl + 2 
+                Set iceWallEffect = iceWallLvl + 1 
+                break 
+            }
+            break 
+            case 4:
+            {
+                //Will attack the monster based on the fireball damage
+                Call attackMonster(enemy, fireBall()) 
+                // Setting the cooldown to a base of 2.
+                Set fireballCooldown = 2 
+                break 
+            }
+            default:
+            {
+                 Display "You have encountered an error. " 
+                break 
+            }
+            }
+            System Pause 
+            System Clear 
+        }
+        End For Loop
+    }
+    End Function
+
+    Declare Public void playerTurnBoss(Boss& enemy)
+    {
+        if (iceWallEffect > 0)
+        {
+            isBlocking = true 
+            iceWallEffect -= 1 
+        }
+        else
+        {
+            isBlocking = false 
+        }
+        End if
+
+
+        Declare Integer choice
+        Set choice = 0
+
+        if (iceWallCooldown > 0)
+        {
+            Set iceWallCooldown -= 1 
+        }
+    end if
+
+        if (fireballCooldown > 0)
+        {
+            Set fireballCooldown -= 1 
+        }
+    end if
+        if (!isStunned)
+        {
+
+
+            for (Integer turn = 1  turn <= numberTurns  ++turn)
+            {
+                 Display "It's your turn, what would you like to do? " 
+                 Display "1. Basic Attack "
+
+                    Display "2. Take Health Potion "
+                    Display "3. Ice Wall "
+                    Display "4. Fireball " 
+
+                do {
+                    Boolean incorrectChoice = false 
+                     Display "Enter your choice: " 
+                    Input choice
+
+                    if (choice == 2 && healthPotions < 0) {
+                         Display "You are out of health potions, pick another option. " 
+                        Set incorrectChoice = true 
+                    }
+                    else if (choice == 2 && getHealth() == maxHealth) {
+                         Display "You are full on health. I highly recommend you do something else. " 
+                        Set incorrectChoice = true 
+                    }
+                    else if (choice == 3 && iceWallCooldown > 0) {
+                         Display "Ice Wall is still on cooldown. You have to wait " + iceWallCooldown + " number of turns. " 
+                        Set incorrectChoice = true 
+                    }
+                    else if (choice == 4 && fireballCooldown > 0) {
+                         Display "FireBall is still on cooldown. You have to wait " + fireballCooldown + " number of turns. " 
+                        Set incorrectChoice = true 
+                    }
+
+
+
+                    // Check if the choice is invalid due to cooldown or lack of resources
+                    if (incorrectChoice) {
+                        // The do-while loop will continue if the choice was incorrect
+                        continue 
+                    }
+
+                } while (choice > 5 || choice < 0) 
+
+                switch (choice)
+                {
+                case 1:
+                {
+                    // attack monster
+                    Call attackMonsterBoss(enemy, playerInventory->getEquippedWeaponDamage()) 
+                    break 
+                }
+                case 2:
+                    // Take Health Potion If have any
+                    Call takePotion() 
+                    break 
+                case 3:
+                {
+                    //Ice wall Effect
+                    Set isBlocking = true 
+                    Set iceWallCooldown = iceWallLvl + 2 
+                    Set iceWallEffect = iceWallLvl + 1 
+                    break 
+                }
+                case 4:
+                {
+                    //Fireball effect
+                    Call attackMonsterBoss(enemy, fireBall()) 
+                    Set fireballCooldown = 2 
+                    break 
+                }
+                default:
+                {
+                     Display "You have encountered an error. " 
+                    break 
+                }
+                }
+                End Switch
+            }
+        }
+        else
+        {
+             Display "You stunned your turn is skipped! " 
+            Set isStunned = false 
+        }
+        End If 
+        System Pause 
+        System Clear 
+
+    }
+    End Function
+
+
+    //Player turn for easy enemies.
+    void playerTurnEasy(easyEnemy& easyEnemy)
+    {
+        if (iceWallEffect > 0)
+        {
+            Set isBlocking = true 
+            Set iceWallEffect -= 1 
+        }
+        else
+        {
+            Set isBlocking = false 
+        }
+        End if
+
+        Declare Integer choice 
+        Set choice = 0
+
+        if (iceWallCooldown > 0)
+        {
+            Set iceWallCooldown -= 1 
+        }
+
+        if (fireballCooldown > 0)
+        {
+           Set fireballCooldown -= 1 
+        }
+        for (Integer turn = 1  turn <= numberTurns  ++turn)
+        {
+
+             Display "It's your turn, what would you like to do? "
+                Display "1. Basic Attack "
+                Display "2. Take Health Potion "
+                Display "3. Ice Wall "
+                Display "4. Fireball " 
+
+            Declare Boolean incorrectChoice = false 
+            do
+            {
+                incorrectChoice = false 
+                 Display "Enter your choice:  " 
+                Input choice
+
+                if (choice == 2 && healthPotions < 0) {
+                     Display "You are out of health potions, pick another option. " 
+                    Set incorrectChoice = true 
+                }
+                else if (choice == 2 && getHealth() == maxHealth) {
+                     Display "You are full on health. I highly recommend you do something else. " 
+                    Set incorrectChoice = true 
+                }
+                else if (choice == 3 && iceWallCooldown > 0) {
+                     Display "Ice Wall is still on cooldown. You have to wait " + iceWallCooldown + " number of turns. " 
+                    Set incorrectChoice = true 
+                }
+                else if (choice == 4 && fireballCooldown > 0) {
+                     Display "Fireball is still on cooldown. You have to wait " + fireballCooldown + " number of turns. " 
+                    Set incorrectChoice = true 
+                }
+
+
+
+            } while (choice > 4 || choice < 0 || incorrectChoice) 
+            End Do While
+
+            switch (choice)
+            {
+            case 1:
+            {
+                // attack monster
+                Call attackMonsterEasy(easyEnemy, playerInventory->getEquippedWeaponDamage()) 
+                break 
+            }
+            case 2:
+            {
+                // Take Health Potion If have any
+                Call takePotion() 
+                break 
+            }
+            case 3:
+            {
+                // The Ice Wall effect
+                Set isBlocking = true 
+                Set iceWallCooldown = iceWallLvl + 2 
+                Set iceWallEffect = iceWallLvl + 1 
+                break 
+            }
+            break 
+            case 4:
+            {
+                //Casting a fireball.
+                Call attackMonsterEasy(easyEnemy, fireBall()) 
+                Set fireballCooldown = 2 
+                break 
+            }
+            default:
+            {
+                //Input Validation
+                 Display "You have entered an incorrect value." 
+            }
+            }
+            End Switch
+            System Pause 
+            System Clear 
+        }
+
+    }
+
+
+    // Taking damage from a normal enemy.
+    Declare Public void takeDamage(Enemy& enemy, Integer d)
+    {
+        // Getting a random number and seeing if the players dex is higher and if it is they will dodge the attack.
+        Declare Integer enemyAttack = d100.rollDice() 
+        if (iceWallEffect > 0)
+        {
+            Set d = d * 0.25 
+            // Assuming playerInventory->getTotalEquippedDefense() is an Integer value
+            Set d = d - playerInventory->getTotalEquippedDefense() 
+            if (d < 0)
+            {
+                Set d = 0 
+            }
+
+            // Convert the decimal damage to a whole number (rounding up)
+            d = static_cast<Integer>(ceil(d)) 
+
+             Display "You took " + d + " damage " 
+            
+             Display "You fully blocked the attack using Ice Wall " 
+
+        }
+        else if (isBlocking)
+        {
+             Display "You successfully blocked the attack! " 
+            Set d = d * 0.25 
+            // Assuming playerInventory->getTotalEquippedDefense() is an Integer value
+            Set d = d - playerInventory->getTotalEquippedDefense() 
+            if (d < 0) 
+            {
+                Set d = 0 
+            }
+            End if
+
+            // Convert the decimal damage to a whole number (rounding up)
+            Set d = static_cast<Integer>(ceil(d)) 
+
+             Display "You took " + d + " damage " 
+        }
+        else if (enemyAttack <= dexterity)
+        {
+             Display "You dodged the attack! " 
+        }
+        else
+        {
+            Set d = d - playerInventory->getTotalEquippedDefense() 
+            if (d < 0)
+            {
+                Set d = 0 
+            }
+            End if
+             Display "You took " + d + " damage " 
+            setHealth(getHealth() - d) 
+        }
+    }
+
+    // Taking damage from the easy enemy.
+    Declare Public void takeDamageEasyEnemy(easyEnemy& easyEnemy, Integer d)
+    {
+        Integer enemyAttack = d100.rollDice() 
+        if (iceWallEffect > 0)
+        {
+             Display "You fully blocked the attack using Ice Wall " 
+        }
+        else if (isBlocking)
+        {
+             Display "You successfully blocked the attack! " 
+            d = d * 0.25 
+            // Assuming playerInventory->getTotalEquippedDefense() is an Integer value
+            d = d - playerInventory->getTotalEquippedDefense() 
+
+            if (d < 0) 
+            {
+                d = 0 
+            }
+            End if
+
+            // Convert the decimal damage to a whole number (rounding up)
+            d = static_cast<Integer>(ceil(d)) 
+
+             Display "You took " + d + " damage " 
+
+        }
+        else if (enemyAttack <= dexterity)
+        {
+             Display "You dodged the attack! " 
+        }
+        else
+        {
+            d = d - playerInventory->getTotalEquippedDefense() 
+            if (d < 0)
+            {
+                d = 0 
+            }
+            End if
+             Display "You took " + d + " damage " 
+            setHealth(getHealth() - d) 
+        }
+    }
+    End Function
+
+    // Taking damage from a normal enemy.
+    Declare Public void takeDamageBoss(Boss& boss, Integer d)
+    {
+        // Getting a random number and seeing if the players dex is higher and if it is they will dodge the attack.
+        Integer enemyAttack = d100.rollDice() 
+        if (iceWallEffect > 0)
+        {
+             Display "You fully blocked the attack using Ice Wall " 
+        }
+        else if (isBlocking)
+        {
+             Display "You successfully blocked the attack! " 
+            Set d = d * 0.25 
+            // Assuming playerInventory->getTotalEquippedDefense() is an Integer value
+            Set d = d - playerInventory->getTotalEquippedDefense() 
+            if (d < 0) 
+            {
+                Set d = 0 
+            }
+            End if
+
+            // Convert the decimal damage to a whole number (rounding up)
+            d = static_cast<Integer>(ceil(d)) 
+
+             Display "You took " + d + " damage " 
+        }
+        else if (enemyAttack <= dexterity)
+        {
+             Display "You dodged the attack! " 
+        }
+        else
+        {
+            Set d = d - playerInventory->getTotalEquippedDefense() 
+            if (d < 0)
+            {
+                Set d = 0 
+            }
+             Display "You took " + d + " damage " 
+            setHealth(getHealth() - d) 
+        }
+    end if
+    }
+    End Function
+
+    //The attack monster functions
+    //For the base enemies
+    Declare Public void attackMonster(Enemy & enemy, Integer d)
+    {
+       Call enemy.takeDamage(d) 
+        Display enemy.getName() + " took " + d + " damage. " 
+    }
+    End Function
+
+    //For the easy enemy
+    Declare Public void attackMonsterEasy(easyEnemy& easyEnemy, Integer d)
+    {
+        Call easyEnemy.takeDamage(d) 
+         Display easyEnemy.getName() + " took " + d + " damage. " 
+    }
+    End Function
+
+    //For the final boss
+    Declare Public void attackMonsterBoss(Boss& boss, Integer d)
+    {
+        boss.takeDamage(d) 
+         Display boss.getName() + " took " + d + " damage. " 
+    }
+    End Function
+
+    // Calculate the damage for the fireball.
+    Declare Public Integer fireBall()
+    {
+        return intelligence * fireballLvl 
+    }
+    End Function
+
+    //Taking a health potion
+    // We should also find a way for them to be used if their in their inventory.
+    Declare Public void takePotion()
+    {
+        //Removing health potion from their inventory. When the inventory is fully setup we will remove it from the inventory class instead.
+        Set healthPotions -= 1
+        //Setting their current health to a higher one.
+        Call setHealth(getHealth() + level * 5)
+
+        // If their health after taking the health potion is higher than their max set their health to their max instead.
+        if (getHealth() > maxHealth)
+        {
+            setHealth(maxHealth)
+        }
+        End if
+        // Confirming for their players so they know they took a health potion.
+        Display "Your health is now at " + getHealth()
+    }
+    End Function
+
+
+    // The function for fighting every enemy after that.
+    Declare Public void fightNormalEnemy(Enemy& enemy)
+    {
+        Set iceWallCooldown = 0 
+        Set fireballCooldown = 0 
+        //Telling them what they have encountered.
+         Display "You encounter " + enemy.getName() + " with " + enemy.getHealth() + " health! " 
+
+        // This is the while loop that will be repeated every turn for user until the fight is over.
+        while (getHealth() > 0 && enemy.getHealth() > 0) {
+            // Player's turn
+            Call playerTurn(enemy) 
+
+            // May want to add some better ai here.
+            // Enemy's turn
+            Call takeDamage(enemy, enemy.getDamage()) 
+
+            // Display updated stats after each round
+             Display "Enemy's health: " + enemy.getHealth()
+                Display "Ice Wall Cooldown " + iceWallCooldown
+                Display "Ice Wall Effect " + iceWallEffect
+                Display "Fireball Cooldown " + fireballCooldown Display endl
+               Display "Your Health is at " + getHealth() 
+
+            System Pause 
+            System Clear 
+        }
+        End While
+
+        if (getHealth() <= 0)
+        {
+            // Game over logic
+            // This will still just take them back to the game manager where will call the restarting of the game and deleting of their save game.
+             Display "You were defeated! Game Over. " 
+        }
+        else
+        {
+            // Victory logic
+             Display "You defeated the enemy! " 
+             Display "You gained " + enemy.giveEXP() + "Experience " 
+            // We will need to add the functionality of getting something from the item pool to add to their inventory.
+            Set exp += enemy.giveEXP() 
+            Call checkForLevelUp(exp, expNeeded) 
+        }
+        End if
+    }
+    End Function
+
+     // The function when the player has to fight a weak enemy (The first three enemies).
+    Declare Public void fightWeakEnemy(easyEnemy & easyEnemy)
+    {
+        Set iceWallCooldown = 0 
+        Set fireballCooldown = 0 
+     // Display the enemy's details
+         Display "You encounter " + easyEnemy.getName() + " with " + easyEnemy.getHealth() + " health! " 
+
+        while (getHealth() > 0 && easyEnemy.getHealth() > 0)
+        {
+            // Player's turn
+            playerTurnEasy(easyEnemy) 
+
+            if (easyEnemy.getHealth() > 0)
+            {
+                // Enemy's turn
+                if (!isEnemyStunned)
+                {
+                    takeDamageEasyEnemy(easyEnemy, easyEnemy.attack()) 
+                }
+                else
+                {
+                     Display "The enemies turn was skipped! " 
+                }
+                End if
+            }
+            End If 
+            //Displaying their health and the enemies health should add their cooldown as well to the list.
+             Display "Enemy's health: " + easyEnemy.getHealth()
+               Display "Ice Wall Cooldown " + iceWallCooldown
+               Display "Ice Wall Effect " + iceWallEffect
+               Display "Fireball Cooldown " + fireballCooldown
+               Display "Your Health is at " + getHealth() 
+
+            System Pause 
+            System Clear 
+        }
+        End While
+
+        if (getHealth() <= 0)
+        {
+             Display "You were defeated! Game Over. " 
+        }
+        else
+        {
+             Display "You defeated the enemy! " 
+            Set exp += easyEnemy.giveEXP() 
+            Set isEnemyStunned = false 
+            if (checkForLevelUp(exp, expNeeded))
+            {
+                Call levelUp() 
+            }
+            End if
+        }
+    }
+    End Function
+
+    //Fighting the final boss.
+    Declare Public void fightBossEnemy(Boss& boss)
+    {
+        Set iceWallCooldown = 0 
+        Set fireballCooldown = 0 
+        Set Integer turnCount = 0 
+         Display "You encounter " + boss.getName() + " with " + boss.getHealth() + " health! " 
+
+        while (getHealth() > 0 && boss.getHealth() > 0) {
+            // Player's turn
+            Call playerTurnBoss(boss) 
+
+            Set turnCount++ 
+            // Enemy's turn
+            if (turnCount % 2 != 0)
+            {
+                Call takeDamageBoss(boss, boss.getDamage()) 
+            }
+            else
+            {
+                if (!isBlocking)
+                {
+                    Set isStunned = true 
+                }
+                End if
+            }
+            End if
+
+            // Display updated stats after each round
+             Display "Boss's health: " + boss.getHealth()
+               Display "Ice Wall Cooldown " + iceWallCooldown
+               Display "Ice Wall Effect " + iceWallEffect
+               Display "Fireball Cooldown " + fireballCooldown
+               Display "Your Health is at " + getHealth() 
+
+            System Pause 
+            System Clear 
+        }
+
+        if (getHealth() <= 0) {
+            // Game over logic
+             Display "You were defeated! Game Over. " 
+
+        }
+        else {
+            // Victory logic
+             Display "You defeated the Boss! " 
+             Display "You gained " + boss.giveEXP() + " Experience " 
+            Set healthPotions++ 
+            Set exp += boss.giveEXP() 
+            if (checkForLevelUp(exp, expNeeded))
+            {
+               Call levelUp() 
+            }
+            End if
+        }
+        End If 
+    }
+    End Function
+} 
+End Class
