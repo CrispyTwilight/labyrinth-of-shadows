@@ -1,0 +1,187 @@
+//Auth: William Brickner
+// Date: 12/8/23
+// Desc: A Load class that will allow us to save from any where else in the program.
+Declare class Load
+{
+
+	//fields
+	string characterSelected
+
+    //Default Constructor
+    Declare Constructor Load()
+    {
+
+    }
+    End Constructor 
+
+    //Passing by reference in order to properly load the game for the rest of the program.
+    Declare Public Function void loadTheGameRanger(int &score, int &round, Ranger &playerRanger)
+    {
+        Open ("ranger.txt")
+        if (File is Open)
+        Declare RangerLoadFile loadFile
+        Read >> loadFile.max >> loadFile.health >> loadFile.strength >> loadFile.intelligence
+            >> loadFile.dexterity >> loadFile.level >> loadFile.numTurns >> loadFile.healthPotions
+            >> loadFile.exp >> loadFile.expNeed >> loadFile.rainLvl >> loadFile.chargedLvl
+            >> loadFile.repulsionLvl >> loadFile.score >> loadFile.round
+
+        Call playerRanger.setMaxHealth(loadFile.max)
+        Call playerRanger.setHealth(loadFile.health)
+        Call playerRanger.setStrength(loadFile.strength)
+        Call playerRanger.setIntelligence(loadFile.intelligence)
+        Call playerRanger.setDexterity(loadFile.dexterity)
+        Call playerRanger.setLevel(loadFile.level)
+        Call playerRanger.setNumTurns(loadFile.numTurns)
+        Call playerRanger.setHealthPotions(loadFile.healthPotions)
+        Call playerRanger.setExp(loadFile.exp)
+        Call playerRanger.setExpNeeded(loadFile.expNeed)
+        Call playerRanger.setRainLvl(loadFile.rainLvl)
+        Call playerRanger.setChargedLvl(loadFile.chargedLvl)
+        Call playerRanger.setRepulsionLvl(loadFile.repulsionLvl)
+        Set score = loadFile.score
+        Set round = loadFile.round
+
+       Close ("ranger.txt")
+        Display "Character Loaded Successfully"
+
+        Call loadInventory("ranger_inventory.txt")
+    }
+    End Function
+
+    Declare Public Function void loadTheGameWizard(int &score, int &round, Wizard &playerWizard)
+    {
+        Open ("wizard.txt")
+        if (File is open)
+        Declare WizardLoadFile loadFile
+        Read >> loadFile.max >> loadFile.health >> loadFile.strength >> loadFile.intelligence
+            >> loadFile.dexterity >> loadFile.level >> loadFile.numTurns >> loadFile.healthPotions
+            >> loadFile.exp >> loadFile.expNeed >> loadFile.fireballLvl >> loadFile.iceWallLvl
+            >> loadFile.score >> loadFile.round
+
+        Call playerWizard.setMaxHealth(loadFile.max)
+        Call playerWizard.setHealth(loadFile.health)
+        Call playerWizard.setStrength(loadFile.strength)
+        Call playerWizard.setIntelligence(loadFile.intelligence)
+        Call playerWizard.setDexterity(loadFile.dexterity)
+        Call playerWizard.setLevel(loadFile.level)
+        Call playerWizard.setNumTurns(loadFile.numTurns)
+        Call playerWizard.setHealthPotions(loadFile.healthPotions)
+        Call playerWizard.setExp(loadFile.exp)
+        Call playerWizard.setExpNeeded(loadFile.expNeed)
+        Call playerWizard.setFirballLvl(loadFile.fireballLvl)
+        Call playerWizard.setIceWallLvl(loadFile.iceWallLvl)
+        Set score = loadFile.score
+        Set round = loadFile.round
+
+        Close (wizard.txt)
+        Display "Character Loaded Successfully"
+
+        Call loadInventory("wizard_inventory.txt")
+	}
+    End Function
+
+    Declare Public function void loadTheGameRogue(int& score, int& round, Rogue& playerRogue)
+    {
+        Open ("rogue.txt")
+        if (File Is Open)
+        Declare RogueLoadFile loadFile
+        Read >> loadFile.max >> loadFile.health >> loadFile.strength >> loadFile.intelligence
+            >> loadFile.dexterity >> loadFile.level >> loadFile.numTurns >> loadFile.healthPotions
+            >> loadFile.exp >> loadFile.expNeed >> loadFile.dodgeLvl >> loadFile.sneakAttackLvl
+            >> loadFile.score >> loadFile.round
+
+        Call playerRogue.setMaxHealth(loadFile.max)
+        Call playerRogue.setHealth(loadFile.health)
+        Call playerRogue.setStrength(loadFile.strength)
+        Call playerRogue.setIntelligence(loadFile.intelligence)
+        Call playerRogue.setDexterity(loadFile.dexterity)
+        Call playerRogue.setLevel(loadFile.level)
+        Call playerRogue.setNumTurns(loadFile.numTurns)
+        Call playerRogue.setHealthPotions(loadFile.healthPotions)
+        Call playerRogue.setExp(loadFile.exp)
+        Call playerRogue.setExpNeeded(loadFile.expNeed)
+        Call playerRogue.setDodgeLvl(loadFile.dodgeLvl)
+        Call playerRogue.setSneakAttackLvl(loadFile.sneakAttackLvl)
+        Set score = loadFile.score
+        Set round = loadFile.round
+
+        Close ("rogue.txt")
+        Display "Character Loaded Successfully"
+
+        loadInventory("rogue_inventory.txt")
+
+    }
+    End Function 
+
+    Declare Public Function void loadInventory(const string& filename) {
+
+        Declare Inventory& playerInventory = *Inventory::getInstance()
+        Open (filename)
+        if (Read.is_open()) {
+            Declare string line
+
+            while (getline(Read, line)) {
+                Declare istringstream iss(line) // For Reading just one line at a time to see what it is.
+                Declare String itemType
+                Read >> itemType
+                
+                
+                if (itemType == "EquippedArmor") {
+                    Declare String type, material, name
+                    Declare Integer defense, weight, value
+                    Declare getline(Read, type)
+                    inFile >> defense >> weight >> value >> name >> material
+
+                    Declare Armor* equippedArmor = new Armor(type, defense, weight, value, name, material)
+                    Call playerInventory.setEquippedArmorByType(equippedArmor->getArmorType(), equippedArmor)
+                    Call playerInventory.addItem(equippedArmor)
+                }
+                else if (itemType == "EquippedWeapon") {
+                    Declare String type, material, name
+                    Declare Integer damage, weight, value
+                    getline(Read, type)
+                    Read >> damage >> weight >> value >> name >> material
+
+                    Weapon* equippedWeapon = new Weapon(type, damage, weight, value, name, material)
+                    Call playerInventory.setEquippedWeapon(equippedWeapon)
+                    Call playerInventory.addItem(equippedWeapon)
+                }
+                else if (itemType == "Gold") {
+                    Declare Integer gold
+                    Read >> gold
+                    Call playerInventory.setGold(gold)
+                }
+                else if (itemType == "Armor") {
+                    Declare String type, material, name
+                    Declare Integer defense, weight, value
+                    Declare getline(Read, type)
+                    inFile >> defense >> weight >> value >> name >> material
+
+                    Declare Armor* newArmor = new Armor(type, defense, weight, value, name, material)
+                    Call playerInventory.addItem(newArmor)
+                }
+                else if (itemType == "Weapon") {
+                    Declare String type, material, name
+                    Declare Integer damage, weight, value
+                    Declare getline(inFile, type)
+                    Read >> damage >> weight >> value >> name >> material
+
+                    Declare Weapon* newWeapon = new Weapon(type, damage, weight, value, name, material)
+                    Call playerInventory.addItem(newWeapon)
+                }
+                End if
+                // Handle other item types similarly
+            }
+            End While 
+
+            Display "Inventory details loaded from " + filename 
+        }
+        else {
+            Display "Unable to open the file for loading inventory details"
+        }
+
+        Close filename
+    }
+    End Function
+}
+End Class
