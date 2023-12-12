@@ -103,6 +103,7 @@ public:
 			}
 		} while (true); // There is a return statement in the switch statement, so this loop will never be infinite.
 	}
+	
 	void initializeShopInformation() {
 		// Randomly select the shop name, owner, and attribute.
         Dice shopNameDie(SIZE - 1);
@@ -311,37 +312,45 @@ public:
 		if (index == -1) {
 			return;
 		}
-		if (index >= 0 && index < shopInventory.size()) {
-			Item* item = shopInventory[index];
-			if (item != nullptr) {
-				if (auto* weapon = dynamic_cast<Weapon*>(item)) {
-					cout << "\nName: " << weapon->name << endl
-						<< "Type: " << weapon->type << endl
-						<< "Material: " << weapon->material << endl
-						<< "Damage: " << weapon->damage << endl
-						<< "Weight: " << weapon->weight << endl
-						<< "Value: " << weapon->value << endl;
-				} else if (auto* armor = dynamic_cast<Armor*>(item)) {
-					cout << "\nName: " << armor->name << endl
-						<< "Type: " << armor->type << endl
-						<< "Material: " << armor->material << endl
-						<< "Defense: " << armor->defense << endl
-						<< "Weight: " << armor->weight << endl
-						<< "Value: " << armor->value << endl;
-				} else if (auto* potion = dynamic_cast<Potion*>(item)) {
-					cout << "\nName: " << potion->name << endl
-						<< "Type: " << potion->type << endl
-						<< "Material: " << potion->material << endl
-						<< "Heal: " << potion->heal << endl
-						<< "Weight: " << potion->weight << endl
-						<< "Value: " << potion->value << endl;
-				}
-			} else {
-				cout << "\nInvalid item. Please try again.\n";
-			}
+
+		if (index < 0 || index >= shopInventory.size()) {
+        cout << "\nInvalid item. Please try again.\n";
+			system("pause");
+			return;
 		}
+
+		Item* item = shopInventory[index];
+		if (item == nullptr) {
+			cout << "\nInvalid item. Please try again.\n";
+			system("pause");
+			return;
+		}
+
+		if (auto* weapon = dynamic_cast<Weapon*>(item)) {
+			cout << "\nName: " << weapon->name << endl
+				<< "Type: " << weaponTypeToString(weapon->type) << endl
+				<< "Material: " << weapon->material << endl
+				<< "Damage: " << weapon->damage << endl
+				<< "Weight: " << weapon->weight << endl
+				<< "Value: " << weapon->value << endl;
+		} else if (auto* armor = dynamic_cast<Armor*>(item)) {
+			cout << "\nName: " << armor->name << endl
+				<< "Type: " << armorTypeToString(armor->type) << endl
+				<< "Material: " << armor->material << endl
+				<< "Defense: " << armor->defense << endl
+				<< "Weight: " << armor->weight << endl
+				<< "Value: " << armor->value << endl;
+		} else if (auto* potion = dynamic_cast<Potion*>(item)) {
+			cout << "\nName: " << potion->name << endl
+				<< "Type: " << potionTypeToString(potion->type) << endl
+				<< "Material: " << potion->material << endl
+				<< "Heal: " << potion->heal << endl
+				<< "Weight: " << potion->weight << endl
+				<< "Value: " << potion->value << endl;
+		}
+
 		system("pause");
-	}
+		}
 };
 
 // Initialize the static instance to nullptr.

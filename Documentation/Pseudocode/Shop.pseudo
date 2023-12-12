@@ -1,0 +1,336 @@
+// Auth: John O'Neal
+// Date: 12/11/23
+// Desc: Pseucode for Shop.h
+
+Include <vector>
+Include <string>
+
+Class Shop
+    Declare Private Static Shop Pointer instance
+    Declare Private Static Constant Integer MAX_ITEMS = 3
+    Declare Private Static Constant Integer SIZE = 4
+    Declare Private Static Constant Integer MENU_SIZE = 5
+    Declare Private vector shopInventory of Item Pointer
+    Declare Private vector weaponsInventory of Weapon Pointer
+    Declare Private vector armorsInventory of Armor Pointer
+    Declare Private vector potionsInventory of Potion Pointer
+    Declare Private Integer itemNumCounter
+    Declare Private String randShopName
+	Declare Private String randShopOwner
+	Declare Private String randOwnerAttribute
+
+    Declare Private String Array shopNames of size SIZE
+    Set shopNames =  "General Shop", "Armorer", "Weapon Smith", "Alchemist Shop"
+
+    Declare Private String Array shopOwners of size SIZE
+    Set shopOwners = "Edney", "Alberich", "Ulric", "Tobias"
+
+    Declare Private String Array ownerAttributes of size SIZE
+    Set ownerAttributes = "the Honest", "the Greedy", "the Good", "the Blind".
+
+    Declare Private String Array menuOptions of size MENU_SIZE
+    Set menu options = "1) Purchase an item.", "2) Sell an item.", "3) Inspect an item.", "4) See your inventory.", "ESC) Exit shop."
+
+    Private Module Shop()
+        Call initializeShopInformation()
+        Call initializeInventory()
+		Set itemNumCounter = 0
+    End Module
+
+    Public Function Shop getInstance()
+        If instance == null Then
+            Set instance = new Shop()
+        End If
+        Return instance
+    End Function
+
+    Public Module displayFullShop()
+		Call clearScreen()
+		Call displayShopInformation()
+		Call displayShopInventory()
+		Call displayGoldAndMenu()
+    End Module
+
+    Public Module runShop 
+        Declare String input
+        do
+            Call displayFullShop()
+            Input input
+            If input = 27 Then
+                Return
+            End If
+
+            Declare Integer numInput
+            Set numInput = stringToInteger(input)
+            Select
+                Case 1
+                    Call handlePurchase()
+                    Break
+                Case 2
+                    Call handleSale()
+                    Break
+                Case 3
+                    Call handleInspect()
+                    Break
+                Case 4
+                    Call Inventory::getInstance()->openInventory()
+                    Break
+                Default
+                    Display "Invalid input. Select a valid menu option."
+                    Call pause()
+                    Break
+            End Select
+        While (true)
+    End Module
+
+    Public Module initializeShopInformation()
+        Declare Dice shopNameDie(SIZE - 1)
+        Set randShopName = shopNames[shopNameDie.rollDice()]
+
+        Declare Dice shopOwnerDie(SIZE - 1)
+        Set randShopOwner = shopOwners[shopOwnerDie.rollDice()]
+
+
+        Declare Dice ownerAttributeDie(SIZE - 1)
+        Set randOwnerAttribute = ownerAttributes[ownerAttributeDie.rollDice()]
+    End Module
+
+    Public Constant Module displayShopInformation()
+        Declare String Object ss
+        Set ss = randShopOwner, " ", randOwnerAttribute
+        Display formated(ss.str(), randShopName)
+        Display formated("Item", "Asking Price")
+    End Module
+
+    Public Module initializeInventory()
+        Declare Integer i
+        For i = 0 To MAX_ITEMS
+            Declare Weapon Pointer weapon
+            Set weapon = new Weapon()
+            Call weaponsInventory.push_back(weapon)
+            Call shopInventory.push_back(weapon)
+        End For
+
+        For i = 0 To MAX_ITEMS
+            Declare Armor Pointer armor
+            Set armor = new Armor()
+            Call armorsInventory.push_back(armor)
+            Call shopInventory.push_back(armor)
+        End For
+
+        For i = 0 To MAX_ITEMS
+            Declare Potion Pointer potion
+            Set potion = new Potion()
+            Call potionsInventory.push_back(potion)
+            Call shopInventory.push_back(potion)
+        End For
+    End Module
+
+    Public Module displayShopInventory()
+        Declare Integer i
+        For i = 0 To weaponsInventory.size()
+            Declare String Object ss
+            Set ss = weaponsInventory[i]->name, " - ", weaponsInventory[i]->material, " ", weaponToString(weaponsInventory[i]->type)
+            Display itemcounter + 1, ") ", formated(ss.str(), "$", weaponsInventory[i]->value)
+            itemNumCounter++
+        End For
+
+        For i = 0 To armorsInventory.size()
+            Declare String Object ss
+            Set ss = armorsInventory[i]->name, " - ", armorsInventory[i]->material, " ", armorToString(armorsInventory[i]->type)
+            Display itemcounter + 1, ") ", formated(ss.str(), "$", armorsInventory[i]->value)
+            itemNumCounter++
+        End For
+
+        For i = 0 To potionsInventory.size()
+            Declare String Object ss
+            Set ss = potionsInventory[i]->name, " ", potionToString(potionsInventory[i]->type), " potion of ", potionsInventory[i]->material,
+            Display itemcounter + 1, ") ", formated(ss.str(), "$", potionsInventory[i]->value)
+            itemNumCounter++
+        End For
+
+        itemNumCounter = 0
+    End Module
+
+    Public Module displayGoldAndMenu()
+        Display "Gold Balance: ", Inventory::getInstance()->getGold()
+        Display "You may: "
+        Declare Integer i
+        For i = 0 To MENU_SIZE
+            Display menuOptions[i]
+        End For
+    End Module
+
+    Public Module handlePurchase()
+        Display "Purchase what?"
+        Declare Integer index
+        Set index = getZeroBasedIntOrQuit()
+
+        If index == -1 Then
+            Return
+        End If
+
+        If index < 0 OR index >= shopInventory.size() Then
+            Display "Invalid item index. Please try again."
+            Call pause()
+            Return
+        End If
+
+        Declare Item Pointer item
+        Set item = shopInventory[index]
+        
+        If Inventory::getInstance()->getGold() < item->value Then
+            Display "You do not have enough gold!"
+            Call pause()
+            Return
+        End If
+
+        Declare Integer ItemWeight
+        Set ItemWeight = 0
+
+        If Constant Weapon Pointer weapon = dynamic_cast<Constant Weapon Pointer>(item) Then
+            Set ItemWeight = weapon->weight
+        Else If Constant Armor Pointer armor = dynamic_cast<Constant Armor Pointer>(item) Then
+            Set ItemWeight = armor->weight
+        Else If Constant Potion Pointer potion = dynamic_cast<Constant Potion Pointer>(item) Then  
+            Set ItemWeight = potion->weight
+        End If
+
+        If Inventory::getInstance()->getCurrentWeight() + ItemWeight > Inventory::getInstance()->getMaxWeight() Then
+            Display "You do not have enough carrying capacity!"
+            Call pause()
+            Return
+        End If
+
+        Call Inventory::getInstance()->deductGold(item->value)
+        Call Inventory::getInstance()->addItem(item)
+        Call removeAndReplaceFromInventories(item)
+        Display "Purchase successful! Item added to inventory."
+        Call pause()
+    End Module
+
+    Public Module handleSale()
+        Display "Sell what?"
+        Declare Integer index
+        Set index = getZeroBasedIntOrQuit()
+
+        If index == -1 Then
+            Return
+        End If
+
+        If index < 0 OR index >= Inventory::getInstance()->getSize() Then
+            Display "Invalid item index. Please try again."
+            Call pause()
+            Return
+        End If
+
+        Declare Item Pointer item
+        Set item = Inventory::getInstance()->getItem(index)
+
+        Call Inventory::getInstance()->addGold(item->value / 2)
+        Display "Sale successful! You made ", item->value / 2, " gold."
+        Set shopInventory.push_back(item)
+        Call Inventory::getInstance()->removeItem(index)
+        Call pause()
+    End Module
+
+    Public Module removeAndReplaceFromInventories()
+        Declare auto itemIterator
+        Set itemIterator = find(shopInventory.begin(), shopInventory.end(), item)
+        If itemIterator != shopInventory.end() Then
+            Declare Integer index
+            Set index = distance(shopInventory.begin(), itemIterator)
+
+            Declare Item Pointer newItem
+            Set newitem = null
+            If Weapon Pointer weapon = dynamic_cast<Weapon Pointer>(item) Then
+                Set newitem = new Weapon(true)
+                Declare auto weaponIterator
+                Set weaponIterator = find(weaponsInventory.begin(), weaponsInventory.end(), weapon)
+                If weaponIterator != weaponsInventory.end() Then
+                    Declare Integer weaponIndex
+                    Set weaponIndex = distance(weaponsInventory.begin(), weaponIterator)
+                    Call weaponsInventory.erase(weaponsInventory.begin() + weaponIndex)
+                    Call weaponsInventory.insert(weaponsInventory.begin() + weaponIndex, dynamic_cast<Weapon Pointer>(newItem))
+                End If
+
+            Else If Armor Pointer armor = dynamic_cast<Armor Pointer>(item) Then
+                Set newitem = new Armor(true)
+                Declare auto armorIterator
+                Set armorIterator = find(armorsInventory.begin(), armorsInventory.end(), armor)
+                If armorIterator != armorsInventory.end() Then
+                    Declare Integer armorIndex
+                    Set armorIndex = distance(armorsInventory.begin(), armorIterator)
+                    Call armorsInventory.erase(armorsInventory.begin() + armorIndex)
+                    Call armorsInventory.insert(armorsInventory.begin() + armorIndex, dynamic_cast<Armor Pointer>(newItem))
+                End If
+
+            Else If Potion Pointer potion = dynamic_cast<Potion Pointer>(item) Then
+                Set newitem = new Potion(true)
+                Declare auto potionIterator
+                Set potionIterator = find(potionsInventory.begin(), potionsInventory.end(), potion)
+                If potionIterator != potionsInventory.end() Then
+                    Declare Integer potionIndex
+                    Set potionIndex = distance(potionsInventory.begin(), potionIterator)
+                    Call potionsInventory.erase(potionsInventory.begin() + potionIndex)
+                    Call potionsInventory.insert(potionsInventory.begin() + potionIndex, dynamic_cast<Potion Pointer>(newItem))
+                End If
+            End If
+
+            shopInventory.erase(itemIterator)
+            shopInventory.insert(shopInventory.begin() + index, newItem)
+        End If
+    End Module
+
+    Public Module inspectItem()
+        Display "Inspect what?"
+        Declare Integer index
+        Set index = getZeroBasedIntOrQuit()
+
+        If index == -1 Then
+            Return
+        End If
+
+        If index < 0 OR index >= shopInventory.size() Then
+            Display "Invalid item. Please try again."
+            Call pause()
+            Return
+        End If
+
+        Declare Item Pointer item
+        Set item = shopInventory[index]
+
+        If item == null Then
+            Display "Invalid item. Please try again."
+            Call pause()
+            Return
+        End If
+
+        If Weapon Pointer weapon = dynamic_cast<Weapon Pointer>(item) Then
+            Display "Name: ", weapon->name
+            Display "Type: ", weaponToString(weapon->type)
+            Display "Material: ", weapon->material
+            Display "Damage: ", weapon->damage
+            Display "Weight: ", weapon->weight
+            Display "Value: ", weapon->value
+        Else If Armor Pointer armor = dynamic_cast<Armor Pointer>(item) Then
+            Display "Name: ", armor->name
+            Display "Type: ", armorToString(armor->type)
+            Display "Material: ", armor->material
+            Display "Defense: ", armor->defense
+            Display "Weight: ", armor->weight
+            Display "Value: ", armor->value
+        Else If Potion Pointer potion = dynamic_cast<Potion Pointer>(item) Then
+            Display "Name: ", potion->name
+            Display "Type: ", potionToString(potion->type)
+            Display "Material: ", potion->material
+            Display "Heal: ", potion->heal
+            Display "Weight: ", potion->weight
+            Display "Value: ", potion->value
+        End If
+
+        Call pause()
+    End Module
+End Class
+
+Declare Shop Pointer Shop::instance = null
