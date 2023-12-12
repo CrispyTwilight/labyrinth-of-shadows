@@ -5,14 +5,12 @@
 #include <iostream>
 #include <string>
 #include <vector>
-using namespace std;
 
 class Item {
 public:
     // Fields
     string name;
     int value;
-
 
     // Constructor
     Item(const string& name = "Default Name", const int& value = 0)

@@ -57,7 +57,7 @@ public:
     //Checks which map should be displayed
     void mapSwitcher()
     {
-        for (auto& row : grid) 
+        for (auto& row : grid)
         {
             fill(row.begin(), row.end(), '.'); //Replace every cell with '.' to clear enemies and other characters
         }
@@ -96,7 +96,7 @@ public:
         return mapLevel;
     }
 
-    //updates the space given coordinates
+    //Updates the space given coordinates
     void updateSpace(int x, int y, char u)
     {
         manage.updateMap(y, x, mapLevel, u);
@@ -107,8 +107,8 @@ public:
         manage.reset();
     }
 
-    //All the Logic to handle moving 'E' arround the map. 
-    void moveE() // JPO: could this be refactored into two shorter functions?
+    //All the Logic to handle moving 'E' around the map.
+    void moveE()
     {
         static int currentDirection = -1;
         static bool stop = false;
@@ -120,7 +120,7 @@ public:
             int x = result.first;
             int y = result.second;
 
-            if (rand() % 100 >= moveProbability) 
+            if (rand() % 100 >= moveProbability)
             {
                 continue;
             }
@@ -183,7 +183,7 @@ public:
         }
     }
 
-    //All the Logic to handle moving 'L' arround the map. 
+    //All the Logic to handle moving 'L' around the map.
     void moveL(int px, int py)
     {
         vector<pair<int, int>> results = manage.findL(grid);
@@ -196,13 +196,11 @@ public:
             {
                 manage.updateMap(x, y, mapLevel, '.');
                 manage.updateMap(x + 1, y, mapLevel, 'L');
-                
             }
             else if (px < x && grid[x - 1][y] != '#' && grid[x - 1][y] != 'A' && grid[x - 1][y] != 'D' && grid[x - 1][y] != '?')
             {
                manage.updateMap(x, y, mapLevel, '.');
                manage.updateMap(x - 1, y, mapLevel, 'L');
-                
             }
             else if (py > y && grid[x][y + 1] != '#' && grid[x][y + 1] != 'A' && grid[x][y + 1] != 'D' && grid[x][y + 1] != '?')
             {
@@ -214,7 +212,6 @@ public:
                 manage.updateMap(x, y, mapLevel, '.');
                 manage.updateMap(x, y - 1, mapLevel, 'L');
             }
-
         }
     }
 

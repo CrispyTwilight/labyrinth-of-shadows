@@ -2,7 +2,9 @@
 // Date: 12/09/2023
 // Desc: This is a header file that holds modules that display the title screen that comes with instructions as pseudocode
 
-Include "Headers.h"
+Include <iostream>
+Include <conio.h>
+Include <string>
 
 Class Screens
 Public:

@@ -52,6 +52,38 @@ struct Potion : public Item
 			this->material = material;
 		}
 	}
+
+	// Second constructor that takes a string for the Potion type.
+	Potion(const string& type, int heal, int weight, int value, const string& name, const string& material) {
+		this->type = stringToPotionType(type);
+		this->heal = heal;
+		this->weight = weight;
+		this->value = value;
+		this->name = name;
+		this->material = material;
+	}
+
+	PotionType stringToPotionType(const string& potionTypeStr) {
+		if (potionTypeStr == "Small Heal")
+		{
+			return Potion::SMALL_HEAL;
+		}
+		else if (potionTypeStr == "Half Heal")
+		{
+			return Potion::HALF_HEAL;
+		}
+		else if (potionTypeStr == "Full Heal")
+		{
+			return Potion::FULL_HEAL;
+		}
+		else if (potionTypeStr == "Double Heal")
+		{
+			return Potion::DOUBLE_HEAL;
+		}
+		else {
+			return Potion::NONE;
+		}
+	}
 };
 
 // Operating globally on the Potion struct. It is put in this file because it is related to the Potion struct.

@@ -1,4 +1,4 @@
-// Auth: Christian A. Botos, John O'Neal
+// Auth: Christian A. Botos, John O'Neal, William Brickner
 // Date: 12/07/2023
 // Desc: Header file for the Armor struct.
 #pragma once
@@ -57,7 +57,7 @@ struct Weapon : public Item {
 	}
 
 	// Second constructor that takes a string for the weapon type.
-	Weapon(string& type, int damage, int weight,int value, const string& name, const string& material) {
+	Weapon(const string& type, int damage, int weight,int value, const string& name, const string& material) {
 		this->type = stringToWeaponType(type);
 		this->damage = damage;
 		this->weight = weight;

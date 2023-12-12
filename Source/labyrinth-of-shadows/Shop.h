@@ -103,7 +103,7 @@ public:
 			}
 		} while (true); // There is a return statement in the switch statement, so this loop will never be infinite.
 	}
-	
+
 	void initializeShopInformation() {
 		// Randomly select the shop name, owner, and attribute.
         Dice shopNameDie(SIZE - 1);

@@ -51,7 +51,31 @@ Structure Potion Extends Item
 			this->material = material
 		End If
 	End Module
-End Module
+
+	Module Potion(const string& type, int heal, int weight, int value, const string& name, const string& material)
+		this->type = stringToPotionType(type)
+		this->heal = heal
+		this->weight = weight
+		this->value = value
+		this->name = name
+		this->material = material
+	End Module
+
+	Module PotionType stringToPotionType(const string& type)
+		If (type == "Small Heal")
+			Return Potion::SMALL_HEAL
+		Else If (type == "Half Heal")
+			Return Potion::HALF_HEAL
+		Else If (type == "Full Heal")
+			Return Potion::FULL_HEAL
+		Else If (type == "Double Heal")
+			Return Potion::DOUBLE_HEAL
+		Else
+			Return NONE
+		End If
+	End Module
+
+End Structure
 
 // Operating globally on the Potion struct. It is put in this file because it is related to the Potion struct.
 Module String potionTypeToString(Potion::PotionType type)

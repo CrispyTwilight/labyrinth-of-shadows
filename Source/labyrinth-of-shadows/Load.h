@@ -1,10 +1,7 @@
-//Auth: William Brickner
+// Auth: William Brickner
 // Date: 12/8/23
 // Desc: A Load class that will allow us to save from any where else in the program.
-
 #pragma once
-// #include "All_Includes.h"
-// JPO: Temp fix for the issue with the compiler not finding the files
 #include <iostream>
 #include <fstream>
 #include "RangerLoadFile.h"
@@ -14,21 +11,17 @@
 #include "Armor.h"
 #include "Weapon.h"
 
-using namespace std;
-
 //Before this finished I need the inventory system to be finished.
 class Load
 {
 private:
-	//fields
+	//Fields
 	string characterSelected;
 
 public:
     //Default Constructor
     Load()
-    {
-
-    }
+    {}
 
     //Passing by reference in order to properly load the game for the rest of the program.
     void loadTheGameRanger(int &score, int &round, Ranger &playerRanger)
@@ -180,7 +173,15 @@ public:
                     Weapon* newWeapon = new Weapon(type, damage, weight, value, name, material);
                     playerInventory.addItem(newWeapon);
                 }
-                // Handle other item types similarly
+                else if (itemType == "Potion") {
+                    string type, material, name;
+                    int heal, weight, value;
+                    getline(inFile, type);
+                    inFile >> heal >> weight >> value >> name >> material;
+
+                    Potion* newPotion = new Potion(type, heal, weight, value, name, material);
+                    playerInventory.addItem(newPotion);
+                }
             }
 
             cout << "Inventory details loaded from " << filename << endl;

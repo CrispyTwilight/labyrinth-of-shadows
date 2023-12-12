@@ -4,7 +4,7 @@
 
 Include "All_Includes.h"
 
-Function Boolean checkForLevelUp(Ref Integer exp, Ref Integer exNeeded)
+Function Boolean checkForLevelUp(Constant Ref Integer exp, Constant Ref Integer exNeeded)
    If exp > exNeeded
       return true;
    Else

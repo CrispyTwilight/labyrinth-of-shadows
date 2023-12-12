@@ -590,7 +590,7 @@ public:
             d = static_cast<int>(ceil(d));
 
             cout << "You took " << d << " damage\n";
-            
+
             cout << "You fully blocked the attack using Ice Wall\n";
 
         }
@@ -600,7 +600,7 @@ public:
             d = d * 0.25;
             // Assuming playerInventory->getTotalEquippedDefense() is an integer value
             d = d - playerInventory->getTotalEquippedDefense();
-            if (d < 0) 
+            if (d < 0)
             {
                 d = 0;
             }
@@ -735,7 +735,7 @@ public:
         return intelligence * fireballLvl;
     }
 
-    //Taking a health potion
+    // Taking a health potion
     // We should also find a way for them to be used if their in their inventory.
     void takePotion()
     {
@@ -752,7 +752,6 @@ public:
         // Confirming for their players so they know they took a health potion.
         cout << "Your health is now at " << getHealth() << endl;
     }
-
 
     // The function for fighting every enemy after that.
     void fightNormalEnemy(Enemy& enemy)
@@ -799,12 +798,12 @@ public:
         }
     }
 
-     // The function when the player has to fight a weak enemy (The first three enemies).
+    // The function when the player has to fight a weak enemy (The first three enemies).
     void fightWeakEnemy(easyEnemy & easyEnemy)
     {
         iceWallCooldown = 0;
         fireballCooldown = 0;
-     // Display the enemy's details
+        // Display the enemy's details
         cout << "You encounter " << easyEnemy.getName() << " with " << easyEnemy.getHealth() << " health!\n";
 
         while (getHealth() > 0 && easyEnemy.getHealth() > 0)

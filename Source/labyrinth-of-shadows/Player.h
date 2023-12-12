@@ -3,7 +3,7 @@
 // Desc: Class to represent the player in the game for movement and position.
 #pragma once
 #include "All_Includes.h"
-#include "Shop.h" // JPO: Added to allow access to the shop.
+#include "Shop.h"
 
 class Player
 {
@@ -16,8 +16,7 @@ private:
 public:
     Player(Map& map, int initialX, int initialY) : map(map), x(initialX), y(initialY), px(initialX), py(initialY) {}
 
-    //Function gets player input and calls the acording move function
-
+    //Function gets player input and calls the according move function
     void handleInput(char option)
 
     {
@@ -45,11 +44,11 @@ public:
         px += dx;
         py += dy;
 
-        //All the diffferent checks for Colissions.
+        //All the different checks for Collisions.
         if (map.getGrid()[py][px] == 'A')
         {
             map.setLevel(map.getLevel() - 1);
-            px = x = 25; // JPO: These assignments didn't modify the "p" variables at all, so I changed to double assignment.
+            px = x = 25;
             py = y = 15;
         }
         if (map.getGrid()[py][px] == '?')
@@ -93,7 +92,7 @@ public:
         outY = y;
     }
 
-    //Resests the map or goes onto the boss fight.
+    //Resets the map or goes onto the boss fight.
     void resetOrBoss()
     {
         char c = '0';
