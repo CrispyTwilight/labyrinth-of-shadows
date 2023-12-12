@@ -140,3 +140,13 @@ The GameManager class is responsible for managing the game and all of its compon
 
 ### labryinth-of-shadows.cpp
 - The main function of a program. It seeds the random number generator, creates an instance of the GameManager class, calls the processMainMenu method on the GameManager instance, and then ends the program.
+
+## Hunter Kauffman
+### Dice.h:
+- Defines the Dice class.
+- Gets a max and min for the dice.
+- Returns a random number based on the min and max.
+
+### Rogue.h:
+- Defines the Rogue class.
+- Manges the players damage, health, and attack.
