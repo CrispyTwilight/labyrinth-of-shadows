@@ -32,7 +32,6 @@ private:
     Ranger playerRanger;
     Wizard playerWizard;
     Rogue playerRogue;
-    Inventory playerInventory;
     Screens screen;
 
 public:
@@ -44,7 +43,6 @@ public:
         playerWizard = playWizard;
         Rogue playRogue(40, 40, 5, 3, 6, 1, 0, 5, 0, 1, 1, 1);
         playerRogue = playRogue;
-        Inventory playerInventory;
         round = 0;
         score = 0;
         characterSelected = "";
@@ -86,13 +84,13 @@ public:
     void saveGame() {
         Save save;
         if (characterSelected == "Ranger") {
-            save.saveTheGameRanger(round, score, playerRanger, playerInventory);
+            save.saveTheGameRanger(round, score, playerRanger);
             cout << "Your game has been saved.\n";
         } else if (characterSelected == "Wizard") {
-            save.saveTheGameWizard(round, score, playerWizard, playerInventory);
+            save.saveTheGameWizard(round, score, playerWizard);
             cout << "Your game has been saved.\n";
         } else if (characterSelected == "Rogue") {
-            save.saveTheGameRogue(round, score, playerRogue, playerInventory);
+            save.saveTheGameRogue(round, score, playerRogue);
             cout << "Your game has been saved.\n";
         } else {
             cout << "There is no character to be saved.";
@@ -113,17 +111,17 @@ public:
             switch (choice) {
             case '1':
                 characterSelected = "Ranger";
-                playerInventory.setMaxWeight(characterSelected);
+                Inventory::getInstance()->setMaxWeight(characterSelected);
                 startMap();
                 break;
             case '2':
                 characterSelected = "Wizard";
-                playerInventory.setMaxWeight(characterSelected);
+                Inventory::getInstance()->setMaxWeight(characterSelected);
                 startMap();
                 break;
             case '3':
                 characterSelected = "Rogue";
-                playerInventory.setMaxWeight(characterSelected);
+                Inventory::getInstance()->setMaxWeight(characterSelected);
                 startMap();
                 break;
             case 27: // ESC
@@ -149,15 +147,15 @@ public:
 
             switch (choice) {
             case 1:
-                load.loadTheGameRanger(score, round, playerRanger, playerInventory);
+                load.loadTheGameRanger(score, round, playerRanger);
                 characterSelected = "Ranger";
                 break;
             case 2:
-                load.loadTheGameWizard(score, round, playerWizard, playerInventory);
+                load.loadTheGameWizard(score, round, playerWizard);
                 characterSelected = "Wizard";
                 break;
             case 3:
-                load.loadTheGameRogue(score, round, playerRogue, playerInventory);
+                load.loadTheGameRogue(score, round, playerRogue);
                 characterSelected = "Rogue";
                 break;
             default:
@@ -233,7 +231,7 @@ public:
         if (characterSelected == "Ranger") {
             if (round < 3) {
                 easyEnemy* easyEnemyPtr = new easyEnemy();
-                playerRanger.fightWeakEnemy(*easyEnemyPtr,playerInventory);
+                playerRanger.fightWeakEnemy(*easyEnemyPtr);
                 delete easyEnemyPtr;
                 easyEnemyPtr = nullptr;
 
@@ -254,7 +252,7 @@ public:
 
             else if (isBossFight) {
                 Boss* bossPtr = new Boss(round);
-                playerRanger.fightBossEnemy(*bossPtr,playerInventory);
+                playerRanger.fightBossEnemy(*bossPtr);
                 delete bossPtr;
                 bossPtr = nullptr;
 
@@ -275,7 +273,7 @@ public:
 
             else {
                 Enemy* enemyPtr = new Enemy(round);
-                playerRanger.fightNormalEnemy(*enemyPtr, playerInventory);
+                playerRanger.fightNormalEnemy(*enemyPtr);
                 delete enemyPtr;
                 enemyPtr = nullptr;
 
@@ -302,7 +300,7 @@ public:
             {
                 easyEnemy* easyEnemyPtr = new easyEnemy();
 
-                playerWizard.fightWeakEnemy(*easyEnemyPtr, playerInventory);
+                playerWizard.fightWeakEnemy(*easyEnemyPtr);
 
                 // Freeing the memory allocated for the easyEnemy object
                 delete easyEnemyPtr;
@@ -329,7 +327,7 @@ public:
             {
                 Boss* bossPtr = new Boss(round);
 
-                playerWizard.fightBossEnemy(*bossPtr ,playerInventory);
+                playerWizard.fightBossEnemy(*bossPtr);
 
 
                 delete bossPtr;
@@ -356,7 +354,7 @@ public:
             {
 
                 Enemy* enemyPtr = new Enemy(round);
-                playerWizard.fightNormalEnemy(*enemyPtr, playerInventory);
+                playerWizard.fightNormalEnemy(*enemyPtr);
                 delete enemyPtr;
                 enemyPtr = nullptr;
 
@@ -381,7 +379,7 @@ public:
         {
             easyEnemy* easyEnemyPtr = new easyEnemy();
 
-            playerRogue.fightWeakEnemy(*easyEnemyPtr, playerInventory);
+            playerRogue.fightWeakEnemy(*easyEnemyPtr);
 
             // Freeing the memory allocated for the easyEnemy object
             delete easyEnemyPtr;
@@ -407,7 +405,7 @@ public:
         {
             Boss* bossPtr = new Boss(round);
 
-            playerRogue.fightBossEnemy(*bossPtr, playerInventory);
+            playerRogue.fightBossEnemy(*bossPtr);
 
 
             delete bossPtr;
@@ -433,7 +431,7 @@ public:
         else
         {
             Enemy* enemyPtr = new Enemy(round);
-            playerRogue.fightNormalEnemy(*enemyPtr, playerInventory);
+            playerRogue.fightNormalEnemy(*enemyPtr);
 
             delete enemyPtr;
             enemyPtr = nullptr;
@@ -458,8 +456,8 @@ public:
     };
 
     // Handles the game's update logic
-    void openInventory()
+    /*void openInventory()
     {
-        playerInventory.openInventory();
-    }
+        Inventory::getInstance()->openInventory();
+    }*/
 };

@@ -20,7 +20,7 @@ public:
 	Save()
 	{}
 
-    void saveTheGameRanger(int round, int score, Ranger& playerRanger , Inventory& playerInventory)
+    void saveTheGameRanger(int round, int score, Ranger& playerRanger)
     {
         //Saving the game if they are a ranger
         ofstream outFile("ranger.txt");
@@ -42,7 +42,7 @@ public:
             outFile << round << endl;
 
             cout << "Character saved successfully!" << endl;
-            saveInventory(playerInventory, "ranger_inventory.txt");
+            saveInventory("ranger_inventory.txt");
         }
         else {
             cout << "Unable to open the file for saving!" << endl;
@@ -51,7 +51,7 @@ public:
         outFile.close();
     }
 
-    void saveTheGameWizard(int round, int score, Wizard& playerWizard, Inventory& playerInventory)
+    void saveTheGameWizard(int round, int score, Wizard& playerWizard)
     {
         // Saving the game if they are a wizard
         ofstream outFile("wizard.txt");
@@ -73,7 +73,7 @@ public:
             outFile << round << endl;
 
             cout << "Character saved successfully!" << endl;
-            saveInventory(playerInventory, "wizard_inventory.txt");
+            saveInventory("wizard_inventory.txt");
         }
         else {
             cout << "Unable to open the file for saving!" << endl;
@@ -82,7 +82,7 @@ public:
         outFile.close();
 	}
 
-    void saveTheGameRogue(int& round, int& score, Rogue& playerRogue, Inventory& playerInventory)
+    void saveTheGameRogue(int& round, int& score, Rogue& playerRogue)
     {
         //Saving the game if they are a rogue
         ofstream outFile("rogue.txt");
@@ -103,7 +103,7 @@ public:
             outFile << round << endl;
 
             cout << "Character saved successfully!" << endl;
-            saveInventory(playerInventory, "rogue_inventory.txt");
+            saveInventory("rogue_inventory.txt");
         }
         else {
             cout << "Unable to open the file for saving!" << endl;
@@ -111,8 +111,10 @@ public:
 
         outFile.close();
     }
-    void saveInventory(const Inventory& playerInventory, const string& filename) const {
+    void saveInventory(const string& filename) const {
+        const Inventory& playerInventory = *Inventory::getInstance();
         ofstream outFile(filename);
+
         if (outFile.is_open()) {
             // Save health potion count
             // outFile << "HealthPotion," << playerInventory.getHealthPotion() << "\n"; JPO: We need to save the Items, health potions are one time use.
@@ -165,6 +167,4 @@ public:
         }
         outFile.close();
     }
-
-
 };

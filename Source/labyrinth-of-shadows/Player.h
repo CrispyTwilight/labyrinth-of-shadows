@@ -3,6 +3,7 @@
 // Desc: Class to represent the player in the game for movement and position.
 #pragma once
 #include "All_Includes.h"
+#include "Shop.h" // JPO: Added to allow access to the shop.
 
 class Player
 {
@@ -34,8 +35,6 @@ public:
         case 'D': case 'd':
             move(1, 0);
             break;
-            //Add more controls as needed
-        //JPO: Add a default case to handle invalid input.
         }
     }
 
@@ -71,6 +70,10 @@ public:
             px = x = 25;
             py = y = 15;
         }
+        if (map.getGrid()[py][px] == 'S')
+        {
+            Shop::getInstance()->runShop(); // Call to handle the shop logic.
+        }
         else if (map.getGrid()[py][px] != '#')
         {
             x += dx;
@@ -91,21 +94,21 @@ public:
 
     void resetOrBoss()
     {
-        int c = 0;
+        char c = '0';
         if (keys == 6)
         {
-            cout << "Would you like to to reset the game(you keep all your character progress), or fight the final boss?\n1. Reset\n2. Fight   ";
-            cin >> c;
+            cout << "Would you like to reset the game(you keep all your character progress), or fight the final boss?\n1. Reset\n2. Fight";
+            c = _getch();
             keys = 0;
             system("cls");
         }
 
-        if (c == 1)
+        if (c == '1')
         {
             map.reset();
             map.setLevel(0);
         }
-        else if (c == 2)
+        else if (c == '2')
         {
             map.toggle2();
         }
