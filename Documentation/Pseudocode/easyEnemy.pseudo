@@ -21,7 +21,7 @@ Class easyEnemy extends Character
     End Function
 
     Public Module takeDamage(Integer d)
-        Call setHealth(getHealth() - d)
+        Call setHealth(Call getHealth() - d)
     End Module
 
     Public Integer Function giveEXP()

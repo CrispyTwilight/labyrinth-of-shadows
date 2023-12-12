@@ -1,0 +1,11 @@
+//Auth: Hunter Kauffman
+//Date: 12/11/23
+//Desc: Pseucode for bow
+
+Structure Bow
+    Declare Private Integer damage
+
+    Public Module Bow()
+        Set damage = 5 // Base damage for bows
+    End Module
+End Structure
