@@ -1,0 +1,37 @@
+// Auth: John O'Neal
+// Date: 12/11/23
+// Desc: Pseucode for Util.h
+
+Include "All_Includes.h"
+
+Function Boolean checkForLevelUp(Ref Integer exp, Ref Integer exNeeded)
+   If exp > exNeeded
+      return true;
+   Else
+      return false;
+    End If
+End Function
+
+Module setCursorPositing (Integer x, Integer y)
+    Declare Static Constant HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE)
+    Call display.flush()
+    Declare COORD coord
+    Set coord = { (SHORT)x, (SHORT)y }
+    SetConsoleCursorPosition(hOut, coord)
+End Module
+
+Module visual()
+    Declare CONSOLE_CURSOR_INFO cursorInfo
+    Call GetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), Ref cursorInfo);
+    Set cursorInfo.bVisible = false;
+    Call SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), Ref cursorInfo);
+End Module
+
+Function Integer getZeroBasedIntOrQuit()
+    Declare String input
+    Input input
+    If input == 27
+        Return -1
+    End If
+    Return input - 1 - "0"
+End Function
