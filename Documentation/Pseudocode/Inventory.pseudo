@@ -1,0 +1,370 @@
+// Auth: John O'Neal
+// Date: 12/11/23
+// Desc: Pseucode for Inventory.h
+Include "Weapon.h"
+Include "Armor.h"
+Include "Potion.h"
+Include "Item.h"
+
+Class Inventory
+    Declare Private vector items of Item Pointer
+    Declare Private Integer maxWeight
+    Declare Private Integer maxItems
+    Declare Private Integer gold
+    Declare Private String selectedCharacter
+    Declare Private Armor Pointer equippedArmor
+    Declare Private Weapon Pointer equippedWeapon
+    Declare Private Map equippedArmorSlots of ArmorType to Armor Pointer
+
+    Declare Private Static Inventory Pointer instance
+
+    Declare Private Module Inventory(Declare Integer maxWeight = 0, Declare Integer maxItems = 9, Declare Integer gold = 100, Declare String selectedCharacter = "", Declare Armor Pointer equippedArmor = null, Declare Weapon Pointer equippedWeapon = null)
+        Set this.maxWeight to maxWeight
+        Set this.maxItems to maxItems
+        Set this.gold to gold
+        Set this.selectedCharacter to selectedCharacter
+        Set this.equippedArmor to equippedArmor
+        Set this.equippedWeapon to equippedWeapon
+
+        Call setMaxWeight(selectedCharacter)
+    End Module
+
+    Public Static Function Inventory Pointer getInstance()
+        If instance == null Then
+            Set instance = new Inventory()
+        End If
+        Return instance
+    End Function
+
+    Public Module ~Inventory()
+        For Each Item Ponnter in items
+            Call delete item
+        End For
+    End Module
+
+    Public Constant Function vector of Item Pointer Ref getItems()
+        Return items[index]
+    End Function
+
+    Public Constant Function Item Pointer getItem(Integer index)
+        If index >= 0 or index < items.size() Then
+            Return items[index]
+        End If
+        Return null
+    End Function
+
+    Public Constant Integer Function getSize()
+        Return items.size()
+    End Function
+
+    Public Constant Integer Function getItemWeight(Integer index)
+        If index < 0 or index >= items.size() Then
+            Display "Invalid index. Cannot find item weight."
+            Return -1
+        End If
+            
+        Declare Constant Item Pointer item
+        Set item = items[index]
+        Declare Integer ItemWeight
+        Set ItemWeight = 0
+
+        If (Constant Weapon Pointer = dynamic_cast<Constant Weapon Pointer>(item)) Then
+            Set ItemWeight = weapon->weight
+        Else If (Constant Armor Pointer = dynamic_cast<Constant Armor Pointer>(item)) Then
+            Set ItemWeight = armor->weight
+        Else If (Constant Potion Pointer = dynamic_cast<Constant Potion Pointer>(item)) Then
+            Set ItemWeight = potion->weight
+        End If
+
+        Return ItemWeight
+    End Function
+
+    Public Constant Integer Function getCurrentWeight()
+        Declare Integer totalWeight
+        Set totalWeight = 0
+
+        Declare Integer i
+        For i = 0 to items.size()
+            Declare Integer itemWeight
+            Set itemWeight = getItemWeight(i)
+            If itemWeight != -1 Then
+                totalWeight += itemWeight
+            End If
+        End For
+        Return totalWeight
+    End Function
+
+    Public Constant Integer Function getMaxWeight()
+        Return maxWeight
+    End Function
+
+    Public Constant Integer Function getMaxItems()
+        Return maxItems
+    End Function
+
+    Public Constant Integer Function getGold()
+        Return gold
+    End Function
+
+    Public Constant String Function getSelectedCharacter()
+        Return selectedCharacter
+    End Function
+
+    Public Constant Armor Pointer Function getEquippedArmorByType(Armor::ArmorType type)
+        Return equippedArmorSlots[type]
+    End Function
+
+    Public Constant Map of ArmorType to Armor Pointer Ref Function getEquippedArmorSlots()
+        Return equippedArmorSlots
+    End Function
+
+    Public Constant Weapon Pointer Function getEquippedWeapon()
+        Return equippedWeapon
+    End Function
+
+    Public Constant Integer getEquippedWeaponDamage()
+        If equippedWeapon Then
+            Return equippedWeapon->damage
+        Else
+            Return 0
+        End If
+    End Function
+
+    Public Constant Integer getTotalEquippedDefense()
+        Declare Integer totalDefense
+        Set totalDefense = 0
+
+        For Each Constant Ref Armor armorSlot in equippedArmorSlots
+            Armor Pointer armor = armorSlot.second
+            If armor Then
+                totalDefense += armor->defense
+            End If
+        End For
+        Return totalDefense
+    End Function
+
+    Public Module addItem(Item Pointer item)
+       Call items.push_back(item)
+    End Module
+
+    Public Module removeItem(Integer index)
+        Call items.erase(items.begin() + index)
+    End Module
+
+    Public Module setMaxWeight(String selectedCharacter)
+        If selectedCharacter == "Warrior" Then
+            Set maxWeight = 225
+        Else If selectedCharacter == "Mage" Then
+            Set maxWeight = 300
+        Else If selectedCharacter == "Rogue" Then
+            Set maxWeight = 200
+        Else
+            Set maxWeight = 500
+        End If
+    End Module
+
+    Public Module setMaxItems(Integer value)
+        Set maxItems = value
+    End Module
+
+    Public Module setGold(Integer value)
+        Set gold = value
+    End Module
+
+    Public Module addGold(Integer g)
+        Set gold += g
+    End Module
+
+    Public Module deductGold(Integer g)
+        Set gold -= g
+    End Module
+
+    Public Module setEquippedArmorByType(Armor::ArmorType type, Armor Pointer armor)
+        Set equippedArmorSlots[type] = armor
+    End Module
+
+    Public Module setEquippedWeapon(Weapon Pointer weapon)
+        Set equippedWeapon = weapon
+    End Module
+
+    Public Constant Module displayCurrentInventory()
+        Display "Current Inventory:"
+        Display "-------------------------------"
+        Display "Gold: ", getGold(), "Weight: ", getCurrentWeight(), "/", maxWeight
+        Display "-------------------------------"
+
+        If items.empty() Then
+            Display "Inventory is empty!"
+            return;
+        End If
+
+        Declare Integer i
+        For i = 0 to items.size()
+            Display i + 1. ") "
+            Declare Constant Item Pointer item
+            Set item = items[i]
+
+            If (Constant Weapon Pointer = dynamic_cast<Constant Weapon Pointer>(item)) Then
+                Display weapon->name, " - ", weapon->material, "  ", weaponTypeToString(weapon->type)
+                Display "      ",  "Value: ", weapon->value, " Weight: ", weapon->weight, " Damage: ", weapon->damage
+            Else If (Constant Armor Pointer = dynamic_cast<Constant Armor Pointer>(item)) Then
+                Display armor->name, " - ", armor->material, "  ", armorTypeToString(armor->type)
+                Display "      ",  "Value: ", armor->value, " Weight: ", armor->weight, "  Defense: ", armor->defense
+            Else If (Constant Potion Pointer = dynamic_cast<Constant Potion Pointer>(item)) Then
+                Display potion->name, "  ", potionTypeToString(potion->type), " potion of " potion->material, 
+                Display "      ",  "Value: ", potion->value, " Weight: ", potion->weight, "  Healing: ", potion->heal
+            End If
+        End For
+    End Module
+
+    Public Module equipItem()
+        Display "Equip what?"
+        Declare Integer index
+        Set index = getZeroBasedIntOrQuit()
+    
+        If index == -1 Then
+            return;
+        End If
+
+        If index < 0 or index >= items.size() Then
+            Display "Invalid index. Please try again."
+            return;
+        End If
+
+        Declare Item Pointer item
+        Set item = items[index]
+        If item == null Then
+            Display "Invalid item. Please try again."
+            return;
+        End If
+
+        Potion Pointer potion = dynamic_cast<Potion Pointer>(item)
+        If potion != null Then
+            Display "Cannot equip a potion."
+            return;
+        End If
+
+        Armor Pointer armor = dynamic_cast<Armor Pointer>(item)
+        If armor != null Then
+            equipArmor(armor)
+            return;
+        End If
+
+        Weapon Pointer weapon = dynamic_cast<Weapon Pointer>(item)
+        If weapon != null Then
+            equipWeapon(weapon)
+            return;
+        End If
+    End Module
+
+    Public Module equipArmor(Armor Pointer armor)
+        If  equippedArmorSlots.find(armor->type) != equippedArmorSlots.end() Then
+            Armor Pointer previousArmor = equippedArmorSlots[armor->type]
+            Display "Unequipped previous ", armorTypeToString(armor->type), " armor: ", previousArmor->name
+        End If
+        equippedArmorSlots[armor->type] = armor
+        Display "Equipped armor: ", armor->name
+    End Module
+
+    Public Module equipWeapon(Weapon Pointer weapon)
+        If equippedWeapon = weapon Then
+        Display "Equipped weapon: ", weapon->name
+    End Module
+
+    Public Module discardItem()
+        If items.empty() Then
+            Display "Nothing to discard! Inventory is empty!"
+            return;
+        End If
+
+        Display "Discard what?"
+        Declare Integer index
+        Set index = getZeroBasedIntOrQuit()
+        If index == -1 Then
+            return;
+        End If
+
+        If index < 0 or index >= items.size() Then
+            Display "Invalid index. Please try again."
+            return;
+        End If
+
+        Call delete items[index]
+        Call items.erase(items.begin() + index)
+        Display "Item discarded."
+    End Module
+
+    Public Module takePotion()
+        Declare Boolean hasPotion
+        Set hasPotion = false
+        For Each Item Pointer item in items
+            If Potion Pointer potion = dynamic_cast<Potion Pointer>(item) != null Then
+                Set hasPotion = true
+                break;
+            End If
+        End For
+
+        If !hasPotion Then
+            Display "You don't have any health potions."
+            return;
+        End If
+
+        Display "Take what?"
+        Declare Integer index
+        Set index = getZeroBasedIntOrQuit()
+        
+        If index == -1 Then
+            return;
+        End If
+
+        If index < 0 or index >= items.size() Then
+            Display "Invalid index. Please try again."
+            return;
+        End If
+
+        If dynamic_cast<Potion Pointer>(items[index]) == null Then
+            Display "Invalid item. Please try again."
+            return;
+        End If
+
+        // Code to consume health potion goes here
+    End Module
+
+    Public Module openInventory()
+        Call clearScreen()
+        Declare String choice
+        do
+            displayCueetjnventory()
+            Display "You may:"
+            Display "1) Equip item."
+            Display "2) Discard item."
+            Display "3) Take health potion."
+            Display "ESC) Exit inventory."
+            Input choice
+
+            If choice == 27 Then
+                Call clearScreen()
+                Return
+            End If
+            
+            Select choice
+                Case "1"
+                    Call equipItem()
+                    Break
+                Case "2"
+                    Call discardItem()
+                    Break
+                Case "3"
+                    Call takePotion()
+                    Break
+                Default
+                    Display "Invalid choice. Please try again."
+                    break
+            End Select
+            Call clearScreen()
+            Call pause()
+        While (true)
+    End Module
+End Class
+
+Declare Inventory Pointer Inventory::instance = null
