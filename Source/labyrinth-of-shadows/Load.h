@@ -58,7 +58,7 @@ public:
         round = loadFile.round;
 
         inFile.close();
-        cout << "Character Loaded Sucessfully\n";
+        cout << "Character Loaded Successfully\n";
 
         loadInventory("ranger_inventory.txt");
     }
@@ -120,7 +120,7 @@ public:
         round = loadFile.round;
 
         inFile.close();
-        cout << "Character Loaded Sucessfully\n";
+        cout << "Character Loaded Successfully\n";
 
         loadInventory("rogue_inventory.txt");
 
