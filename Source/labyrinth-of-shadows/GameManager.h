@@ -422,29 +422,7 @@ public:
                 }
             }
 
-            if (isBossFight)
-            {
-                Boss* bossPtr = new Boss(round);
-                playerRogue.fightBossEnemy(*bossPtr);
-                delete bossPtr;
-                bossPtr = nullptr;
-
-                if (playerRogue.getHealth() > 0)
-                {
-                    round++;
-                    score = score + 5;
-                    // This is a victory and should take them back to the map.
-                }
-                else
-                {
-                    cout << "Your score was " << score << endl;
-                    score = 0;
-                    round = 0;
-                    processMainMenu();
-                    // This is a lose and should restart the game.
-                }
-            }
-
+            // Was redundant
             else if (isBossFight) {
                 Boss* bossPtr = new Boss(round);
                 playerRogue.fightBossEnemy(*bossPtr);

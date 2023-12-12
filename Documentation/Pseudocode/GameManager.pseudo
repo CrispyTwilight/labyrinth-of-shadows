@@ -1,0 +1,487 @@
+// Date: 12/04/2023
+// Auth: John O'Neal, William Brickner, Christian Botos, Hunter Kauffman, Christian Baack.
+// Desc: This class will manage the game and all of its components. Loading, ending, saving, quitting, etc. will all be handled here.
+
+
+Declare class GameManager
+{
+
+    // Adding the basic fields of score and round count so that I could properly save and load the game.
+    Declare Private Integer round
+    Declare Private Integer score
+    Declare Private String characterSelected
+    Declare Private Ranger playerRanger
+    Declare Private Wizard playerWizard
+    Declare Private Rogue playerRogue
+    Declare Private Screens screen
+
+
+    Declare Public Constructor GameManager()
+    {
+        Declare Public Ranger playRanger(25, 25, 5, 5, 7, 1, 0, 5, 0, 0, 0, 0, 1)
+        Set playerRanger = playRanger
+        Declare Public Wizard playWizard(30, 30, 3, 8, 5, 1, 0, 5, 1, 1, 2, 1)
+        Set playerWizard = playWizard
+        Declare Public Rogue playRogue(40, 40, 5, 3, 6, 1, 0, 5, 0, 1, 1, 1)
+        Set playerRogue = playRogue
+        Set round = 0
+        Set score = 0
+        Set characterSelected = ""
+    }
+
+    Declare Public Function void processMainMenu() {
+        Declare Char choice
+        do {
+            Call screen.showTitle()
+            Input choice
+            switch (choice)
+            {
+            case '1': {
+                Call startNewGame()
+                break
+            }
+            case '2':
+                Display "Loading previous game..."
+                Call loadGame()
+                Call startNewGame()
+                System Pause
+                break
+            case 27: // ESC
+                Display "Saving and quitting game..."
+                saveGame()
+                System Pause
+                return
+            case '?':
+                screen.showHelp()
+                break
+            default:
+                Display "Invalid choice. Try again." 
+                System Pause
+                break
+            }
+        End Switch
+        } while (true)
+        End Do While
+    }
+    End Function
+
+    Declare Public Function void saveGame() {
+        Declare Save save
+        if (characterSelected == "Ranger") {
+            Call save.saveTheGameRanger(round, score, playerRanger)
+            Display "Your game has been saved."
+        }
+        else if (characterSelected == "Wizard") {
+            Call save.saveTheGameWizard(round, score, playerWizard)
+            Display "Your game has been saved."
+        }
+        else if (characterSelected == "Rogue") {
+            Call save.saveTheGameRogue(round, score, playerRogue)
+            Display "Your game has been saved."
+        }
+        else {
+            Display "There is no character to be saved."
+        }
+        End If
+        return
+    }
+    End Function
+
+    Declare Public Function void startNewGame() {
+        Display "Select a class to play as:"
+        Display "1) Ranger (A class focused on reflecting attacks and dodging attacks while doing massive damage)"
+        Display "2) Wizard (A High Defense and High Damaging Wizard)"
+        Display "3) Rogue (A damaging Rogue that can vanish and do deadly sneak attacks)"
+        Display "ESC) Exit"
+
+        Declare Char choice
+        do {
+            Input choice
+            switch (choice) {
+            case '1':
+                Declare characterSelected = "Ranger"
+                Call Inventory::getInstance()->setMaxWeight(characterSelected)
+                Call startMap()
+                break
+            case '2':
+                Declare characterSelected = "Wizard"
+                Call Inventory::getInstance()->setMaxWeight(characterSelected)
+                Call startMap()
+                break
+            case '3':
+                Declare characterSelected = "Rogue"
+                Call Inventory::getInstance()->setMaxWeight(characterSelected)
+                Call startMap()
+                break
+            case 27: // ESC
+                return
+            default:
+                Display "Invalid choice. Try again."
+                break
+            }
+        End switch
+        } while (true)
+        End do While 
+    }
+    End Function
+
+    Declare Public Function void loadGame() {
+        Declare Integer choice = 0
+        Load load
+        Display "What class would you like to load?"
+        Declare "1. Ranger"
+        Declare "2. Wizard"
+        Declare "3. Rogue"
+
+        do {
+            Display "Enter your choice: "
+            Input choice - '0'
+
+            switch (choice) {
+            case 1:
+                Call Inventory::getInstance()->setMaxWeight(characterSelected)
+                Call load.loadTheGameRanger(score, round, playerRanger)
+                Set characterSelected = "Ranger"
+                Call startMap()
+                break
+            case 2:
+                Call Inventory::getInstance()->setMaxWeight(characterSelected)
+                Call load.loadTheGameWizard(score, round, playerWizard)
+                Set characterSelected = "Wizard"
+                Call startMap()
+                break
+            case 3:
+                Call Inventory::getInstance()->setMaxWeight(characterSelected)
+                Call load.loadTheGameRogue(score, round, playerRogue)
+                Set characterSelected = "Rogue"
+                Call startMap()
+                break
+            default:
+                Display "Incorrect value. Please enter a valid value."
+                Set choice = 0 // Reset choice to ensure the loop continues
+                break
+            }
+        End Switch
+        } while (choice < 1 || choice > 3)
+        End Do While
+    }
+    End Function
+
+    Declare Public Function void startMap()
+    {
+        Declare Map gameMap(51, 31) // JPO: Updated so that the @ is can actually be in the middle of the map.
+        Declare Player player(gameMap, 25, 15) // JPO: Updated so that the player starts in the middle of the map.
+        while (true)
+        {
+            Declare srand(time(NULL))
+            //This clears the cli
+            Call setCursorPosition(0, 0)
+
+            //Update player's position on the map
+            Declare Integer playerX, playerY
+
+            Call player.getPosition(playerX, playerY)
+            Call gameMap.updatePlayerPosition(playerX, playerY)
+            Call gameMap.display()
+
+            Call gameMap.mapSwitcher()
+
+            // Get input, then decide if inGameMenu or pass to handleInput.
+            Declare Char option
+            Input option 
+            if (option == 'b' || option == 'i' || option == 'm' || option == '?')
+                Call inGameMenu(option)
+
+            Call player.handleInput(option)
+
+            Call gameMap.mapSwitcher()
+
+            Call gameMap.moveL(playerY, playerX)
+            Call gameMap.moveE()
+
+            Call visual()
+            if (gameMap.getTrigger())
+            {
+                Call gameMap.updateSpace(playerX, playerY, '.')
+
+                //Calls the fighting.
+                Call fighting(false)
+
+                Call gameMap.toggle()
+
+                System Clear
+            }
+            End if
+            if (gameMap.getTrigger2())
+            {
+                Call fighting(true)
+            }
+            End if
+
+            //This is necessary to control speed of the game.
+            Call this_thread::sleep_for(chrono::milliseconds(100))
+        }
+        End While
+    }
+    End Function
+
+    Declare Public Function void inGameMenu(Char option) {
+        switch (option) {
+        case 'b':
+            Call saveGame()
+            break
+        case 'i':
+            Call Inventory::getInstance()->openInventory()
+            break
+        case 'm':
+            Call processMainMenu()
+            // User can quit from here
+            break
+        case '?':
+            Call screen.showHelp()
+            break
+        default:
+            Display "You have encountered an unexpected error."
+            break
+        }
+        End Switch
+    }
+    End Function
+
+    Declare Public Function void fighting(Boolean isBossFight)
+    {
+        if (characterSelected == "Ranger") {
+            if (round < 3) {
+                Declare easyEnemy* easyEnemyPtr = new easyEnemy()
+                Call playerRanger.fightWeakEnemy(*easyEnemyPtr)
+                Delete easyEnemyPtr
+                Set easyEnemyPtr = nullptr
+
+                if (playerRanger.getHealth() > 0) {
+                    Set round = round + 1
+                    Set score = score + 5
+                    // This is a victory and should take them back to the map.
+                }
+                else {
+                    Display "Your score was " +score 
+                    Set score = 0
+                    Set round = 0
+                    Call screen.showDeath()
+                    Call processMainMenu()
+                    // This is a lose and should restart the game.
+                }
+                End if 
+            }
+            
+
+            else if (isBossFight) {
+                Declare Boss* bossPtr = new Boss(round)
+                Call playerRanger.fightBossEnemy(*bossPtr)
+                Delete bossPtr
+                Set bossPtr = nullptr
+
+                if (playerRanger.getHealth() > 0) {
+                    Set round = round + 1
+                    Set score = score + 5
+                    Call screen.showVictory()
+                    // This is a victory and should take them back to the map.
+                }
+                else {
+                    Display "Your score was " +score 
+                    Set score = 0
+                    Set round = 0
+                    Call screen.showDeath()
+                    Call processMainMenu()
+                    //Should Restart the game
+                }
+                End if 
+            }
+
+            else {
+                Declare Enemy* enemyPtr = new Enemy(round)
+                Call playerRanger.fightNormalEnemy(*enemyPtr)
+                Delete enemyPtr
+                Set enemyPtr = nullptr
+
+                if (playerRanger.getHealth() > 0) {
+                    Set round = round + 1
+                    Set score = score + 10
+                    
+                    // This is a victory and should take them back to the map.
+                }
+                else {
+                    Display "Your score was " +score 
+                    Set score = 0
+                    Set round = 0
+                    Call screen.showDeath()
+                    Call processMainMenu()
+                    // Should Restart the game
+                }
+                End If 
+            }
+            End if
+        }
+
+        else if (characterSelected == "Wizard")
+        {
+
+            if (round < 3)
+            {
+                Declare easyEnemy* easyEnemyPtr = new easyEnemy()
+
+                Call playerWizard.fightWeakEnemy(*easyEnemyPtr)
+
+                // Freeing the memory allocated for the easyEnemy object
+                Delete easyEnemyPtr
+                Set easyEnemyPtr = nullptr
+
+                if (playerWizard.getHealth() > 0)
+                {
+                    Set round = round + 1
+                    Set score = score + 5
+                    // This is a victory and should take them back to the map.
+                }
+                else
+                {
+                    Display "Your score was " +score 
+                    Set score = 0
+                    Set round = 0
+                    Call screen.showDeath()
+                    Call processMainMenu()
+                    //This is a loss and should restart the game.
+                }
+                End if 
+            }
+
+            else if (isBossFight)
+            {
+                Declare Boss* bossPtr = new Boss(round)
+
+                Call playerWizard.fightBossEnemy(*bossPtr)
+
+
+                Delete bossPtr
+                Set bossPtr = nullptr
+
+                if (playerWizard.getHealth() > 0)
+                {
+                    Set round = round + 1
+                    Set score = score + 5
+                    Call screen.showVictory()
+                    // This is a victory and should take them back to the map.
+                }
+                else
+                {
+                    Display "Your score was " +score 
+                    Set score = 0
+                    Set round = 0
+                    Call screen.showDeath()
+                    Call processMainMenu()
+                    //This is a lose and should restart the game.
+                }
+                End if 
+            }
+
+            else
+            {
+
+                Declare Enemy* enemyPtr = new Enemy(round)
+                Call playerWizard.fightNormalEnemy(*enemyPtr)
+                Delete enemyPtr
+                Set enemyPtr = nullptr
+
+                if (playerWizard.getHealth() > 0) {
+                    Set round = round + 1
+                    Set score = score + 10
+                    // This is a victory and should take them back to the map.
+                }
+                else {
+                    Display "Your score was " +score 
+                    Set score = 0
+                    Set round = 0
+                    Call screen.showDeath()
+                    Call processMainMenu()
+                   //This is a loss and should restart the game.
+                }
+                End if 
+            }
+            End if
+        }
+        else if (characterSelected == "Rogue")
+        {
+            if (round < 3)
+            {
+                Declare easyEnemy* easyEnemyPtr = new easyEnemy()
+                Call playerRogue.fightWeakEnemy(*easyEnemyPtr)
+                // Freeing the memory allocated for the easyEnemy object
+                Delete easyEnemyPtr
+                Set easyEnemyPtr = nullptr
+
+                if (playerRogue.getHealth() > 0)
+                {
+                    Set round = round + 1
+                    Set score = score + 5
+                    // This is a victory and should take them back to the map.
+                }
+                else
+                {
+                    isplay "Your score was " + score 
+                    Set score = 0
+                    Set round = 0
+                    Call screen.showDeath()
+                    Call processMainMenu()
+                    //This is a loss and should restart the game.
+                }
+                End if
+            }
+
+          
+            else if (isBossFight) {
+                Declare Boss* bossPtr = new Boss(round)
+                Call playerRogue.fightBossEnemy(*bossPtr)
+                Delete bossPtr
+                Set bossPtr = nullptr
+
+                if (playerRogue.getHealth() > 0) {
+                    Set round = round + 1
+                    Set score = score + 5
+                    Call screen.showVictory()
+                    // This is a victory and should take them back to the map.
+                }
+                else{
+                    Display "Your score was " +score 
+                    Set score = 0
+                    Set round = 0
+                    Call screen.showDeath()
+                    Call processMainMenu()
+                    //This is a lose and should restart the game.
+                }
+            }
+
+            else {
+                Declare Enemy* enemyPtr = new Enemy(round)
+                Call playerRogue.fightNormalEnemy(*enemyPtr)
+                Delete enemyPtr
+                Set enemyPtr = nullptr
+
+                if (playerRogue.getHealth() > 0) {
+                    Set round = round + 1
+                    Set score = score + 10
+                    // This is a victory and should take them back to the map.
+                }
+                else {
+                    Display "Your score was " +score 
+                    Set score = 0
+                    Set round = 0
+                    Call screen.showDeath()
+                    Call processMainMenu()
+                    //This is a loss and should restart the game.
+                }
+                End if 
+            }
+            End if 
+        } End if 
+    }
+    End Function
+}
+End Class
