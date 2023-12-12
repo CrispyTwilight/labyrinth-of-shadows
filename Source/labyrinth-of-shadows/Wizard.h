@@ -524,7 +524,7 @@ public:
                     incorrectChoice = true;
                 }
 
-                
+
 
             } while (choice > 4 || choice < 0 || incorrectChoice);
 
@@ -578,14 +578,28 @@ public:
         int enemyAttack = d100.rollDice();
         if (iceWallEffect > 0)
         {
+            d = d * 0.25;
+            // Assuming playerInventory->getTotalEquippedDefense() is an integer value
+            d = d - playerInventory->getTotalEquippedDefense();
+            if (d < 0)
+            {
+                d = 0;
+            }
+
+            // Convert the decimal damage to a whole number (rounding up)
+            d = static_cast<int>(ceil(d));
+
+            cout << "You took " << d << " damage\n";
+            
             cout << "You fully blocked the attack using Ice Wall\n";
+
         }
         else if (isBlocking)
         {
             cout << "You successfully blocked the attack!\n";
             d = d * 0.25;
-            // Assuming playerInventory.getTotalEquippedDefense() is an integer value
-            d = d - playerInventory.getTotalEquippedDefense();
+            // Assuming playerInventory->getTotalEquippedDefense() is an integer value
+            d = d - playerInventory->getTotalEquippedDefense();
             if (d < 0) 
             {
                 d = 0;
@@ -624,8 +638,9 @@ public:
         {
             cout << "You successfully blocked the attack!\n";
             d = d * 0.25;
-            // Assuming playerInventory.getTotalEquippedDefense() is an integer value
-            d = d - playerInventory.getTotalEquippedDefense();
+            // Assuming playerInventory->getTotalEquippedDefense() is an integer value
+            d = d - playerInventory->getTotalEquippedDefense();
+
             if (d < 0) {
                 d = 0;
             }
@@ -634,6 +649,7 @@ public:
             d = static_cast<int>(ceil(d));
 
             cout << "You took " << d << " damage\n";
+
         }
         else if (enemyAttack <= dexterity)
         {
@@ -654,8 +670,6 @@ public:
     // Taking damage from a normal enemy.
     void takeDamageBoss(Boss& boss, int d)
     {
-        
-
         // Getting a random number and seeing if the players dex is higher and if it is they will dodge the attack.
         int enemyAttack = d100.rollDice();
         if (iceWallEffect > 0)
@@ -666,8 +680,8 @@ public:
         {
             cout << "You successfully blocked the attack!\n";
             d = d * 0.25;
-            // Assuming playerInventory.getTotalEquippedDefense() is an integer value
-            d = d - playerInventory.getTotalEquippedDefense();
+            // Assuming playerInventory->getTotalEquippedDefense() is an integer value
+            d = d - playerInventory->getTotalEquippedDefense();
             if (d < 0) {
                 d = 0;
             }

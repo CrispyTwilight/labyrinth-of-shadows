@@ -42,7 +42,7 @@ private:
 public:
     Ranger()
     {
-       
+
         maxHealth = 25;
         //This is a placeholder because the playername
         setName("Ranger");
@@ -68,7 +68,7 @@ public:
         repulsionUses = repulsionLvl;
         d100.setMin(1);
         d100.setMax(100);
-       
+
 
     }
     Ranger(int max, int hea, int  str, int intel, int  dex, int lev, int ex, int need, int rai, int charg, int re, int potion, int turns) : playerInventory(getInventory())
@@ -730,9 +730,10 @@ public:
         if (isBlocking)
         {
             cout << "You successfully blocked the attack!\n";
+
             d = d * 0.25;
-            // Assuming playerInventory.getTotalEquippedDefense() is an integer value
-            d = d - playerInventory.getTotalEquippedDefense();
+            // Assuming playerInventory->getTotalEquippedDefense() is an integer value
+            d = d - playerInventory->getTotalEquippedDefense();
             if (d < 0) {
                 d = 0;
             }
@@ -773,8 +774,10 @@ public:
         {
             cout << "You successfully blocked the attack!\n";
             d = d * 0.25;
-            // Assuming playerInventory.getTotalEquippedDefense() is an integer value
-            d = d - playerInventory.getTotalEquippedDefense();
+            // Assuming playerInventory->getTotalEquippedDefense() is an integer value
+            d = d - playerInventory->getTotalEquippedDefense();
+
+           
             if (d < 0) {
                 d = 0;
             }
@@ -783,6 +786,7 @@ public:
             d = static_cast<int>(ceil(d));
 
             cout << "You took " << d << " damage\n";
+            
         }
         else if (isRepulsionActivated)
         {
@@ -816,8 +820,8 @@ public:
         {
             cout << "You successfully blocked the attack!\n";
             d = d * 0.25;
-            // Assuming playerInventory.getTotalEquippedDefense() is an integer value
-            d = d - playerInventory.getTotalEquippedDefense();
+            // Assuming playerInventory->getTotalEquippedDefense() is an integer value
+            d = d - playerInventory->getTotalEquippedDefense();
             if (d < 0) {
                 d = 0;
             }
@@ -826,6 +830,7 @@ public:
             d = static_cast<int>(ceil(d));
 
             cout << "You took " << d << " damage\n";
+
         }
         else if (isRepulsionActivated)
         {
@@ -904,7 +909,7 @@ public:
         if (getHealth() <= 0) {
             // Game over logic
             cout << "You were defeated! Game Over.\n";
-            
+
 
         }
         else {
@@ -1023,7 +1028,9 @@ public:
                 << "Charged Shot cooldown " << chargedCooldown << endl
                 << "Repulsion uses remaining " << repulsionUses << endl
                 << "Enemy's health: " << easyEnemy.getHealth() << endl;
-            
+            system("pause");
+            system("cls");
+
         }
 
         if (getHealth() <= 0) {
