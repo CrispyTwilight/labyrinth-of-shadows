@@ -1,0 +1,18 @@
+//Auth: Hunter Kauffman
+//Date: 12/7/23
+//Desc: Pseucode for inventory load file
+
+Structure InventoryLoadFile
+    Declare Integer healthPotion
+    Declare String type
+    Declare Integer defense
+    Declare Integer weight
+    Declare Integer value
+    Declare String wType
+    Declare String material
+    Declare String materialW
+    Declare Integer damage
+    Declare Integer weightW
+    Declare Integer valueW
+    Declare Integer gold
+ENd Structure
