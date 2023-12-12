@@ -197,17 +197,6 @@ public:
 
             gameMap.mapSwitcher();
 
-        case '?':
-        {
-            screen.showHelp();
-
-            break;
-        }
-        default:
-        {
-            cout << "You have encountered an unexpected error.\n";
-            break;
-        }
             gameMap.moveL(playerY, playerX);
             gameMap.moveE();
 
@@ -275,7 +264,7 @@ public:
                     round = 0;
                     screen.showDeath();
                     processMainMenu();
-                    // This is a lose scenario and should take them back to the map.
+                    // This is a lose and should restart the game.
                 }
             }
 
@@ -296,6 +285,7 @@ public:
                     score = 0;
                     round = 0;
                     screen.showDeath();
+                    processMainMenu();
                     //Should Restart the game
                 }
             }
@@ -407,9 +397,7 @@ public:
             if (round < 3)
             {
                 easyEnemy* easyEnemyPtr = new easyEnemy();
-
                 playerRogue.fightWeakEnemy(*easyEnemyPtr);
-
                 // Freeing the memory allocated for the easyEnemy object
                 delete easyEnemyPtr;
                 easyEnemyPtr = nullptr;
@@ -430,14 +418,10 @@ public:
                 }
             }
 
-
             if (isBossFight)
             {
                 Boss* bossPtr = new Boss(round);
-
                 playerRogue.fightBossEnemy(*bossPtr);
-
-
                 delete bossPtr;
                 bossPtr = nullptr;
 
@@ -453,96 +437,52 @@ public:
                     score = 0;
                     round = 0;
                     processMainMenu();
+                    // This is a lose and should restart the game.
+                }
+            }
+
+            else if (isBossFight) {
+                Boss* bossPtr = new Boss(round);
+                playerRogue.fightBossEnemy(*bossPtr);
+                delete bossPtr;
+                bossPtr = nullptr;
+
+                if (playerRogue.getHealth() > 0) {
+                    round++;
+                    score = score + 5;
+                    screen.showVictory();
+                    // This is a victory and should take them back to the map.
+                }
+                else{
+                    cout << "Your score was " << score << endl;
+                    score = 0;
+                    round = 0;
+                    screen.showDeath();
+                    processMainMenu();
                     //This is a lose and should restart the game.
                 }
             }
 
-            else
-            {
-
-                cout << "Your score was " << score << endl;
-                score = 0;
-                round = 0;
-                screen.showDeath();
-                processMainMenu();
-                // This is a loss and should restart the game.
-            }
-        }
-        else if (isBossFight)
-        {
-            Boss* bossPtr = new Boss(round);
-
-            playerRogue.fightBossEnemy(*bossPtr);
-
-
-            delete bossPtr;
-            bossPtr = nullptr;
-
-            if (playerRogue.getHealth() > 0)
-            {
-                round++;
-                score = score + 5;
-                // This is a victory and should take them back to the map.
-            }
-            else
-            {
-                cout << "Your score was " << score << endl;
-                score = 0;
-                round = 0;
-                screen.showDeath();
-                processMainMenu();
-                //This is a lose and should restart the game.
-            }
-        }
-
-        else
-        {
-            Enemy* enemyPtr = new Enemy(round);
-            playerRogue.fightNormalEnemy(*enemyPtr);
-
-            delete enemyPtr;
-            enemyPtr = nullptr;
-
-            if (playerRogue.getHealth() > 0)
-            {
-                round++;
-                score = score + 10;
-                // This is a victory and should take them back to the map.
-            }
-            else
-            {
-                cout << "Your score was " << score << endl;
-                score = 0;
-                round = 0;
-                screen.showDeath();
-                processMainMenu();
-                //This is a loss and should restart the game.
-            }
-        }
-        }
-
+            else {
                 Enemy* enemyPtr = new Enemy(round);
                 playerRogue.fightNormalEnemy(*enemyPtr);
-
                 delete enemyPtr;
                 enemyPtr = nullptr;
 
-                if (playerRogue.getHealth() > 0)
-                {
+                if (playerRogue.getHealth() > 0) {
                     round++;
                     score = score + 10;
                     // This is a victory and should take them back to the map.
                 }
-                else
-                {
+                else {
                     cout << "Your score was " << score << endl;
                     score = 0;
                     round = 0;
+                    screen.showDeath();
                     processMainMenu();
                     //This is a loss and should restart the game.
                 }
-
             }
         }
-    };
+    }
 };
