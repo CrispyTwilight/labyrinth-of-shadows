@@ -5,6 +5,9 @@
 // #include "All_Includes.h"
 // JPO: Temp fix for the issue with the compiler not finding the files
 #include "Character.h"
+#include <iostream>
+#include <string>
+#include <iterator>
 #include "Enemy.h"
 #include "easyEnemy.h"
 #include "Boss.h"
@@ -278,6 +281,7 @@ public:
             {
                 repulsionLvl += 1;
                 cout << "Repulsion is now level " << repulsionLvl << endl;
+                repulsionUses = repulsionLvl;
                 break;
             }
             default:
@@ -355,7 +359,12 @@ public:
                         cout << "Charged shot is still on cooldown. You have to wait " << chargedCooldown << " number of turns.\n";
                         incorrectChoice = true;
                     }
-                    else if (choice < 0 || choice > 5) {
+                    else if (choice == 6 && repulsionUses < 0)
+                    {
+                        cout << "You are out of Repulsion uses please try something else.\n";
+                        incorrectChoice = true;
+                    }
+                    else if (choice < 0 || choice > 6) {
                         cout << "Incorrect value. Please enter a valid value.\n";
                         incorrectChoice = true;
                     }
@@ -420,6 +429,8 @@ public:
         {
             cout << "You turn has been skipped!\n";
         }
+        system("pause");
+        system("cls");
     }
 
     // Player for the easy enemy
@@ -481,7 +492,12 @@ public:
                         cout << "Charged shot is still on cooldown. You have to wait " << chargedCooldown << " number of turns.\n";
                         incorrectChoice = true;
                     }
-                    else if (choice < 0 || choice > 5) {
+                    else if (choice == 6 && repulsionUses < 0)
+                    {
+                        cout << "You are out of Repulsion uses please try something else.\n";
+                        incorrectChoice = true;
+                    }
+                    else if (choice < 0 || choice > 6) {
                         cout << "Incorrect value. Please enter a valid value.\n";
                         incorrectChoice = true;
                     }
@@ -548,6 +564,8 @@ public:
             {
                 cout << "You turn has been skipped!\n";
             }
+            system("pause");
+            system("cls");
         }
     }
 
@@ -608,7 +626,12 @@ public:
                         cout << "Charged shot is still on cooldown. You have to wait " << chargedCooldown << " number of turns.\n";
                         incorrectChoice = true;
                     }
-                    else if (choice < 0 || choice > 5) {
+                    else if (choice == 6 && repulsionUses < 0)
+                    {
+                        cout << "You are out of Repulsion uses please try something else.\n";
+                        incorrectChoice = true;
+                    }
+                    else if (choice < 0 || choice > 6) {
                         cout << "Incorrect value. Please enter a valid value.\n";
                         incorrectChoice = true;
                     }
@@ -676,6 +699,8 @@ public:
                 cout << "You turn has been skipped!\n";
                 isStunned = false;
             }
+            system("pause");
+            system("cls");
         }
     }
 
@@ -705,10 +730,9 @@ public:
         if (isBlocking)
         {
             cout << "You successfully blocked the attack!\n";
-<<<<<<< Updated upstream
-=======
+
             d = d * 0.25;
-            // Assuming playerInventory.getTotalEquippedDefense() is an integer value
+            // Assuming playerInventory->getTotalEquippedDefense() is an integer value
             d = d - playerInventory->getTotalEquippedDefense();
             if (d < 0) {
                 d = 0;
@@ -718,7 +742,6 @@ public:
              d = static_cast<int>(ceil(d));
 
             cout << "You took " << d << " damage\n";
->>>>>>> Stashed changes
         }
         else if (isRepulsionActivated)
         {
@@ -750,11 +773,11 @@ public:
         if (isBlocking)
         {
             cout << "You successfully blocked the attack!\n";
-<<<<<<< Updated upstream
-=======
             d = d * 0.25;
-            // Assuming playerInventory.getTotalEquippedDefense() is an integer value
+            // Assuming playerInventory->getTotalEquippedDefense() is an integer value
             d = d - playerInventory->getTotalEquippedDefense();
+
+           
             if (d < 0) {
                 d = 0;
             }
@@ -763,7 +786,7 @@ public:
             d = static_cast<int>(ceil(d));
 
             cout << "You took " << d << " damage\n";
->>>>>>> Stashed changes
+            
         }
         else if (isRepulsionActivated)
         {
@@ -795,12 +818,9 @@ public:
 
         if (isBlocking)
         {
-<<<<<<< Updated upstream
-           cout << "You successfully blocked the attack!\n";
-=======
             cout << "You successfully blocked the attack!\n";
             d = d * 0.25;
-            // Assuming playerInventory.getTotalEquippedDefense() is an integer value
+            // Assuming playerInventory->getTotalEquippedDefense() is an integer value
             d = d - playerInventory->getTotalEquippedDefense();
             if (d < 0) {
                 d = 0;
@@ -810,7 +830,7 @@ public:
             d = static_cast<int>(ceil(d));
 
             cout << "You took " << d << " damage\n";
->>>>>>> Stashed changes
+
         }
         else if (isRepulsionActivated)
         {
@@ -860,7 +880,10 @@ public:
     void fightNormalEnemy(Enemy& enemy)
     {
         cout << "You encounter " << enemy.getName() << " with " << enemy.getHealth() << " health!\n";
-
+        //setup before combat that will be kept.
+        repulsionUses = repulsionLvl;
+        rainCooldown = 0;
+        chargedCooldown = 0;
         while (getHealth() > 0 && enemy.getHealth() > 0) {
             // Player's turn
             playerTurn(enemy);
@@ -910,6 +933,11 @@ public:
     {
         int turnCount = 0;
         cout << "You encounter " << boss.getName() << " with " << boss.getHealth() << " health!\n";
+
+        //setup before combat that will be kept.
+        repulsionUses = repulsionLvl;
+        rainCooldown = 0;
+        chargedCooldown = 0;
 
         while (getHealth() > 0 && boss.getHealth() > 0) {
             // Player's turn
@@ -972,6 +1000,11 @@ public:
         // Display the enemy's details
         cout << "You encounter " << easyEnemy.getName() << " with " << easyEnemy.getHealth() << " health!\n";
 
+        //setup before combat that will be kept.
+        repulsionUses = repulsionLvl;
+        rainCooldown = 0;
+        chargedCooldown = 0;
+
         while (getHealth() > 0 && easyEnemy.getHealth() > 0) {
             // Player's turn
             playerTurnEasy(easyEnemy);
@@ -995,12 +1028,9 @@ public:
                 << "Charged Shot cooldown " << chargedCooldown << endl
                 << "Repulsion uses remaining " << repulsionUses << endl
                 << "Enemy's health: " << easyEnemy.getHealth() << endl;
-<<<<<<< Updated upstream
             system("pause");
             system("cls");
-=======
 
->>>>>>> Stashed changes
         }
 
         if (getHealth() <= 0) {

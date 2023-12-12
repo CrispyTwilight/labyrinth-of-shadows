@@ -3,10 +3,15 @@
 // Desc: This is a header file that holds modules that display the title screen that comes with instructions
 
 #pragma once
-#include "ALL_Includes.h"
+
+#include "GameManager.h"
+#include <iostream>
+#include <conio.h>
+#include <string>
 
 class Screens
 {
+
 public:
     void showTitle()
     {

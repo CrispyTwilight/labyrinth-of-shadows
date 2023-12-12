@@ -2,7 +2,8 @@
 // Date: 12/04/2023
 // Desc: The Shop class contains all code needed to build a shop. This will be accessed by the character entering an 'S' tile.
 #pragma once
-#include "All_Includes.h"
+#include <vector>
+#include <string>
 
 class Shop
 {
