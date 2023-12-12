@@ -185,12 +185,12 @@ public:
 
             gameMap.mapSwitcher();
 
-            // Get input, then decide if in game menu or handle input.
+            // Get input, then decide if inGameMenu or pass to handleInput.
             char option = _getch();
             if (option == 'b' || option == 'i' || option == 'm' || option == '?')
                 inGameMenu(option);
-            else
-                player.handleInput();
+
+            player.handleInput(option);
 
             gameMap.mapSwitcher();
 

@@ -16,13 +16,11 @@ private:
 public:
     Player(Map& map, int initialX, int initialY) : map(map), x(initialX), y(initialY), px(initialX), py(initialY) {}
 
-    void handleInput()
+    void handleInput(char option)
     {
-        char input;
         cout << "Enter move (WASD): ";
-        input = _getch();
 
-        switch (input) {
+        switch (option) {
         case 'W': case 'w':
             move(0, -1);
             break;
