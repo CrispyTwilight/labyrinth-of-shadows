@@ -38,7 +38,7 @@ private:
 public:
     Rogue()
     {}
-    
+
     Rogue(int max, int hea, int  str, int intel, int  dex, int lev, int ex, int need, int sa, int dodge, int potion, int turns) : playerInventory(getInventory())
     {
         maxHealth = max;
@@ -422,6 +422,10 @@ public:
                         cout << "Dodge is still on cooldown. You have to wait " << dodgeCooldown << " number of turns.\n";
                         incorrectChoice = true;
                     }
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
                     else if (choice < 0 || choice > 5) {
                         cout << "Incorrect value. Please enter a valid value.\n";
                         incorrectChoice = true;
@@ -638,6 +642,20 @@ public:
         if (isBlocking)
         {
             cout << "You successfully blocked the attack!\n";
+<<<<<<< Updated upstream
+=======
+            d = d * 0.25;
+            // Assuming playerInventory.getTotalEquippedDefense() is an integer value
+            d = d - playerInventory->getTotalEquippedDefense();
+            if (d < 0) {
+                d = 0;
+            }
+
+            // Convert the decimal damage to a whole number (rounding up)
+            d = static_cast<int>(ceil(d));
+
+            cout << "You took " << d << " damage\n";
+>>>>>>> Stashed changes
         }
         else if (isDodgingActivated)
         {
@@ -670,6 +688,20 @@ public:
         if (isBlocking)
         {
             cout << "You successfully blocked the attack!\n";
+<<<<<<< Updated upstream
+=======
+            d = d * 0.25;
+            // Assuming playerInventory.getTotalEquippedDefense() is an integer value
+            d = d - playerInventory->getTotalEquippedDefense();
+            if (d < 0) {
+                d = 0;
+            }
+
+            // Convert the decimal damage to a whole number (rounding up)
+            d = static_cast<int>(ceil(d));
+
+            cout << "You took " << d << " damage\n";
+>>>>>>> Stashed changes
         }
         else if (isDodgingActivated)
         {
@@ -701,7 +733,22 @@ public:
 
         if (isBlocking)
         {
+<<<<<<< Updated upstream
             std::cout << "You successfully blocked the attack!\n";
+=======
+            cout << "You successfully blocked the attack!\n";
+            d = d * 0.25;
+            // Assuming playerInventory.getTotalEquippedDefense() is an integer value
+            d = d - playerInventory->getTotalEquippedDefense();
+            if (d < 0) {
+                d = 0;
+            }
+
+            // Convert the decimal damage to a whole number (rounding up)
+            d = static_cast<int>(ceil(d));
+
+            cout << "You took " << d << " damage\n";
+>>>>>>> Stashed changes
         }
         else if (isDodgingActivated)
         {
