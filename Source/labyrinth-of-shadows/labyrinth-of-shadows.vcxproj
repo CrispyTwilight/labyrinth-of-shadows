@@ -129,7 +129,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="InventoryLoadFile.cpp" />
     <ClCompile Include="labyrinth-of-shadows.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -142,13 +141,11 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Inventory.h" />
-    <ClInclude Include="InventoryLoadFile.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Load.h" />
     <ClInclude Include="Loot.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapManager.h" />
-    <ClInclude Include="Placeholder.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Potion.h" />
     <ClInclude Include="Ranger.h" />
