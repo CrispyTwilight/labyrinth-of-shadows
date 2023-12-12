@@ -16,6 +16,8 @@
 #include "Boss.h"
 #include "Inventory.h"
 #include "Screens.h"
+#include "Map.h"
+#include "Player.h"
 
 using namespace std;
 // Will need to #include all of the other classes here.
