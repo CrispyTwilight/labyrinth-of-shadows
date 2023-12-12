@@ -40,3 +40,20 @@ This is a dungeon crawl game played in the command line interface. The game allo
 
 #### Structure File Loot.h:
 - This file makes random dice rolls for whether loot that the player picks up is a weapon, a piece of armor, or a potion. It also calculates how much gold a user can get in a certain range.
+
+# Christian Baack
+#### MapManager.h:
+- Defines MapManager class.
+- Manages multiple maps (map0, map1, etc.).
+- Includes functionalities for map retrieval, updating, and resetting.
+
+#### Map.h:
+- Defines Map class.
+- Represents individual maps with dimensions and a 2D grid.
+- Includes methods for player position updating, map displaying, and level switching.
+
+#### Player.h:
+- Defines Player class.
+- Manages player's movement and position.
+- Integrates with Map class for gameplay mechanics.
+- Handles keys collection, fights triggering, and shop interactions.
