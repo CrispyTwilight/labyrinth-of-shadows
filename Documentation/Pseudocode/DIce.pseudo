@@ -38,7 +38,7 @@ Class Dice
         Set prevRoll = pr
     End Module
 
-    Public Function()
+    Public Function rollDice()
         Call setPrevRoll(rand() % (max - min + 1) + min)
         Return prevRoll
     End Function

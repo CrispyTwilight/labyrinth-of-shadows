@@ -1,0 +1,11 @@
+//Auth: Hunter Kauffman
+//Date: 12/11/23
+//Desc: Pseucode for staff
+
+Structure Staff
+    Declare Private Integer damage
+
+    Public Module Staff()
+        Set damage = 6 // Base damage for staff
+    End Module
+End Structure
