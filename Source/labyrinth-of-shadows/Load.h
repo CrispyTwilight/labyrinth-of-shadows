@@ -10,7 +10,6 @@
 #include "RangerLoadFile.h"
 #include "WizardLoadFile.h"
 #include "RogueLoadFile.h"
-#include "InventoryLoadFile.h"
 #include "Inventory.h"
 #include "Armor.h"
 #include "Weapon.h"
@@ -90,7 +89,7 @@ public:
         round = loadFile.round;
 
         inFile.close();
-        cout << "Character Loaded Sucessfully\n";
+        cout << "Character Loaded Successfully\n";
 
         loadInventory("wizard_inventory.txt");
 	}
@@ -131,7 +130,6 @@ public:
         Inventory& playerInventory = *Inventory::getInstance();
         ifstream inFile(filename);
         if (inFile.is_open()) {
-            InventoryLoadFile loadFile;
             string line;
 
             while (getline(inFile, line)) {
