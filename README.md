@@ -57,3 +57,13 @@ This is a dungeon crawl game played in the command line interface. The game allo
 - Manages player's movement and position.
 - Integrates with Map class for gameplay mechanics.
 - Handles keys collection, fights triggering, and shop interactions.
+
+# Hunter Kauffman
+### Dice.h:
+- Defines the Dice class.
+- Gets a max and min for the dice.
+- Returns a random number based on the min and max.
+
+### Rogue.h
+- Defines the Rogue class.
+- Manges the players damage, health, and attack
