@@ -1,0 +1,20 @@
+//Auth: Hunter Kauffman
+//Date: 12/7/23
+//Desc: Pseucode for Rogue load file
+
+Structure RogueLoadFile
+    Declare Integer max
+    Declare Integer health
+    Declare Integer strength
+    Declare Integer intelligence
+    Declare Integer dexterity
+    Declare Integer level
+    Declare Integer numTurns
+    Declare Integer healthPotions
+    Declare Integer exp
+    Declare Integer expNeed
+    Declare Integer sneakAttackLvl
+    Declare Integer DodgeLvl
+    Declare Integer round
+    Declare Integer score
+ENd Structure

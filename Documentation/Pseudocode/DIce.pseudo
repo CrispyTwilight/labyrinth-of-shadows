@@ -1,0 +1,45 @@
+//Auth: Hunter Kauffman
+//Date: 12/7/23
+//Desc: Pseucode for dice
+
+Class Dice
+    Declare Private Integer max
+    Declare Private Integer min
+    Declare Private Integer prevRoll
+
+    Public Module Dice(Integer mx = 0, Integer mn = 0, Integer pr = 0)
+        Call setMax(mx)
+        Call setMin(mn)
+        Call setPrevRoll(pr)
+    End Module
+
+    Public Integer Function getMax()
+        Return max
+    End Function
+
+    Public Integer Function getMin()
+        Return min
+    End Function
+
+    Public Integer Function getPrevRoll()
+        Return prevRoll
+    End Function
+
+
+    Public Module setMax(Integer mx)
+        Set max = mx
+    End Module
+
+    Public Module setMax(Integer mn)
+        Set min = mn
+    End Module
+
+    Public Module setMax(Integer pr)
+        Set prevRoll = pr
+    End Module
+
+    Public Function()
+        Call setPrevRoll(rand() % (max - min + 1) + min)
+        Return prevRoll
+    End Function
+End Class

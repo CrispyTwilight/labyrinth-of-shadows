@@ -1,0 +1,36 @@
+//Auth: Hunter Kauffman
+//Date: 12/7/23
+//Desc: Pseucode for character
+
+Includ "Inventory.pseudo"
+
+Class Character
+    Declare Private Integer health
+    Declare Private String name
+
+    Public Module Character(Integer hea, String n, Integer gold)
+        health = hea
+        name = n
+    End Module
+
+    Public Module setHealth(Integer value)
+        Set health = value
+    End Module
+
+    Public Module setName(string n)
+        Set name = n
+    End Module
+
+
+    Public Integer Function getHealth()
+        Return health
+    End Function
+
+    Public String Function getName()
+        Return name
+    End Function
+
+    Public Inventory Function getInventory()
+        Return Inventory::getInstance()
+    End Function
+End Class
