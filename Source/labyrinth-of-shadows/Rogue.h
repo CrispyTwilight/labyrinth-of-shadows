@@ -813,7 +813,7 @@ public:
             cout << "Enemy's health: " << enemy.getHealth() << endl
                 << "Dodge Cooldown " << dodgeCooldown << endl
                 << "Sneak Attack Cooldown " << sneakAttackCooldown << endl
-                << "Your Health is at " << getHealth() << endl;
+                << "Your Health is at " << getHealth() << " / " << maxHealth << endl;
             system("pause");
             system("cls");
         }
@@ -871,7 +871,7 @@ public:
             cout << "Enemy's health: " << boss.getHealth() << endl
                 << "Dodge Cooldown " << dodgeCooldown << endl
                 << "Sneak Attack Cooldown " << sneakAttackCooldown << endl
-                << "Your Health is at " << getHealth() << endl;
+                << "Your Health is at " << getHealth() << " / " << maxHealth <<  endl;
             system("pause");
             system("cls");
         }
@@ -926,7 +926,7 @@ public:
             cout << "Enemy's health: " << easyEnemy.getHealth() << endl
                 << "Dodge Cooldown " << dodgeCooldown << endl
                 << "Sneak Attack Cooldown " << sneakAttackCooldown << endl
-                << "Your Health is at " << getHealth() << endl;
+                << "Your Health is at " << getHealth() << " / " << maxHealth << endl;
             system("pause");
             system("cls");
         }

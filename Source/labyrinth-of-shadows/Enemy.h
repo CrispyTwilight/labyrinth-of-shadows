@@ -40,7 +40,6 @@ public:
 		generateBattleStyle();
 		expWorth = round * 2;
 		generateName();
-
 	}
 
 	int attack()

@@ -697,7 +697,7 @@ public:
     void attackMonster(Enemy & enemy, int d)
     {
        enemy.takeDamage(d);
-       cout << enemy.getName() << "took " << d << " damage.\n";
+       cout << enemy.getName() << " took " << d << " damage.\n";
     }
 
     //For the easy enemy
@@ -711,7 +711,7 @@ public:
     void attackMonsterBoss(Boss& boss, int d)
     {
         boss.takeDamage(d);
-        cout << boss.getName() << "took " << d << " damage.\n";
+        cout << boss.getName() << " took " << d << " damage.\n";
     }
 
     // Calculate the damage for the fireball.

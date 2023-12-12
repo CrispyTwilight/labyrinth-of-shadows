@@ -226,7 +226,7 @@ public:
     // Leveling up the player
     void levelUp()
     {
-        cout << "Congratulations you leveled up!";
+        cout << "Congratulations you leveled up!\n";
         // Increasing the players max health and healing them to full.
         maxHealth += 5;
         setHealth(maxHealth);
@@ -464,9 +464,6 @@ public:
                     << "4. Rain of Arrows\n"
                     << "5. Charged Shot\n"
                     << "6. Repulsion\n" << endl;
-
-
-
 
                 bool incorrectChoice = false;
                 do
@@ -707,7 +704,7 @@ public:
     void attackMonster(Enemy& enemy, int d)
     {
         enemy.takeDamage(d);
-        cout << enemy.getName() << "took " << d << " damage.\n";
+        cout << enemy.getName() << " took " << d << " damage.\n";
     }
 
     void attackMonsterEasy(easyEnemy& easyEnemy, int d)
@@ -719,7 +716,7 @@ public:
     void attackMonsterBoss(Boss& boss, int d)
     {
         boss.takeDamage(d);
-        cout << boss.getName() << "took " << d << " damage.\n";
+        cout << boss.getName() << " took " << d << " damage.\n";
     }
 
     // Taking damage from the easy enemy.

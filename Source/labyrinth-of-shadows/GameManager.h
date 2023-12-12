@@ -191,17 +191,7 @@ public:
 
             gameMap.mapSwitcher();
 
-        case '?':
-        {
-            screen.showHelp();
-
-            break;
-        }
-        default:
-        {
-            cout << "You have encountered an unexpected error.\n";
-            break;
-        }
+       
             gameMap.moveL(playerY, playerX);
             gameMap.moveE();
 
