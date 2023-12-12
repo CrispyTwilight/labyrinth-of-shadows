@@ -200,7 +200,6 @@ public:
             gameMap.moveL(playerY, playerX);
             gameMap.moveE();
 
-
             visual();
             if (gameMap.getTrigger())
             {
