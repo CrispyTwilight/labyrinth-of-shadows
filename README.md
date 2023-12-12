@@ -59,7 +59,7 @@ This is a dungeon crawl game played in the command line interface. The game allo
 
 ## John O'Neal
 ### Inventory.h
-- This class represents the player's inventory in a game. It includes items, gold, and equipped weapons and armor. The inventory has a maximum weight and a maximum number of items it can hold.
+- This class represents the player's inventory in the game. It includes items, gold, and equipped weapons and armor. The inventory has a maximum weight and a maximum number of items it can hold.
 
 #### Private Fields:
 - `items`: A vector of pointers to Item objects. These represent the items in the inventory.
@@ -139,7 +139,7 @@ The GameManager class is responsible for managing the game and all of its compon
 - `fighting`: Handles the fighting mechanics of the game. It checks the character selected and the round number to determine the type of enemy to fight. It also handles the victory and defeat scenarios.
 
 ### labryinth-of-shadows.cpp
-- The main function of a program. It seeds the random number generator, creates an instance of the GameManager class, calls the processMainMenu method on the GameManager instance, and then ends the program.
+- The main function of the program. It seeds the random number generator, creates an instance of the GameManager class, calls the processMainMenu method on the GameManager instance, and then ends the program.
 
 ## Hunter Kauffman
 ### Dice.h:
