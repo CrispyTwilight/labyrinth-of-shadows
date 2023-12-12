@@ -1,0 +1,53 @@
+// Auth: John O'Neal
+// Date: 12/11/23
+// Desc: Pseucode for Boss.h
+
+Include "All_Includes.h"
+
+Class Boss Extends Charater
+    Declare Private Integer strength
+    Declare Private Integer dexterity
+    Declare Private Integer expWorth
+    Declare Private String name 
+    Declare Private Dice enemyDice
+
+    Public Funtion Boss(Integer round)
+        generateHealth(round)
+        generateStrength(round)
+        generateDexterity(round)
+        name = "The Dark Lord"
+        expWorth = round *5
+    End Function
+
+    Public Function Integer attack()
+        Return strength
+    End Function
+
+    Public Function Integer takeDamage(Integer d)
+        setHealth(getHealth() - d)
+    End Function
+
+    Public Function Integer giveEXP()
+        Return expWorth
+    End Function
+
+    Public Module generateHealth(Integer round)
+        setHealth(350)
+    End Module
+
+    Public Module generateStrength(Integer round)
+        strength = 70
+    End Module
+    
+    Public Module generateDexterity(Integer round)
+        dexterity = 50
+    End Module
+
+    Public Constant Function Integer getDamage()
+        Return strength
+    End Function
+
+    Public Constant Function String getName()
+        Return name
+    End Function
+End Class

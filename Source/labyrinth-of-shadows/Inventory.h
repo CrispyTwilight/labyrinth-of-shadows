@@ -225,36 +225,56 @@ public:
 	}
 
 	void equipItem() {
-		 cout << "Equip what?";
+		cout << "Equip what?";
 		int index = getZeroBasedIntOrQuit();
-		if (index == -1 || index < 0 || index >= items.size()) {
+		if (index == -1) {
+			return;
+		}
+
+		if (index < 0 || index >= items.size()) {
 			cout << "\nInvalid index. Please try again\n";
 			return;
 		}
+
 		Item* item = items[index];
+		if (item == nullptr) {
+			cout << "\nInvalid item. Please try again\n";
+			return;
+		}
+
+		auto* potion = dynamic_cast<Potion*>(item);
+		if (potion != nullptr) {
+			cout << "\nCannot equip a potion." << endl;
+			return;
+		}
 
 		auto* armor = dynamic_cast<Armor*>(item);
-		auto* weapon = dynamic_cast<Weapon*>(item);
-
 		if (armor != nullptr) {
-			if (equippedArmorSlots.find(armor->type) != equippedArmorSlots.end()) {
-				// An armor of this type is already equipped, so unequip it first.
-				auto* previousArmor = equippedArmorSlots[armor->type];
-				cout << "\nUnequipped previous " << armorTypeToString(armor->type) << " armor: " << previousArmor->name;
-			}
-			// Armor slot for this type doesn't exist, so create one and equip the armor.
-			equippedArmorSlots[armor->type] = armor;
-			cout << "\nEquipped armor: " << armor->name << endl;
+			equipArmor(armor);
 			return;
 		}
 
+		auto* weapon = dynamic_cast<Weapon*>(item);
 		if (weapon != nullptr) {
-			equippedWeapon = weapon;
-			cout << "\nEquipped weapon: " << weapon->name << endl;
+			equipWeapon(weapon);
 			return;
 		}
-		// Not a valid item to equip
-		cout << "\nCannot equip a potion." << endl;
+	}
+
+	void equipArmor(Armor* armor) {
+		if (equippedArmorSlots.find(armor->type) != equippedArmorSlots.end()) {
+			// An armor of this type is already equipped, so unequip it first.
+			auto* previousArmor = equippedArmorSlots[armor->type];
+			cout << "\nUnequipped previous " << armorTypeToString(armor->type) << " armor: " << previousArmor->name;
+		}
+		// Armor slot for this type doesn't exist, so create one and equip the armor.
+		equippedArmorSlots[armor->type] = armor;
+		cout << "\nEquipped armor: " << armor->name << endl;
+	}
+
+	void equipWeapon(Weapon* weapon) {
+		equippedWeapon = weapon;
+		cout << "\nEquipped weapon: " << weapon->name << endl;
 	}
 
 	void discardItem() {
@@ -264,7 +284,11 @@ public:
 		}
 		cout << "Discard what?";
 		int index = getZeroBasedIntOrQuit();
-		if (index == -1 || index < 0 || index >= items.size()) {
+		if (index == -1 ) {
+			return;
+		}
+
+		if (index < 0 || index >= items.size()) {
 			cout << "\nInvalid index. Please try again\n";
 			return;
 		}
@@ -285,17 +309,22 @@ public:
 			cout << "You don't have any health potions.\n";
 			return;
 		}
-		cout << "Take which potion?";
+		cout << "Take what?";
 		int index = getZeroBasedIntOrQuit();
-		if (index == -1 || index < 0 || index >= items.size()) {
+		if (index == -1) {
+			return;
+		}
+
+		if (index < 0 || index >= items.size()) {
 			cout << "\nInvalid index. Please try again\n";
 			return;
 		}
-		if (dynamic_cast<Potion*>(items[index]) != nullptr) {
-			// Code to consume health potion goes here
-		} else {
+
+		if (dynamic_cast<Potion*>(items[index]) == nullptr) {
 			cout << "\nThat item is not a health potion.\n";
 		}
+
+		// Code to consume health potion goes here
 	}
 
 	void openInventory() {
