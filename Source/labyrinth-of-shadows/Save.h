@@ -123,9 +123,9 @@ public:
             for (const auto& armorSlot : playerInventory.getEquippedArmorSlots()) {
                 Armor* equippedArmor = armorSlot.second;
                 if (equippedArmor) {
-                    outFile << "EquippedArmor," << armorTypeToString(armorSlot.first) << ","
-                        << equippedArmor->defense << "," << equippedArmor->weight << ","
-                        << equippedArmor->value << "," << equippedArmor->name << ","
+                    outFile << "EquippedArmor" << endl << armorTypeToString(armorSlot.first) << endl
+                        << equippedArmor->defense << endl << equippedArmor->weight << endl
+                        << equippedArmor->value << endl << equippedArmor->name << endl
                         << equippedArmor->material << "\n";
                 }
             }
@@ -133,31 +133,31 @@ public:
             // Save equipped weapon details
             Weapon* equippedWeapon = playerInventory.getEquippedWeapon();
             if (equippedWeapon) {
-                outFile << "EquippedWeapon," << weaponTypeToString(equippedWeapon->type) << ","
-                    << equippedWeapon->damage << "," << equippedWeapon->weight << ","
-                    << equippedWeapon->value << "," << equippedWeapon->name << ","
+                outFile << "EquippedWeapon" << endl << weaponTypeToString(equippedWeapon->type) << endl
+                    << equippedWeapon->damage << endl << equippedWeapon->weight << endl
+                    << equippedWeapon->value << endl << equippedWeapon->name << endl
                     << equippedWeapon->material << "\n";
             }
 
             // Save gold
-            outFile << "Gold," << playerInventory.getGold() << "\n";
+            outFile << "Gold" << endl << playerInventory.getGold() << endl;
 
             // Save individual items
             const vector<Item*>& items = playerInventory.getItems();
             for (const Item* item : items) {
                 if (const Armor* armorItem = dynamic_cast<const Armor*>(item)) {
                     // This is an Armor item
-                    outFile << "Armor," << armorTypeToString(armorItem->type) << ","
-                        << armorItem->defense << "," << armorItem->weight << ","
-                        << armorItem->value << "," << armorItem->name << ","
-                        << armorItem->material << "\n";
+                    outFile << "Armor" << endl << armorTypeToString(armorItem->type) << endl
+                        << armorItem->defense << endl << armorItem->weight << endl
+                        << armorItem->value << endl << armorItem->name << endl
+                        << armorItem->material << endl;
                 }
                 else if (const Weapon* weaponItem = dynamic_cast<const Weapon*>(item)) {
                     // This is a Weapon item
-                    outFile << "Weapon," << weaponTypeToString(weaponItem->type) << ","
-                        << weaponItem->damage << "," << weaponItem->weight << ","
-                        << weaponItem->value << "," << weaponItem->name << ","
-                        << weaponItem->material << "\n";
+                    outFile << "Weapon" << endl <<  weaponTypeToString(weaponItem->type) << endl
+                        << weaponItem->damage << endl << weaponItem->weight << endl
+                        << weaponItem->value << endl << weaponItem->name << endl
+                        << weaponItem->material << endl;
                 }
             }
             cout << "Inventory details saved to " << filename << endl;

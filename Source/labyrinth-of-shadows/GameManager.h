@@ -150,16 +150,22 @@ public:
 
             switch (choice) {
             case 1:
+                Inventory::getInstance()->setMaxWeight(characterSelected);
                 load.loadTheGameRanger(score, round, playerRanger);
                 characterSelected = "Ranger";
+                startMap();
                 break;
             case 2:
+                Inventory::getInstance()->setMaxWeight(characterSelected);
                 load.loadTheGameWizard(score, round, playerWizard);
                 characterSelected = "Wizard";
+                startMap();
                 break;
             case 3:
+                Inventory::getInstance()->setMaxWeight(characterSelected);
                 load.loadTheGameRogue(score, round, playerRogue);
                 characterSelected = "Rogue";
+                startMap();
                 break;
             default:
                 cout << "Incorrect value. Please enter a valid value.\n";
