@@ -1,0 +1,173 @@
+//Auth: William Brickner
+// Date: 12/8/23
+// Desc: A save class that will allow us to save from any where else in the program.
+// Before These are truly finished I need to see the inventory needs to be finished
+Declare class Save
+{
+
+    // Default Constructor
+	Declare Public Constructor Save()
+	{}
+
+    Declare Public void saveTheGameRanger(Integer round, Integer score, Ranger& playerRanger)
+    {
+        //Saving the game if they are a ranger
+        Open("ranger.txt")
+        if (File is Open) {
+            Read << playerRanger.getMaxHealth() 
+            Read << playerRanger.getHealth() 
+            Read << playerRanger.getStrength() 
+            Read << playerRanger.getIntelligence() 
+            Read << playerRanger.getDexterity() 
+            Read << playerRanger.getLevel() 
+            Read << playerRanger.getNumTurns() 
+            Read << playerRanger.getHealthPotions() 
+            Read << playerRanger.getExp() 
+            Read << playerRanger.getExpNeeded() 
+            Read << playerRanger.getRainLvl() 
+            Read << playerRanger.getChargedLvl() 
+            Read << playerRanger.getRepulsionLvl() 
+            Read << score 
+            Read << round 
+
+            Display "Character saved successfully!" 
+            Call saveInventory("ranger_inventory.txt")
+        }
+        else {
+            Display "Unable to open the file for saving!" 
+        }
+
+        Close("ranger.txt")
+    }
+    End Function
+
+    Declare Public Function void saveTheGameWizard(Integer round, Integer score, Wizard& playerWizard)
+    {
+        // Saving the game if they are a wizard
+        Open ("wizard.txt")
+        if (Read.is_open())
+        {
+            Read << playerWizard.getMaxHealth() 
+            Read << playerWizard.getHealth() 
+            Read << playerWizard.getStrength() 
+            Read << playerWizard.getIntelligence() 
+            Read << playerWizard.getDexterity() 
+            Read << playerWizard.getLevel() 
+            Read << playerWizard.getNumturns() 
+            Read << playerWizard.getHealthPotions() 
+            Read << playerWizard.getExp() 
+            Read << playerWizard.getExpNeeded() 
+            Read << playerWizard.getFireball() 
+            Read << playerWizard.getIceWall() 
+            Read << score 
+            Read << round 
+
+            Display "Character saved successfully!" 
+            Call saveInventory("wizard_inventory.txt")
+        }
+        else {
+            Display "Unable to open the file for saving!" 
+        }
+
+        Close("wizard.txt")
+	}
+    End Function
+
+    Declare Public Function void saveTheGameRogue(Integer& round, Integer& score, Rogue& playerRogue)
+    {
+        //Saving the game if they are a rogue
+        Open("rogue.txt")
+        if (File is Open) {
+            Read << playerRogue.getMaxHealth() 
+            Read << playerRogue.getHealth() 
+            Read << playerRogue.getStrength() 
+            Read << playerRogue.getIntelligence() 
+            Read << playerRogue.getDexterity() 
+            Read << playerRogue.getLevel() 
+            Read << playerRogue.getNumTurns() 
+            Read << playerRogue.getHealthPotions() 
+            Read << playerRogue.getExp() 
+            Read << playerRogue.getExpNeeded() 
+            Read << playerRogue.getSneakAttackLvl() 
+            Read << playerRogue.getDodgeLvl() 
+            Read << score 
+            Read << round 
+
+            Display "Character saved successfully!" 
+            Call saveInventory("rogue_inventory.txt")
+        }
+        else {
+            Display "Unable to open the file for saving!" 
+        }
+
+        Read.close()
+    }
+    End Function
+    Declare Public Function void saveInventory(Constant string& filename) Constant {
+        Declare Constant Inventory& playerInventory = *Inventory::getInstance()
+        Open(filename)
+
+        if (File is Open) {
+            // Save health potion count
+            // Read << "HealthPotion," << playerInventory.getHealthPotion() << "\n" JPO: We need to save the Items, health potions are one time use.
+
+            // Save equipped armor details
+            for (Constant auto& armorSlot : playerInventory.getEquippedArmorSlots()) {
+                Declare Armor* equippedArmor 
+                Set equippedArmor = armorSlot.second
+                if (equippedArmor) {
+                    Read << "EquippedArmor"  << armorTypeToString(armorSlot.first) 
+                        << equippedArmor->defense  << equippedArmor->weight 
+                        << equippedArmor->value  << equippedArmor->name 
+                        << equippedArmor->material 
+                }
+            end if
+            }
+            End For loop
+
+            // Save equipped weapon details
+            Declare Weapon* EquippedWeapon
+            Set EquippedWeapon= playerInventory.getEquippedWeapon()
+            if (equippedWeapon) {
+                Read << "EquippedWeapon"  << weaponTypeToString(equippedWeapon->type) 
+                    << equippedWeapon->damage  << equippedWeapon->weight 
+                    << equippedWeapon->value  << equippedWeapon->name 
+                    << equippedWeapon->material 
+            }
+            End if
+
+            // Save gold
+            Read << "Gold"  << playerInventory.getGold() 
+
+            // Save individual items
+            Declare Constant vector<Item*>& items 
+            Set items = playerInventory.getItems()
+            for (Constant Item* item : items) {
+                if (Constant Armor* armorItem = dynamic_cast<Constant Armor*>(item)) {
+                    // This is an Armor item
+                    Read << "Armor"  << armorTypeToString(armorItem->type) 
+                        << armorItem->defense  << armorItem->weight 
+                        << armorItem->value  << armorItem->name 
+                        << armorItem->material 
+                }
+                else if (Constant Weapon* weaponItem = dynamic_cast<Constant Weapon*>(item)) {
+                    // This is a Weapon item
+                    Read << "Weapon"  <<  weaponTypeToString(weaponItem->type) 
+                        << weaponItem->damage  << weaponItem->weight 
+                        << weaponItem->value  << weaponItem->name 
+                        << weaponItem->material 
+                }
+            end if
+            }
+            End for
+            Display "Inventory details saved to " << filename 
+        }
+        else {
+            Display "Unable to open the file for saving inventory details\n"
+        }
+        End if
+        Close(filename)
+    }
+    End Function
+}
+End Class
