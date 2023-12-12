@@ -23,7 +23,6 @@ private:
 	string description;
 	Dice enemyDice;
 
-
 public:
 	Enemy(int round)
 	{

@@ -37,7 +37,7 @@ public:
 		return expWorth;
 	}
 
-	string getName() const // JPO: This is hiding the Character::getName() function
+	string getName() const
 	{
 		return name;
 	}

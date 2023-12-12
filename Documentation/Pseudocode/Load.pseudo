@@ -169,8 +169,16 @@ Declare class Load
                     Declare Weapon* newWeapon = new Weapon(type, damage, weight, value, name, material)
                     Call playerInventory.addItem(newWeapon)
                 }
+                else if (itemType == "Potion") {
+                    Declare String type, material, name
+                    Declare Integer heal, weight, value
+                    Declare getline(Read, type)
+                    Read >> heal >> weight >> value >> name >> material
+
+                    Declare Potion* newPotion = new Potion(type, heal, weight, value, name, material)
+                    Call playerInventory.addItem(newPotion)
+                }
                 End if
-                // Handle other item types similarly
             }
             End While 
 

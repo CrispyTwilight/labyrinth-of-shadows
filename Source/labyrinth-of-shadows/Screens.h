@@ -1,10 +1,7 @@
 // Auth: Christian A. Botos
 // Date: 12/09/2023
-// Desc: This is a header file that holds modules that display the title screen that comes with instructions
-
+// Desc: This is a header file that holds modules that display the title screens that comes with instructions.
 #pragma once
-
-#include "GameManager.h"
 #include <iostream>
 #include <conio.h>
 #include <string>
@@ -85,8 +82,7 @@ public:
         CTRL - LOAD GAME
         ESC - RETURN TO MENU
 
-        PRESS ANY KEY TO EXIT
-        )";
+        PRESS ANY KEY TO EXIT)";
 
         _getch(); // Pause for user input
         // This should return to whatever screen the user was on before.

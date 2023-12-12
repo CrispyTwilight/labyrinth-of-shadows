@@ -2,8 +2,6 @@
 // Date: 12/8/23
 // Desc: A save class that will allow us to save from any where else in the program.
 #pragma once
-// #include "All_Includes.h"
-// JPO: Temp fix for the issue with the compiler not finding the files
 #include <iostream>
 #include <fstream>
 #include "Ranger.h"
@@ -12,6 +10,7 @@
 #include "Inventory.h"
 #include "Armor.h"
 #include "Weapon.h"
+
 // Before These are truly finished I need to see the inventory needs to be finished
 class Save
 {
@@ -116,9 +115,6 @@ public:
         ofstream outFile(filename);
 
         if (outFile.is_open()) {
-            // Save health potion count
-            // outFile << "HealthPotion," << playerInventory.getHealthPotion() << "\n"; JPO: We need to save the Items, health potions are one time use.
-
             // Save equipped armor details
             for (const auto& armorSlot : playerInventory.getEquippedArmorSlots()) {
                 Armor* equippedArmor = armorSlot.second;
@@ -159,6 +155,13 @@ public:
                         << weaponItem->value << endl << weaponItem->name << endl
                         << weaponItem->material << endl;
                 }
+                else if (const Potion* potionItem = dynamic_cast<const Potion*>(item)) {
+					// This is a HealthPotion item
+					outFile << "Health Potion" << endl << potionTypeToString(potionItem->type) << endl
+                        << potionItem->heal << endl << potionItem->weight << endl
+                        << potionItem->value << endl << potionItem->name << endl
+                        << potionItem->material << endl;
+				}
             }
             cout << "Inventory details saved to " << filename << endl;
         }

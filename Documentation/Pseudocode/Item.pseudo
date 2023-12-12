@@ -1,6 +1,9 @@
 // Auth: Christian A. Botos
 // Date: 12/07/2023
 // Desc: This is the file that holds Item names and materials.
+Include <iostream>
+Include <string>
+Include <vector>
 
 Class Item 
 public:

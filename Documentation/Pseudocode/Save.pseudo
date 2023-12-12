@@ -108,9 +108,6 @@ Declare class Save
         Open(filename)
 
         if (File is Open) {
-            // Save health potion count
-            // Read << "HealthPotion," << playerInventory.getHealthPotion() << "\n" JPO: We need to save the Items, health potions are one time use.
-
             // Save equipped armor details
             for (Constant auto& armorSlot : playerInventory.getEquippedArmorSlots()) {
                 Declare Armor* equippedArmor 
@@ -157,7 +154,14 @@ Declare class Save
                         << weaponItem->value  << weaponItem->name 
                         << weaponItem->material 
                 }
-            end if
+                else if (Constant Potion* potionItem = dynamic_cast<Constant Potion*>(item)) {
+                    // This is a Potion item
+                    Read << "Potion"  << potionTypeToString(potionItem->type) 
+                        << potionItem->heal  << potionItem->weight 
+                        << potionItem->value  << potionItem->name 
+                        << potionItem->material
+                }
+                End if
             }
             End for
             Display "Inventory details saved to " << filename 

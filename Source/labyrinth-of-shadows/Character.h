@@ -13,9 +13,7 @@ private:
 
 public:
     Character()
-    {
-
-    }
+    {}
 
     Character(int hea, string n, int gold)
     {

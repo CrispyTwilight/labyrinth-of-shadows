@@ -1,9 +1,7 @@
-//Auth: William Brickner
-//Date: 11/30/23
-//Desc: Creating the subclass ranger for the player.
+// Auth: William Brickner
+// Date: 11/30/23
+// Desc: Creating the subclass ranger for the player.
 #pragma once
-// #include "All_Includes.h"
-// JPO: Temp fix for the issue with the compiler not finding the files
 #include "Character.h"
 #include <iostream>
 #include <string>
@@ -286,7 +284,7 @@ public:
             }
             default:
             {
-                cout << "Incorrect value. Please eneter a valid value.\n";
+                cout << "Incorrect value. Please enter a valid value.\n";
                 break;
             }
         }
@@ -334,7 +332,6 @@ public:
                     << "4. Rain of Arrows\n"
                     << "5. Charged Shot\n"
                     << "6. Repulsion\n" << endl;
-
 
                    bool incorrectChoice = false;
                 do
@@ -454,7 +451,6 @@ public:
         }
         if (!isStunned)
         {
-
             for (int turn = 1; turn <= numberTurns; ++turn)
             {
                 cout << "It's your turn, what would you like to do?\n";
@@ -498,9 +494,7 @@ public:
                         cout << "Incorrect value. Please enter a valid value.\n";
                         incorrectChoice = true;
                     }
-
                 } while (choice > 6 || choice < 0 || incorrectChoice);
-
 
                 switch (choice)
                 {
@@ -774,7 +768,6 @@ public:
             // Assuming playerInventory->getTotalEquippedDefense() is an integer value
             d = d - playerInventory->getTotalEquippedDefense();
 
-           
             if (d < 0) {
                 d = 0;
             }
@@ -783,7 +776,6 @@ public:
             d = static_cast<int>(ceil(d));
 
             cout << "You took " << d << " damage\n";
-            
         }
         else if (isRepulsionActivated)
         {

@@ -1,0 +1,37 @@
+Gold
+43
+Health Potion
+Half Heal
+14
+19
+4
+Clear
+Wheatgrass
+Health Potion
+Small Heal
+1
+5
+13
+Orange
+Corrupted Plants
+Health Potion
+Small Heal
+14
+13
+11
+Blue
+Corrupted Plants
+Health Potion
+Double Heal
+4
+16
+12
+Yellow
+Butterfly Wings
+Armor
+Greaves
+3
+2
+17
+Warrior's Garments
+Titanium

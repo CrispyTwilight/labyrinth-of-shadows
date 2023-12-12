@@ -2,7 +2,6 @@
 // Date: 12/07/2023
 // Desc: Header file for the Armor struct.
 
-// #include "All_Includes.h
 Include "Item.h"
 Include "Dice.h"
 
@@ -56,7 +55,7 @@ Structure Weapon Extends Item
 		End If
 	End Module
 
-	Module Weapon(string& type, int damage, int weight,int value, const string& name, const string& material) {
+	Module Weapon(const string& type, int damage, int weight, int value, const string& name, const string& material) {
 		this->type = stringToWeaponType(type)
 		this->damage = damage
 		this->weight = weight

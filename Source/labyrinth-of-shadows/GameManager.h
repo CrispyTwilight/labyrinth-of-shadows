@@ -19,8 +19,6 @@
 #include "Map.h"
 #include "Player.h"
 
-using namespace std;
-
 class GameManager
 {
 private:
@@ -95,7 +93,7 @@ public:
             cout << "Your game has been saved.\n";
         }
         else {
-            cout << "There is no character to be saved.";
+            cout << "There is no character to be saved. Quitting...\n";
         }
         return;
     }
@@ -176,8 +174,8 @@ public:
 
     void startMap()
     {
-        Map gameMap(51, 31); // JPO: Updated so that the @ is can actually be in the middle of the map.
-        Player player(gameMap, 25, 15); // JPO: Updated so that the player starts in the middle of the map.
+        Map gameMap(51, 31);
+        Player player(gameMap, 25, 15);
         while (true)
         {
             srand(time(NULL));

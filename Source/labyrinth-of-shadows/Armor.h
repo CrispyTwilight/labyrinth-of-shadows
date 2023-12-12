@@ -1,8 +1,7 @@
-// Auth: Christian A. Botos, John O'Neal
+// Auth: Christian A. Botos, John O'Neal, William Brickner
 // Date: 12/07/2023
 // Desc: Header file for the Armor struct.
 #pragma once
-// #include "All_Includes.h"
 #include "Item.h"
 #include "Dice.h"
 

@@ -1,9 +1,7 @@
-//Auth: Hunter Kauffman
-//Date: 12/5/23
-//Desc: Creating the subclass Rogue for the player.
+// Auth: Hunter Kauffman
+// Date: 12/5/23
+// Desc: Creating the subclass Rogue for the player.
 #pragma once
-// #include "All_Includes.h"
-// JPO: Temp fix for the issue with the compiler not finding the files
 #include <iostream>
 #include <string>
 #include <iterator>
@@ -211,8 +209,7 @@ public:
              << "2. Dodge " << dodgeLvl << endl;
 
         do {
-            std::cout << "Enter your choice: ";
-            // Here is the use of getch.
+            cout << "Enter your choice: ";
             choice = _getch() - '0';
             if (choice < 0 || choice > 2) {
                 cout << "Incorrect value. Please enter a valid value.\n";
@@ -330,20 +327,20 @@ public:
                     case 2:
                     {
                         // Block attack
-                        std::cout << "You have started to block\n";
+                        cout << "You have started to block\n";
                         isBlocking = true;
                         break;
                     }
                     case 3:
                     {
                         // Take Health Potion If have any
-                        std::cout << "You took a health potion\n";
+                        cout << "You took a health potion\n";
                         takePotion();
                         break;
                     }
                     case 4:
                     {
-                        std::cout << "You used Sneak Attack\n";
+                        cout << "You used Sneak Attack\n";
                         // Sneak Attack
                         attackMonster(enemy, sneakAttack());
                         sneakAttackCooldown = 3;
@@ -351,7 +348,7 @@ public:
                     }
                     case 5:
                     {
-                        std::cout << " You used Dodge\n";
+                        cout << " You used Dodge\n";
                         // Dodge
                         isDodgingActivated = true;
                         dodgeCooldown = dodgeLvl + 1;
@@ -359,14 +356,14 @@ public:
                     }
                     default:
                     {
-                        std::cout << "You put in an incorrect value please try again\n";
+                        cout << "You put in an incorrect value please try again\n";
                     }
                 }
             }
         }
         if (isStunned)
         {
-            std::cout << "You turn has been skipped!\n";
+            cout << "You turn has been skipped!\n";
         }
         system("pause");
         system("cls");
@@ -481,7 +478,7 @@ public:
                     }
                     default:
                     {
-                        std::cout << "You put in an incorrect value please try again\n";
+                        cout << "You put in an incorrect value please try again\n";
                     }
                 }
             }
@@ -755,7 +752,7 @@ public:
         }
         else if (enemyAttack <= dexterity)
         {
-            std::cout << "You dodged the attack!\n";
+            cout << "You dodged the attack!\n";
         }
         else
         {
@@ -764,7 +761,7 @@ public:
             {
                 d = 0;
             }
-            std::cout << "You took " << d << " damage\n";
+            cout << "You took " << d << " damage\n";
             setHealth(getHealth() - d);
         }
     }
@@ -791,7 +788,7 @@ public:
         {
             setHealth(maxHealth);
         }
-        cout << "Your health is now at " << getHealth() << std::endl;
+        cout << "Your health is now at " << getHealth() << endl;
     }
 
     void fightNormalEnemy(Enemy& enemy)
@@ -813,7 +810,7 @@ public:
             }
             else
             {
-                std::cout << "The enemies turn was skipped\n";
+                cout << "The enemies turn was skipped\n";
             }
             cout << "Enemy's health: " << enemy.getHealth() << endl
                 << "Dodge Cooldown " << dodgeCooldown << endl
@@ -825,13 +822,13 @@ public:
 
         if (getHealth() <= 0) {
             // Game over logic
-            std::cout << "You were defeated! Game Over.\n";
+            cout << "You were defeated! Game Over.\n";
 
         }
         else {
             // Victory logic
-            std::cout << "You defeated the enemy!\n";
-            std::cout << "You gained " << enemy.giveEXP() << "Experience\n";
+            cout << "You defeated the enemy!\n";
+            cout << "You gained " << enemy.giveEXP() << "Experience\n";
             isEnemyStunned = false;
             exp += enemy.giveEXP();
             if (checkForLevelUp(exp, expNeeded))

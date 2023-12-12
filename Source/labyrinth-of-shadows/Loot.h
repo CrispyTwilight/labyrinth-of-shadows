@@ -7,16 +7,15 @@
 struct Loot : public Item {
     Weapon lootWeapon;
     Armor lootArmor;
-    //Potion lootPotion;
+    Potion lootPotion;
     int gold;
-
 
     // Constructor takes no arguments, overriding the default constructor
     Loot() {
         // Generate a random number between 1 and 100
         Dice lootDie(100, 1);
 
-        // 40% chance of getting some loot
+        // 40% chance of getting some loot, then 1/3 chance of getting a weapon, armor, or potion
         if ( int lootRoll = lootDie.rollDice() <= 40) {
             // Generate a random number between 1 and 3 to determine the type of loot
             Dice typeDie(3, 1);
@@ -33,7 +32,7 @@ struct Loot : public Item {
                 break;
             case 3:
                 // Generate a random potion
-                            // lootPotion = Potion(true);
+                lootPotion = Potion(true);
                 break;
             default:
                 cout << "Error: Invalid loot type roll.\n";
@@ -42,7 +41,7 @@ struct Loot : public Item {
         }
 
         // Else generate a random amount of gold. This always occurs.
-        Dice goldDie(50);
+        Dice goldDie(10);
         gold = goldDie.rollDice();
     }
 };
