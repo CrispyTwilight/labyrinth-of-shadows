@@ -653,6 +653,8 @@ public:
     // Taking damage from a normal enemy.
     void takeDamageBoss(Boss& boss, int d, Inventory& playerInventory)
     {
+        
+
         // Getting a random number and seeing if the players dex is higher and if it is they will dodge the attack.
         int enemyAttack = d100.rollDice();
         if (iceWallEffect > 0)
@@ -740,6 +742,8 @@ public:
     // The function for fighting every enemy after that.
     void fightNormalEnemy(Enemy& enemy, Inventory& playerInventory)
     {
+        iceWallCooldown = 0;
+        fireballCooldown = 0;
         //Telling them what they have encountered.
         cout << "You encounter " << enemy.getName() << " with " << enemy.getHealth() << " health!\n";
 
@@ -783,6 +787,8 @@ public:
      // The function when the player has to fight a weak enemy (The first three enemies).
     void fightWeakEnemy(easyEnemy & easyEnemy, Inventory& playerInventory)
     {
+        iceWallCooldown = 0;
+        fireballCooldown = 0;
      // Display the enemy's details
         cout << "You encounter " << easyEnemy.getName() << " with " << easyEnemy.getHealth() << " health!\n";
 
@@ -833,6 +839,8 @@ public:
     //Fighting the final boss.
     void fightBossEnemy(Boss& boss , Inventory& playerInventory)
     {
+        iceWallCooldown = 0;
+        fireballCooldown = 0;
         int turnCount = 0;
         cout << "You encounter " << boss.getName() << " with " << boss.getHealth() << " health!\n";
 

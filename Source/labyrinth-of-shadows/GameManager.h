@@ -191,6 +191,17 @@ public:
 
             gameMap.mapSwitcher();
 
+        case '?':
+        {
+            screen.showHelp();
+
+            break;
+        }
+        default:
+        {
+            cout << "You have encountered an unexpected error.\n";
+            break;
+        }
             gameMap.moveL(playerY, playerX);
             gameMap.moveE();
 
@@ -235,8 +246,9 @@ public:
                     cout << "Your score was " << score << endl;
                     score = 0;
                     round = 0;
+                    screen.showDeath();
                     processMainMenu();
-                    // This is a victory and should take them back to the map.
+                    // This is a lose scenario and should take them back to the map.
                 }
             }
 
@@ -249,12 +261,14 @@ public:
                 if (playerRanger.getHealth() > 0) {
                     round++;
                     score = score + 5;
+                    screen.showVictory();
                     // This is a victory and should take them back to the map.
                 }
                 else {
                     cout << "Your score was " << score << endl;
                     score = 0;
                     round = 0;
+                    screen.showDeath();
                     //Should Restart the game
                 }
             }
@@ -274,6 +288,7 @@ public:
                     cout << "Your score was " << score << endl;
                     score = 0;
                     round = 0;
+                    screen.showDeath();
                     processMainMenu();
                    // Should Restart the game
                 }
@@ -304,12 +319,13 @@ public:
                     cout << "Your score was " << score << endl;
                     score = 0;
                     round = 0;
+                    screen.showDeath();
                     processMainMenu();
                     //This is a loss and should restart the game.
                 }
             }
 
-            if (isBossFight)
+            else if (isBossFight)
             {
                 Boss* bossPtr = new Boss(round);
 
@@ -330,6 +346,7 @@ public:
                     cout << "Your score was " << score << endl;
                     score = 0;
                     round = 0;
+                    screen.showDeath();
                     processMainMenu();
                     //This is a lose and should restart the game.
                 }
@@ -352,8 +369,9 @@ public:
                     cout << "Your score was " << score << endl;
                     score = 0;
                     round = 0;
+                    screen.showDeath();
                     processMainMenu();
-                   //This is a loss and should restart the game.
+                   // This is a loss and should restart the game.
                 }
             }
         }
@@ -380,13 +398,12 @@ public:
                 cout << "Your score was " << score << endl;
                 score = 0;
                 round = 0;
+                screen.showDeath();
                 processMainMenu();
-                //This is a loss and should restart the game.
+                // This is a loss and should restart the game.
             }
         }
-
-
-        if (isBossFight)
+        else if (isBossFight)
         {
             Boss* bossPtr = new Boss(round);
 
@@ -407,6 +424,7 @@ public:
                 cout << "Your score was " << score << endl;
                 score = 0;
                 round = 0;
+                screen.showDeath();
                 processMainMenu();
                 //This is a lose and should restart the game.
             }
@@ -414,7 +432,6 @@ public:
 
         else
         {
-
             Enemy* enemyPtr = new Enemy(round);
             playerRogue.fightNormalEnemy(*enemyPtr, playerInventory);
 
@@ -432,10 +449,10 @@ public:
                 cout << "Your score was " << score << endl;
                 score = 0;
                 round = 0;
+                screen.showDeath();
                 processMainMenu();
                 //This is a loss and should restart the game.
             }
-
         }
         }
     };

@@ -8,7 +8,8 @@
 #include <iterator>
 #include <string>
 #include <iostream>
-
+#include <vector>
+#include <random>
 #include "Sword.h"
 #include "Bow.h"
 #include "Staff.h"
@@ -38,7 +39,7 @@ public:
 		generateDexterity(round);
 		generateBattleStyle();
 		expWorth = round * 2;
-		generateNameAndDescription();
+		generateName();
 
 	}
 
@@ -81,31 +82,22 @@ public:
 		battleStyle = enemyDice.rollDice(); // Randomly choose battle style (0, 1, or 2)
 	}
 
-	void generateNameAndDescription() {
-		string names[] = { "Garkle", "Snarflark ", "Zog", "Blarg", "Gruk" };
-		string creatureTypes[] = { "Bandit", "Goblin", "Gremlin", "Skeleton" };
+	
+	void generateName() 
+	{
+			vector<string> names = { "Garkle", "Snarflark", "Zog", "Blarg", "Gruk" };
+			vector<string> creatureTypes = { "Bandit", "Goblin", "Gremlin", "Skeleton" };
 
-		enemyDice.setMax(size(names));
-		enemyDice.setMin(0);
-		int nameIndex = enemyDice.rollDice();
-		enemyDice.setMax(size(creatureTypes));
-		int typeIndex = enemyDice.rollDice();
+			// Randomly select indices for name and creature type
+			enemyDice.setMax(names.size() - 1);
+			int nameIndex = enemyDice.rollDice();
 
-		setName(names[nameIndex] + " the " + creatureTypes[typeIndex]);
-		description = " a fearsome creature";
+			enemyDice.setMax(creatureTypes.size() - 1);
+			int typeIndex = enemyDice.rollDice();
 
-		if (creatureTypes[typeIndex] == "Bandit") {
-			description = " a cunning bandit";
-		}
-		else if (creatureTypes[typeIndex] == "Goblin") {
-			description = " a mischievous goblin";
-		}
-		else if (creatureTypes[typeIndex] == "Gremlin") {
-			description = " a tricky gremlin";
-		}
-		else if (creatureTypes[typeIndex] == "Skeleton") {
-			description = " an eerie skeleton";
-		}
+			// Construct the name and description based on the randomly chosen indices
+			setName(names[nameIndex] + " the " + creatureTypes[typeIndex]);
+			
 	}
 	int getDamage()
 	{

@@ -42,21 +42,12 @@ using namespace std;
 #include "Loot.h"
 
 //Character and enemy includes
-#include "Dagger.h"
-#include "Sword.h"
-#include "Bow.h"
-#include "Staff.h"
 
-#include "Character.h"
-#include "Enemy.h"
-#include "easyEnemy.h"
-#include "Boss.h"
+
+
 
 #include "Player.h"
-#include "Ranger.h"
-#include "Boss.h"
-#include "Rogue.h"
-#include "Wizard.h"
+
 
 // File includes
 #include "RangerLoadFile.h"
