@@ -1,0 +1,98 @@
+// Auth: Christian A. Botos
+// Date: 12/07/2023
+// Desc: Header file for the Armor struct.
+
+// #include "All_Includes.h
+Include "Item.h"
+Include "Dice.h"
+
+Structure Weapon Extends Item
+
+    Enumerated WeaponType
+		NONE, // Default value
+		AXE,
+		BOW,
+		DAGGER,
+		SPEAR,
+		STAFF,
+		SWORD,
+		WEAPON_TYPE_COUNT // Used to determine the number of possible weapon types.
+	End Enumerated
+
+	// Other fields
+	Declare Public WeaponType type
+	Declare Public Integer damage
+	Declare Public Integer weight
+	Declare Public String material
+
+	// Constructor with default arguments and initializer list.
+	// All parameters are passed by const reference to avoid copying the arguments for efficiency.
+	Module Weapon(Constant Boolean& randomize = false, Constant WeaponType& type = NONE, Constant Integer& damage = 0, Constant Integer& weight = 0, Constant Integer& value = 0, Constant String& name = "Default Name", Constant String& material = "Default Material")
+		If (randomize)
+			Dice typeDie(Weapon::WEAPON_TYPE_COUNT - 1, 1)
+			this->type = static_cast<WeaponType>(typeDie.rollDice())
+
+			Dice dmgDie(20, 1)
+			this->damage = dmgDie.rollDice()
+
+			Dice weightDie(20, 1)
+			this->weight = weightDie.rollDice()
+
+			Dice valueDie(20, 1)
+			this->value = valueDie.rollDice()
+
+			Dice nameDie(possibleWeaponNames.size() - 1)
+			this->name = possibleWeaponNames[nameDie.rollDice()]
+
+			Dice materialDie(possibleWeaponMaterials.size() - 1)
+			this->material = possibleWeaponMaterials[materialDie.rollDice()]
+		Else
+			this->type = type
+			this->damage = damage
+			this->weight = weight
+			this->value = value
+			this->name = name
+			this->material = material
+		End If
+	End Module
+
+	Module Weapon(string& type, int damage, int weight,int value, const string& name, const string& material) {
+		this->type = stringToWeaponType(type)
+		this->damage = damage
+		this->weight = weight
+		this->value = value
+		this->name = name
+		this->material = material
+	End Module
+
+	Module WeaponType stringToWeaponType(const string& weaponTypeStr) {
+		If (weaponTypeStr == "Axe")
+			return Weapon::AXE
+		Else If (weaponTypeStr == "Bow")
+			return Weapon::BOW
+		Else If (weaponTypeStr == "Dagger")
+			return Weapon::DAGGER
+		Else If (weaponTypeStr == "Spear")
+			return Weapon::SPEAR
+		Else If (weaponTypeStr == "Staff")
+			return Weapon::STAFF
+		Else If (weaponTypeStr == "Sword")
+			return Weapon::SWORD
+		Else
+			return Weapon::NONE
+        End If
+	End Module
+End Structure
+
+// Operating globally on the Weapon struct. It is put in this file because it is related to the Weapon struct.
+Module String weaponTypeToString(Weapon::WeaponType type)
+	switch (type)
+	case Weapon::AXE: return "Axe"
+	case Weapon::BOW: return "Bow"
+	case Weapon::DAGGER: return "Dagger"
+	case Weapon::SPEAR: return "Spear"
+	case Weapon::STAFF: return "Staff"
+	case Weapon::SWORD: return "Sword"
+	default: return "None"
+	End Switch
+End Module

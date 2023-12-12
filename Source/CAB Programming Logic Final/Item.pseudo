@@ -1,0 +1,97 @@
+// Auth: Christian A. Botos
+// Date: 12/07/2023
+// Desc: This is the file that holds Item names and materials.
+
+Class Item 
+public:
+    // Fields
+    Declare Public String name;
+    Declare Public Integer value;
+
+
+    // Constructor
+    Item(Constant String& name = "Default Name", Constant Integer& value = 0)
+        : name(name), value(value)
+
+    // Destructor
+    virtual ~Item() = default;
+
+    // These are static because they are the same for all instances of the struct.
+    Inline static vector<string> possibleWeaponNames =
+        "Reaper",
+        "Shadowstrike",
+        "Celestial Fury",
+        "Thunderclaw",
+        "Moonbeam",
+        "Soulrender",
+        "Blazebringer",
+        "Soulreaper",
+        "Omega",
+        "Oblivion",
+    End Inline
+
+    Inline static vector<string> possibleWeaponMaterials = 
+        "Ironwood",
+        "Alloy",
+        "Starlight Silver",
+        "Damascus Steel",
+        "Mithril",
+        "Titanium",
+        "Silver",
+        "Bronze",
+        "Iron",
+        "Steel",
+    End Inline
+
+    Inline static vector<string> possibleArmorNames = 
+        "Champion's Ward",
+        "Elder's Guard",
+        "Ender's Gear",
+        "Guardian's Ward",
+        "Soulward",
+        "Aegis",
+        "Elven Garb",
+        "Mage's Robes",
+        "Warrior's Garments",
+        "Divine Protector",
+    End Inline
+
+    Inline static vector<string> possibleArmorMaterials = 
+        "Cloth",
+        "Leather",
+        "Steel",
+        "Iron",
+        "Chainmail",
+        "Bronze",
+        "Silver",
+        "Alloy",
+        "Mithril",
+        "Titanium",
+    End Inline
+
+    Inline static vector<string> possiblePotionNames = 
+        "Blue",
+        "Red",
+        "Green",
+        "Orange",
+        "Yellow",
+        "Purple",
+        "Clear",
+        "Unmarked",
+        "White",
+        "Black",
+    End Inline
+
+    inline static vector<string> possiblePotionMaterials = 
+        "Wheatgrass",
+        "Divine Blood",
+        "Butterfly Wings",
+        "Common Mushrooms",
+        "Raven Eggs",
+        "Red Flowers",
+        "Falcon Eyes",
+        "Sunstone Dust",
+        "Corrupted Plants",
+        "Eagle Feathers",
+    End Inline
+End Class

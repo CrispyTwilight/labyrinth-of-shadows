@@ -1,0 +1,106 @@
+// Auth: Christian A. Botos
+// Date: 12/07/2023
+// Desc: Header file for the Armor struct as pseudocode.
+// #include "All_Includes.h"
+Include "Item.h"
+Include "Dice.h"
+
+Structure Armor Extends Item
+	// Define enumerated data type for Armor types that can be used to determine what kind of Armor it is.
+	Enumerated ArmorType
+		NONE, // Default value
+		BREASTPLATE,
+		HELMET,
+		CAP,
+		GAUNTLETS,
+		GREAVES,
+		SHIELD,
+		GLOVES,
+		ARMOR_TYPE_COUNT // Used to determine the number of Armor types
+	End Enumerated
+
+	// Other fields
+	Declare Public ArmorType type
+	Declare Public Integer defense
+	Declare Public Integer weight
+	Declare Public String material
+
+	// Constructor with default arguments and initializer list.
+	// All parameters are pass by const reference to avoid copying the arguments for efficiency.
+	Module Armor(const bool& randomize = false, const ArmorType& type = NONE, const int& defense = 0, const int& weight = 0, const int& value = 0, const string& name = "Default Name", const string& material = "Default Material") {
+		If (randomize)
+			Dice typeDie(Armor::ARMOR_TYPE_COUNT - 1, 1);
+			this->type = static_cast<ArmorType>(typeDie.rollDice());
+
+			Dice defDie(20, 1)
+			this->defense = defDie.rollDice()
+
+			Dice weightDie(20, 1)
+			this->weight = weightDie.rollDice()
+
+			Dice valueDie(20, 1)
+			this->value = valueDie.rollDice()
+
+			Dice nameDie(possibleArmorNames.size() - 1)
+			this->name = possibleArmorNames[nameDie.rollDice()]
+
+			Dice materialDie(possibleArmorMaterials.size() - 1)
+			this->material = possibleArmorMaterials[materialDie.rollDice()]
+		Else
+			this->type = type
+			this->defense = defense
+			this->weight = weight
+			this->value = value
+			this->name = name
+			this->material = material
+		End If
+	End Module
+
+	//Armor constructor for the load file
+	Module Armor(string armorType, int def, int wei, int val, const string& nm, const string& mat)
+		type = stringToArmorType(armorType);
+		defense = def
+		weight = wei
+		value = val
+		name = nm
+		material = mat
+	End Module
+
+	Module ArmorType getArmorType()
+		return type
+	End Module
+
+	Module ArmorType stringToArmorType(const string& armorTypeStr)
+		If (armorTypeStr == "Breastplate")
+			return Armor::BREASTPLATE
+		Else If (armorTypeStr == "Helmet")
+			return Armor::HELMET
+		Else If (armorTypeStr == "Cap")
+			return Armor::CAP
+		Else If (armorTypeStr == "Gauntlets")
+			return Armor::GAUNTLETS
+		Else If (armorTypeStr == "Greaves")
+			return Armor::GREAVES
+		Else If (armorTypeStr == "Shield")
+			return Armor::SHIELD
+		Else If (armorTypeStr == "Gloves")
+			return Armor::GLOVES
+		Else
+			return Armor::NONE
+        End If
+	End Module
+End Structure
+
+// Operating globally on the Armor struct. It is put in this file because it is related to the Armor struct.
+Module String armorTypeToString(Armor::ArmorType type) 
+	Switch (type) 
+	case Armor::BREASTPLATE: return "Breastplate"
+	case Armor::HELMET: return "Helmet"
+	case Armor::CAP: return "Cap"
+	case Armor::GAUNTLETS: return "Gauntlets"
+	case Armor::GREAVES: return "Greaves"
+	case Armor::SHIELD: return "Shield"
+	case Armor::GLOVES: return "Gloves"
+	default: return "None"
+	End Switch
+End Module
