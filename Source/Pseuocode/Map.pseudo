@@ -1,0 +1,174 @@
+class Map 
+    Private bool fightTrigger = false
+    Private bool bossTrigger = false
+    Private int mapLevel = 0
+    Private int width, height
+    Private vector<vector<char>> grid
+    Private MapManager manage
+    
+    Constructor Map(int w, int h) : width(w), height(h)
+        grid = vector<vector<char>>(h, vector<char>(w, '.'))
+    End Constructor
+
+    //Updates the players position
+    Public Module updatePlayerPosition(int x, int y)
+        grid[y][x] = '@'
+    End Module
+
+    //Displays the Map.
+    Public display() const
+        for (const auto& row : grid)
+            for (char cell : row)
+                Output cell, " "
+            End For
+            Output endl
+        End For
+    End Module
+
+    //Checks which map should be displayed
+    Public Module mapSwitcher()  
+        For (auto& row : grid) 
+            fill(row.begin(), row.end(), '.') //Replace every cell with '.' to clear enemies and other characters
+        End For
+        Switch (mapLevel)
+        Case 0:
+            grid = manage.getMap0()
+            Break
+        Case 1:
+            grid = manage.getMap1()
+            Break
+        Case 2:
+            grid = manage.getMap2()
+            Break
+        Case 3:
+            grid = manage.getMap3()
+            Break
+        default:
+            Break
+        End Switch
+    End Module
+
+    Public vector<vector<char>> getGrid() const
+        return grid
+    End Module
+
+    Public Module setLevel(int l)
+        mapLevel = l
+    End Module
+
+    Public int getLevel() const
+        return mapLevel
+    End Module
+
+    //updates the space given coordinates
+    Public Module updateSpace(int x, int y, char u)
+        manage.updateMap(y, x, mapLevel, u)
+    End Module
+
+    Public Module reset()
+        manage.reset()
+    End Module
+
+    //All the Logic to handle moving 'E' arround the map. 
+    Public Module moveE() 
+        static int currentDirection = -1
+        static bool stop = false
+        const int moveProbability = 60
+
+        vector<pair<int, int>> results = manage.findE(grid)
+        For (const auto& result : results)
+            int x = result.first
+            int y = result.second
+
+            If (rand() % 100 >= moveProbability) Then
+                continue
+            End If
+
+            If (currentDirection == -1 || stop) Then
+                currentDirection = rand() % 4 + 1
+                stop = false
+            End If
+
+            Switch (currentDirection)
+            case 1:
+                If (grid[x + 1][y] != '#' && grid[x + 1][y] != 'E' && grid[x + 1][y] != 'A' && grid[x + 1][y] != 'D' && grid[x + 1][y] != '?')
+                    manage.updateMap(x, y, mapLevel, '.')
+                    manage.updateMap(x + 1, y, mapLevel, 'E')
+                End If
+                Else
+                    stop = true
+                End Else
+                Break
+            case 2:
+                If (grid[x - 1][y] != '#' && grid[x - 1][y] != 'E' && grid[x - 1][y] != 'A' && grid[x - 1][y] != 'D' && grid[x - 1][y] != '?')
+                    manage.updateMap(x, y, mapLevel, '.')
+                    manage.updateMap(x - 1, y, mapLevel, 'E')
+                End If
+                Else
+                    stop = true
+                End Else
+                Break
+            case 3:
+                If (grid[x][y + 1] != '#' && grid[x][y + 1] != 'E' && grid[x][y + 1] != 'A' && grid[x][y + 1] != 'D' && grid[x][y + 1] != '?')
+                    manage.updateMap(x, y, mapLevel, '.')
+                    manage.updateMap(x, y + 1, mapLevel, 'E')
+                End If
+                Else
+                    stop = true
+                End Else
+                Break
+            case 4:
+                If (grid[x][y - 1] != '#' && grid[x][y - 1] != 'E' && grid[x][y - 1] != 'A' && grid[x][y - 1] != 'D' && grid[x][y - 1] != '?')
+                    manage.updateMap(x, y, mapLevel, '.')
+                    manage.updateMap(x, y - 1, mapLevel, 'E')
+                End If
+                Else
+                    stop = true
+                End Else
+                Break
+            default:
+                Break
+            End Switch
+    End Module
+        
+    //All the Logic to handle moving 'L' arround the map. 
+    Public Module moveL(int px, int py)
+        vector<pair<int, int>> results = manage.findL(grid)
+        For (const auto& result : results)
+            int x = result.first
+            int y = result.second
+
+            If (px > x && grid[x + 1][y] != '#' && grid[x + 1][y] != 'A' && grid[x + 1][y] != 'D' && grid[x + 1][y] != '?') Then
+                manage.updateMap(x, y, mapLevel, '.')
+                manage.updateMap(x + 1, y, mapLevel, 'L')
+            End If
+            Else If (px < x && grid[x - 1][y] != '#' && grid[x - 1][y] != 'A' && grid[x - 1][y] != 'D' && grid[x - 1][y] != '?') Then
+                manage.updateMap(x, y, mapLevel, '.')
+                manage.updateMap(x - 1, y, mapLevel, 'L')
+            End If
+            Else if (py > y && grid[x][y + 1] != '#' && grid[x][y + 1] != 'A' && grid[x][y + 1] != 'D' && grid[x][y + 1] != '?') Then
+                manage.updateMap(x, y, mapLevel, '.')
+                manage.updateMap(x, y + 1, mapLevel, 'L')
+            End If
+            Else If (py < y && grid[x][y - 1] != '#' && grid[x][y + 1] != 'A' && grid[x][y + 1] != 'D' && grid[x][y + 1] != '?') Then
+                manage.updateMap(x, y, mapLevel, '.')
+                manage.updateMap(x, y - 1, mapLevel, 'L')
+            End If
+        End For
+    End Module
+
+    Public Module toggle()
+        fightTrigger = !fightTrigger
+    End Module
+
+    Public Module void toggle2()
+        bossTrigger = !bossTrigger
+    End Module
+
+    Public bool getTrigger()
+        return fightTrigger
+    End Function
+
+    Public bool getTrigger2()
+        return bossTrigger
+    End Function  

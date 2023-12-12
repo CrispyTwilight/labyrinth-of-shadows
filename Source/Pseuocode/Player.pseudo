@@ -1,0 +1,92 @@
+Class Player
+
+Private Map& map
+Private int x, y //Player's position
+Private int px, py //Proposed position. Checking for walls
+Private int keys = 0
+
+Player(Map& map, int initialX, int initialY) : map(map), x(initialX), y(initialY), px(initialX), py(initialY) 
+
+//Function gets player input and calls the acording move function
+Public handleInput(char option)
+    Output "Enter move (WASD): "
+
+    Switch (option) 
+    Case 'W': Case 'w':
+        move(0, -1)
+        Break
+    Case 'S': Case 's':
+        move(0, 1)
+        Break
+    Case 'A': Case 'a':
+        move(-1, 0)
+        Break
+    Case 'D': Case 'd':
+        move(1, 0)
+        Break
+    End Switch
+End Module
+
+//This will check if the proposed position is valid
+Public void move(int dx, int dy)
+    px += dx
+    py += dy
+
+    //All the diffferent checks for Colissions.
+    If (map.getGrid()[py][px] == 'A') Then
+        map.setLevel(map.getLevel() - 1)
+        px = x = 25 // JPO: These assignments didn't modify the "p" variables at all, so I changed to double assignment.
+        py = y = 15
+    End If
+    If (map.getGrid()[py][px] == '?')
+        map.updateSpace(px, py, '.')
+        keys += 1
+        If (keys == 5)
+            map.updateSpace(24, 14, '?')
+        End If
+    End If
+    If (map.getGrid()[py][px] == 'E' || map.getGrid()[py][px] == 'L')
+        map.toggle()
+    End If
+    If (map.getGrid()[py][px] == 'D')
+        map.setLevel(map.getLevel() + 1)
+        px = x = 25
+        py = y = 15
+    End If
+    If (map.getGrid()[py][px] == 'S')
+        Shop::getInstance()->runShop() // Call to handle the shop logic.
+    End If
+    Else If (map.getGrid()[py][px] != '#')
+        x += dx
+        y += dy
+    End If
+    px = x
+    py = y
+
+    resetOrBoss()
+End Module
+
+Public getPosition(int& outX, int& outY) const
+    outX = x
+    outY = y
+End Module
+
+//Resests the map or goes onto the boss fight.
+Public Module resetOrBoss()
+    char c = '0'
+    If (keys == 6)
+        Output "Would you like to reset the game(you keep all your character progress), or fight the final boss?\n1. Reset\n2. Fight"
+        c = _getch()
+        keys = 0
+        system("cls")
+    End If
+
+    If (c == '1')
+    
+        map.reset()
+        map.setLevel(0)
+    End If
+    Else If (c == '2')
+        map.toggle2()
+    End Else
+End Module
