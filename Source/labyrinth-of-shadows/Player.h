@@ -1,4 +1,4 @@
-// Date: ??
+// Date: 12/11/23
 // Auth: Christian Baack
 // Desc: Class to represent the player in the game for movement and position.
 #pragma once
@@ -16,6 +16,7 @@ private:
 public:
     Player(Map& map, int initialX, int initialY) : map(map), x(initialX), y(initialY), px(initialX), py(initialY) {}
 
+    //Function gets player input and calls the acording move function
     void handleInput()
     {
         char input;
@@ -44,6 +45,7 @@ public:
         px += dx;
         py += dy;
 
+        //All the diffferent checks for Colissions.
         if (map.getGrid()[py][px] == 'A')
         {
             map.setLevel(map.getLevel() - 1);
@@ -62,7 +64,6 @@ public:
         if (map.getGrid()[py][px] == 'E' || map.getGrid()[py][px] == 'L')
         {
             map.toggle();
-            cout << map.getTrigger();
         }
         if (map.getGrid()[py][px] == 'D')
         {
@@ -92,6 +93,7 @@ public:
         outY = y;
     }
 
+    //Resests the map or goes onto the boss fight.
     void resetOrBoss()
     {
         char c = '0';
