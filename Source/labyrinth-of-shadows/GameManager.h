@@ -185,7 +185,12 @@ public:
 
             gameMap.mapSwitcher();
 
-            player.handleInput();
+            // Get input, then decide if inGameMenu or pass to handleInput.
+            char option = _getch();
+            if (option == 'b' || option == 'i' || option == 'm' || option == '?')
+                inGameMenu(option);
+
+            player.handleInput(option);
 
             gameMap.mapSwitcher();
 
@@ -223,6 +228,27 @@ public:
 
             //This is necessary to control speed of the game.
             this_thread::sleep_for(chrono::milliseconds(100));
+        }
+    }
+
+    void inGameMenu(char option) {
+        switch (option) {
+            case 'b':
+                saveGame();
+                break;
+            case 'i':
+                Inventory::getInstance()->openInventory();
+                break;
+            case 'm':
+                processMainMenu();
+                // User can quit from here
+                break;
+            case '?':
+                screen.showHelp();
+                break;
+            default:
+                cout << "You have encountered an unexpected error.\n";
+                break;
         }
     }
 
@@ -454,10 +480,4 @@ public:
         }
         }
     };
-
-    // Handles the game's update logic
-    /*void openInventory()
-    {
-        Inventory::getInstance()->openInventory();
-    }*/
 };
