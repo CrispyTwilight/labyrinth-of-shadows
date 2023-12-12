@@ -64,6 +64,6 @@ This is a dungeon crawl game played in the command line interface. The game allo
 - Gets a max and min for the dice.
 - Returns a random number based on the min and max.
 
-### Rogue.h
+### Rogue.h:
 - Defines the Rogue class.
 - Manges the players damage, health, and attack
