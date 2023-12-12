@@ -2,12 +2,13 @@
 //Date: 12/11/23
 //Desc: Pseucode for easyEnemy
 
-Include "Sword.pseudo"
-Include "Bow.pseudo"
-Include "Staff.pseudo"
 Include "Dice.pseudo"
 
 Class Enemy extends Character
+    Declare Private Constant Integer baseDamageBow = 8
+    Declare Private Constant Integer baseDamageSword = 10
+    Declare Private Constant Integer baseDamageStaff = 6
+    Declare Private Constant Integer baseDamageDagger = 5
     Declare Private Integer strength
     Declare Private Integer dexterity
     Declare Private Integer expWorth
@@ -63,7 +64,7 @@ Class Enemy extends Character
 
     Public Module generateBattleStyle()
         Call enemyDice.setMin(0)
-        Call enemyDice.setMax(2)
+        Call enemyDice.setMax(3)
         Set battleStyle = Call enemyDice.rollDice()
     End Module
 
@@ -85,11 +86,13 @@ Class Enemy extends Character
     Public Integer Function getDamage()
         Switch (battleStyle)
             Case 0:
-                Return Call bow.damage + dexterity
+                Return Call baseDamageBow + dexterity
             Case 1:
-                Return Call sword.damage + strength
+                Return Call baseDamageSword + strength
             Case 2:
-                Return Call staff.damage + strength
+                Return Call baseDamageStaff + strength
+            Case 3:
+                Return Call baseDamageDagger + dexterity
             Default
                 Return 0
         End Switch

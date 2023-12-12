@@ -344,7 +344,7 @@ public:
                     case 4:
                     {
                         std::cout << "You used Sneak Attack\n";
-                        // Rain of arrows
+                        // Sneak Attack
                         attackMonster(enemy, sneakAttack());
                         sneakAttackCooldown = 3;
                         break;
@@ -352,7 +352,7 @@ public:
                     case 5:
                     {
                         std::cout << " You used Dodge\n";
-                        // Charged Shot
+                        // Dodge
                         isDodgingActivated = true;
                         dodgeCooldown = dodgeLvl + 1;
                         break;
